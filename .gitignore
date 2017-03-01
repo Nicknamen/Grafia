@@ -27,3 +27,7 @@
 *.exe
 *.out
 *.app
+
+# Db
+*.VC.opendb
+*.VC.db

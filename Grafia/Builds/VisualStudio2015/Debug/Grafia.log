@@ -1,0 +1,19 @@
+﻿  MainComponent.cpp
+  Main.cpp
+  juce_audio_basics.cpp
+  juce_audio_devices.cpp
+  juce_audio_formats.cpp
+  juce_audio_processors.cpp
+  juce_core.cpp
+  juce_cryptography.cpp
+  juce_data_structures.cpp
+c:\users\nicoc_000\source\repos\grafia\grafia\source\main.cpp(27): warning C4100: 'commandLine': unreferenced formal parameter
+c:\users\nicoc_000\source\repos\grafia\grafia\source\main.cpp(49): warning C4100: 'commandLine': unreferenced formal parameter
+  juce_events.cpp
+  juce_graphics.cpp
+  juce_gui_basics.cpp
+  juce_gui_extra.cpp
+  juce_opengl.cpp
+  juce_video.cpp
+  Grafia.vcxproj -> C:\Users\nicoc_000\Source\Repos\Grafia\Grafia\Builds\VisualStudio2015\Debug\Grafia.exe
+  Grafia.vcxproj -> Debug\\Grafia.pdb (Full PDB)
