@@ -352,6 +352,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\GUI.cpp">
+      <Filter>Grafia\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\MainComponent.cpp">
       <Filter>Grafia\Source</Filter>
     </ClCompile>
@@ -2025,6 +2028,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\GUI.h">
+      <Filter>Grafia\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\MainComponent.h">
       <Filter>Grafia\Source</Filter>
     </ClInclude>
