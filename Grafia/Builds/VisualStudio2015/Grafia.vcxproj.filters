@@ -352,7 +352,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\GUI.cpp">
+    <ClCompile Include="..\..\..\..\..\..\Desktop\texlib\main\main\texlib.cpp">
       <Filter>Grafia\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\MainComponent.cpp">
@@ -2028,7 +2028,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\GUI.h">
+    <ClInclude Include="..\..\..\..\..\..\Desktop\texlib\main\main\texlib.h">
       <Filter>Grafia\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\MainComponent.h">

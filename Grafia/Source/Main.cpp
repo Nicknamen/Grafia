@@ -9,7 +9,8 @@
 */
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "GUI.h"
+#include "MainComponent.h"
+#include "texlib.h"
 
 
 //==============================================================================
@@ -66,7 +67,7 @@ public:
                                                     DocumentWindow::allButtons)
         {
             setUsingNativeTitleBar (true);
-            setContentOwned (new GUI(), true);
+            setContentOwned (new MainContentComponent(), true);
 
             centreWithSize (getWidth(), getHeight());
             setVisible (true);
