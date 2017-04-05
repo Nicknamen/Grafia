@@ -1,5 +1,4 @@
 
-#include "stdafx.h"
 #include "texlib.h"
 
 #include <iostream>

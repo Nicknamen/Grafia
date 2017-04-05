@@ -28,6 +28,9 @@ public:
     void resized() override;
 
 private:
+	ImageComponent tex_image;
+	PNGImageFormat PNGreader;
+	std::string message;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };

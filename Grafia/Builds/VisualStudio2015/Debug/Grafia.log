@@ -1,17 +1,14 @@
-﻿Build started 03/04/2017 23:26:04.
-Project "C:\Users\nicoc_000\Source\Repos\Grafia\Grafia\Builds\VisualStudio2015\Grafia.vcxproj" on node 2 (Build target(s)).
+﻿Build started 05/04/2017 17:01:53.
+Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Grafia.vcxproj" on node 2 (Build target(s)).
 InitializeBuildStatus:
   Creating "Debug\Grafia.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
 ClCompile:
-  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I..\..\JuceLibraryCode /I"..\..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules" /ZI /nologo /W4 /WX- /MP /Od /Oy- /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D _WINDOWS /D DEBUG /D _DEBUG /D JUCER_VS2015_78A5022=1 /D JUCE_APP_VERSION=1.0.0 /D JUCE_APP_VERSION_HEX=0x10000 /Gm- /EHsc /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"Debug\\" /Fd"Debug\\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\Source\Main.cpp
-  Main.cpp
-c:\users\nicoc_000\source\repos\grafia\grafia\source\main.cpp(28): warning C4100: 'commandLine': unreferenced formal parameter
-c:\users\nicoc_000\source\repos\grafia\grafia\source\main.cpp(50): warning C4100: 'commandLine': unreferenced formal parameter
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I..\..\JuceLibraryCode /I"..\..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules" /ZI /nologo /W4 /WX- /MP /Od /Oy- /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D _WINDOWS /D DEBUG /D _DEBUG /D JUCER_VS2015_78A5022=1 /D JUCE_APP_VERSION=1.0.0 /D JUCE_APP_VERSION_HEX=0x10000 /Gm- /EHsc /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"Debug\\" /Fd"Debug\\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\Source\MainComponent.cpp
+  MainComponent.cpp
 ResourceCompile:
   All outputs are up-to-date.
 Link:
-  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\nicoc_000\Source\Repos\Grafia\Grafia\Builds\VisualStudio2015\Debug\\Grafia.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /NODEFAULTLIB:libcmt.lib /NODEFAULTLIB:msvcrt.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"Debug\\Grafia.pdb" /SUBSYSTEM:WINDOWS /LARGEADDRESSAWARE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\nicoc_000\Source\Repos\Grafia\Grafia\Builds\VisualStudio2015\Debug\Grafia.lib" /MACHINE:X86 /SAFESEH:NO Debug\resources.res
-  Debug\\texlib.obj
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Debug\\Grafia.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /NODEFAULTLIB:libcmt.lib /NODEFAULTLIB:msvcrt.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"Debug\\Grafia.pdb" /SUBSYSTEM:WINDOWS /LARGEADDRESSAWARE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Debug\Grafia.lib" /MACHINE:X86 /SAFESEH:NO Debug\resources.res
   Debug\\MainComponent.obj
   Debug\\Main.obj
   Debug\\juce_audio_basics.obj
@@ -27,13 +24,14 @@ Link:
   Debug\\juce_gui_extra.obj
   Debug\\juce_opengl.obj
   Debug\\juce_video.obj
-  Grafia.vcxproj -> C:\Users\nicoc_000\Source\Repos\Grafia\Grafia\Builds\VisualStudio2015\Debug\Grafia.exe
+  Debug\\texlib.obj
+  Grafia.vcxproj -> C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Debug\Grafia.exe
   Grafia.vcxproj -> Debug\\Grafia.pdb (Full PDB)
 FinalizeBuildStatus:
   Deleting file "Debug\Grafia.tlog\unsuccessfulbuild".
   Touching "Debug\Grafia.tlog\Grafia.lastbuildstate".
-Done Building Project "C:\Users\nicoc_000\Source\Repos\Grafia\Grafia\Builds\VisualStudio2015\Grafia.vcxproj" (Build target(s)).
+Done Building Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Grafia.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:05.51
+Time Elapsed 00:00:03.26

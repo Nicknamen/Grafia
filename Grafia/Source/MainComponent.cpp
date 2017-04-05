@@ -12,7 +12,19 @@
 //==============================================================================
 MainContentComponent::MainContentComponent()
 {
-    setSize (600, 400);
+	File imagefile("C:\\Diploma_riforma.png");
+	FileInputStream fis(imagefile);	
+	if (PNGreader.canUnderstand(fis))
+	{
+		message = "Image understood";
+	}
+	else
+	{
+		message = "Image not understood";
+	}
+
+	//	addAndMakeVisible(tex_image);
+	setSize(600, 400);
 }
 
 MainContentComponent::~MainContentComponent()
@@ -25,7 +37,7 @@ void MainContentComponent::paint (Graphics& g)
 
     g.setFont (Font (16.0f));
     g.setColour (Colours::white);
-    g.drawText ("Hello World!", getLocalBounds(), Justification::centred, true);
+    g.drawText (message, getLocalBounds(), Justification::centred, true);
 }
 
 void MainContentComponent::resized()
