@@ -12,19 +12,21 @@
 //==============================================================================
 MainContentComponent::MainContentComponent()
 {
-	File imagefile("C:\\Diploma_riforma.png");
-	FileInputStream fis(imagefile);	
-	if (PNGreader.canUnderstand(fis))
+	File imagefile("C:\\Diploma_riforma.png");
+
+	tex_preimage = PNGImageFormat::loadFrom(imagefile);
+
+	if (tex_preimage.isValid())
 	{
-		message = "Image understood";
+		message += "Image is valid";
 	}
 	else
 	{
-		message = "Image not understood";
+		message += "Image is not valid";
 	}
 
-	//	addAndMakeVisible(tex_image);
-	setSize(600, 400);
+	addAndMakeVisible(tex_image);
+	setSize(900, 400);
 }
 
 MainContentComponent::~MainContentComponent()
@@ -37,12 +39,11 @@ void MainContentComponent::paint (Graphics& g)
 
     g.setFont (Font (16.0f));
     g.setColour (Colours::white);
-    g.drawText (message, getLocalBounds(), Justification::centred, true);
+
+	tex_image.setImage(tex_preimage);
 }
 
 void MainContentComponent::resized()
 {
-    // This is called when the MainContentComponent is resized.
-    // If you add any child components, this is where you should
-    // update their positions.
+	tex_image.setBounds(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
 }

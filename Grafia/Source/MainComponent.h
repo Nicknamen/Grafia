@@ -31,6 +31,7 @@ private:
 	ImageComponent tex_image;
 	PNGImageFormat PNGreader;
 	std::string message;
+	Image tex_preimage;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };
