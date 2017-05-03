@@ -8,24 +8,57 @@
 
 #include "MainComponent.h"
 
-
 //==============================================================================
 MainContentComponent::MainContentComponent()
 {
-	File imagefile("C:\\Diploma_riforma.png");
-
-	tex_preimage = PNGImageFormat::loadFrom(imagefile);
-
-	if (tex_preimage.isValid())
+	try
 	{
-		message += "Image is valid";
+		texstream.open("sum.tex");
+
+		to_tex("\\sum_{i=0}^n i = \\frac{n(n+1)}{2}", texstream);
+
+		message += texstream.to_png();
+
+		File teximage(File::getCurrentWorkingDirectory().getChildFile("sum.png"));
+
+		File imagefile("C:\\Diploma_riforma.png");
+	/*	File svgfile("C:\\prova.svg");
+
+		ScopedPointer<XmlElement> svg(XmlDocument::parse(svgfile));
+
+		if (svg != nullptr)
+		{
+			svg_image = DrawableImage::createFromSVG(*svg);
+
+			message += "svg != nullptr";
+		}
+		else
+		{
+			message += "svg = nullptr";
+		}
+	*/
+	//	addAndMakeVisible(svg_image);
+
+		tex_preimage = PNGImageFormat::loadFrom(teximage);
+
+		if (tex_preimage.isValid())
+		{
+			message += " Image is valid";
+		}
+		else
+		{
+			message += " Image is not valid";
+		}
+
+		tex_image.setImage(tex_preimage);
+
+		addAndMakeVisible(tex_image);
 	}
-	else
+	catch (string exc)
 	{
-		message += "Image is not valid";
+		message += " " + exc;
 	}
 
-	addAndMakeVisible(tex_image);
 	setSize(900, 400);
 }
 
@@ -39,11 +72,19 @@ void MainContentComponent::paint (Graphics& g)
 
     g.setFont (Font (16.0f));
     g.setColour (Colours::white);
-
-	tex_image.setImage(tex_preimage);
+	g.drawText(message, getLocalBounds(), Justification::centred, true);
 }
 
 void MainContentComponent::resized()
 {
-	tex_image.setBounds(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
+	tex_image.setBounds(getWidth() / 6, getHeight() / 6, getWidth() / 1.5, getHeight() / 1.5);
+}
+
+void to_tex(string formula, TeX & tw)
+{
+	tw << "\\documentclass[tikz]{standalone}\n%\\usetikzlibrary{calc}\n\\begin{document}\n\\begin{tikzpicture}\n\\draw(0, 0) rectangle(8, 4) node[midway]{ \\large $"
+		<< formula
+		<< "$};\n\\end{tikzpicture}\n\\end{document}";
+
+	return;
 }
