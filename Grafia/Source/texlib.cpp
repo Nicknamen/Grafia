@@ -7,15 +7,19 @@
 using namespace Magick;
 using namespace std;
 
-TeX::TeX()
+TeX::TeX(bool show_shell)
 {
 	_istexcreated = false;
 	_istexmodified = true;
+
+	_is_shell_hidden = !show_shell;
 }
 
-TeX::TeX(string filename)
+TeX::TeX(string filename, bool show_shell)
 {
 	open(filename);
+
+	_is_shell_hidden = !show_shell;
 }
 
 bool TeX::open()
@@ -26,6 +30,23 @@ bool TeX::open()
 		_texfile.open(_texname);
 	else
 		_texfile.open(_texname, ios::out);
+
+	if (_texfile.bad())
+		return false;
+	else
+	{
+		_istexcreated = true;
+		_istexmodified = true;
+
+		return true;
+	}
+}
+
+bool TeX::open_rewritemode()
+{
+	close();
+
+	_texfile.open(_texname, ios::out);
 
 	if (_texfile.bad())
 		return false;
@@ -69,6 +90,8 @@ inline void TeX::close()
 TeX::~TeX()
 {
 	close();
+
+	execute(("rm " + _texname + ".pdf" + _texname + ".log" + _texname + ".aux" + _texname + ".tex" + _texname + ".png").c_str());
 }
 
 ostream & TeX::operator<<(string & s)
@@ -135,7 +158,7 @@ void TeX::to_pdf()
 	close();
 
 	if (exists())
-		system(("pdflatex " + _texname).c_str());
+		execute(("pdflatex " + _texname).c_str());
 	else
 		throw "File " + _texname + " not found";
 }
@@ -145,7 +168,7 @@ void TeX::to_dvi()
 	close();
 
 	if (exists())
-		system(("latex " + _texname).c_str());
+		execute(("latex " + _texname).c_str());
 	else
 		throw "File " + _texname + " not found";
 }
@@ -154,13 +177,13 @@ void TeX::to_svg()
 {
 	if (fexists(_emptyname + ".dvi") && !_istexmodified) // to be compiled directly from dvi
 	{
-		system(("dvisvgm " + _emptyname + ".dvi").c_str());
+		execute(("dvisvgm " + _emptyname + ".dvi").c_str());
 	}
 	else if (exists()) // to be compiled from tex
 	{
 		to_dvi();
 
-		system(("dvisvgm " + _emptyname + ".dvi").c_str());
+		execute(("dvisvgm " + _emptyname + ".dvi").c_str());
 	}
 	else
 	{
@@ -221,6 +244,25 @@ string TeX::to_png(string ext)
 	}
 
 	return "";
+}
+
+void TeX::execute(const char* comand)
+{
+#ifdef _WIN32
+
+	if (_is_shell_hidden)
+		WinExec(comand, SW_HIDE);
+	else
+		WinExec(comand, SW_SHOW);
+
+#elif defined __linux__
+
+	if (_is_shell_hidden)
+		fork(comand);
+	else
+		system(comand);
+
+#endif
 }
 
 #ifdef _WIN32

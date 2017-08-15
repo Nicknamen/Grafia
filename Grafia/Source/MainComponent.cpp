@@ -11,55 +11,54 @@
 //==============================================================================
 MainContentComponent::MainContentComponent()
 {
-	try
-	{
-		texstream.open("sum.tex");
+	texstream.open("sum.tex");
 
-		to_tex("\\sum_{i=0}^n i = \\frac{n(n+1)}{2}", texstream);
+	addAndMakeVisible(compile_button);
+	compile_button.setButtonText("Compile");
+	compile_button.addListener(this);
 
-		message += texstream.to_png();
-
-		File teximage(File::getCurrentWorkingDirectory().getChildFile("sum.png"));
-
-		File imagefile("C:\\Diploma_riforma.png");
-	/*	File svgfile("C:\\prova.svg");
-
-		ScopedPointer<XmlElement> svg(XmlDocument::parse(svgfile));
-
-		if (svg != nullptr)
-		{
-			svg_image = DrawableImage::createFromSVG(*svg);
-
-			message += "svg != nullptr";
-		}
-		else
-		{
-			message += "svg = nullptr";
-		}
-	*/
-	//	addAndMakeVisible(svg_image);
-
-		tex_preimage = PNGImageFormat::loadFrom(teximage);
-
-		if (tex_preimage.isValid())
-		{
-			message += " Image is valid";
-		}
-		else
-		{
-			message += " Image is not valid";
-		}
-
-		tex_image.setImage(tex_preimage);
-
-		addAndMakeVisible(tex_image);
-	}
-	catch (string exc)
-	{
-		message += " " + exc;
-	}
+	addAndMakeVisible(tex_text);
+	tex_text.addListener(this);
 
 	setSize(900, 400);
+}
+
+void MainContentComponent::buttonClicked(Button* button)
+{
+	if (button == &compile_button)
+	{
+		try
+		{
+			message = "";
+
+			texstream.open_rewritemode();
+
+			to_tex(tex_text.getText().toStdString(), texstream);
+
+			message += texstream.to_png();
+
+			File teximage(File::getCurrentWorkingDirectory().getChildFile("sum.png"));
+
+			tex_preimage = PNGImageFormat::loadFrom(teximage);
+
+			if (tex_preimage.isValid())
+			{
+				message += " Image is valid";
+			}
+			else
+			{
+				message += " Image is not valid";
+			}
+
+			tex_image.setImage(tex_preimage);
+		}
+		catch (string exc)
+		{
+			message += " " + exc;
+		}
+
+		repaint();
+	}
 }
 
 MainContentComponent::~MainContentComponent()
@@ -68,23 +67,34 @@ MainContentComponent::~MainContentComponent()
 
 void MainContentComponent::paint (Graphics& g)
 {
-    g.fillAll (Colour (0xff001F36));
+    g.fillAll (Colours::lightgrey);
 
     g.setFont (Font (16.0f));
-    g.setColour (Colours::white);
-	g.drawText(message, getLocalBounds(), Justification::centred, true);
+    g.setColour (Colours::black);
+	g.drawText(message, getLocalBounds(), Justification::bottomRight, true);
+
+	g.drawImageAt(tex_preimage, 10, 10);
 }
 
 void MainContentComponent::resized()
 {
-	tex_image.setBounds(getWidth() / 6, getHeight() / 6, getWidth() / 1.5, getHeight() / 1.5);
+	tex_image.setBounds(0, 0, getWidth() / 1.5, getHeight() / 1.5);
+	tex_text.setBounds(10, getHeight()*0.8, getWidth()/2 - 10, 40);
+	compile_button.setBounds(getWidth()/2+10, getHeight()*0.8, getWidth()/2 - 20, 40);
 }
 
 void to_tex(string formula, TeX & tw)
 {
-	tw << "\\documentclass[tikz]{standalone}\n%\\usetikzlibrary{calc}\n\\begin{document}\n\\begin{tikzpicture}\n\\draw(0, 0) rectangle(8, 4) node[midway]{ \\large $"
+	tw << "\\documentclass{minimal}\n"
+		"\\usepackage[paperwidth=6.5cm, paperheight=3.5cm]{geometry}\n"
+		"\\begin{document}\n$$"
 		<< formula
-		<< "$};\n\\end{tikzpicture}\n\\end{document}";
+		<< "$$\n\\end{document}";
 
 	return;
 }
+
+/*void LatexDisplay::paint(Graphics & g)
+{
+//	g.fillAll(Colours::white);
+}*/

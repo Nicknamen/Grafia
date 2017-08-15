@@ -15,12 +15,22 @@
 using namespace std;
 
 void to_tex(string formula, TeX & tw);
+
+class LatexDisplay : public ImageComponent
+{
+public:
+
+//	void paint(Graphics& g) override;
+};
+
 //==============================================================================
 /*
     This component lives inside our window, and this is where you should put all
     your controls and content.
 */
-class MainContentComponent   : public Component
+class MainContentComponent   : public Component,
+							   public Button::Listener,
+							   public TextEditor::Listener
 {
 public:
     //==============================================================================
@@ -30,8 +40,12 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
+	void buttonClicked(Button* button) override;
+
 private:
-	ImageComponent tex_image;
+	TextEditor tex_text;
+	TextButton compile_button;
+	LatexDisplay tex_image;
 	PNGImageFormat PNGreader;
 	std::string message;
 	Image tex_preimage;

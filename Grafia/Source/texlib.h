@@ -17,8 +17,8 @@
 class TeX
 {
 public:
-	TeX();
-	TeX(std::string filename);
+	TeX(bool show_shell = FALSE);
+	TeX(std::string filename, bool show_shell = FALSE);
 
 	~TeX();
 
@@ -31,7 +31,10 @@ public:
 	void to_svg();
 	std::string to_png(std::string ext = "pdf"); //returns a possible message error
 
+	void execute(const char* comand);
+
 	bool open();
+	bool open_rewritemode();
 	bool open(std::string filename);
 	void close();
 
@@ -49,6 +52,8 @@ private:
 
 	bool _istexcreated;
 	bool _istexmodified;
+
+	bool _is_shell_hidden;
 
 	std::fstream _texfile;
 
