@@ -20,7 +20,7 @@ class LatexDisplay : public ImageComponent
 {
 public:
 
-//	void paint(Graphics& g) override;
+	void paint(Graphics& g) override;
 };
 
 //==============================================================================
@@ -42,6 +42,8 @@ public:
 
 	void buttonClicked(Button* button) override;
 
+	void compile();
+
 private:
 	TextEditor tex_text;
 	TextButton compile_button;
@@ -51,6 +53,7 @@ private:
 	Image tex_preimage;
 	DrawableImage svg_image;
 	TeX texstream;
+	std::string ImageFileName;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };
