@@ -55,6 +55,9 @@ private:
 
 	bool _is_shell_hidden;
 
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
+
 	std::fstream _texfile;
 
 	void name(std::string texname);

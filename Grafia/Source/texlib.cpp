@@ -91,7 +91,7 @@ TeX::~TeX()
 {
 	close();
 
-	execute(("rm " + _texname + ".pdf" + _texname + ".log" + _texname + ".aux" + _texname + ".tex" + _texname + ".png").c_str());
+	execute(("rm " + _texname + ".pdf " + _texname + ".log " + _texname + ".aux " + _texname + ".tex " + _texname + ".png ").c_str());
 }
 
 ostream & TeX::operator<<(string & s)
@@ -251,9 +251,32 @@ void TeX::execute(const char* comand)
 #ifdef _WIN32
 
 	if (_is_shell_hidden)
-		WinExec(comand, SW_HIDE);
+	{
+		LPSTR lpcomand = const_cast<char *>(comand);
+
+		ZeroMemory(&si, sizeof(si));
+		si.cb = sizeof(si);
+		ZeroMemory(&pi, sizeof(pi));
+
+		CreateProcess(NULL,   // No module name (use command line)
+			lpcomand,        // Command line
+			NULL,           // Process handle not inheritable
+			NULL,           // Thread handle not inheritable
+			FALSE,          // Set handle inheritance to FALSE
+			CREATE_NO_WINDOW,  // No creation flags
+			NULL,           // Use parent's environment block
+			NULL,           // Use parent's starting directory 
+			&si,            // Pointer to STARTUPINFO structure
+			&pi);         // Pointer to PROCESS_INFORMATION structure
+
+		WaitForSingleObject(pi.hProcess, 10000);
+
+		// Close process and thread handles. 
+		CloseHandle(pi.hProcess);
+		CloseHandle(pi.hThread);
+	}
 	else
-		WinExec(comand, SW_SHOW);
+		system(comand);
 
 #elif defined __linux__
 
