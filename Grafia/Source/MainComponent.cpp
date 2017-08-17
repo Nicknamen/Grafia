@@ -11,7 +11,8 @@
 //==============================================================================
 MainContentComponent::MainContentComponent()
 {
-	texstream.open("sum.tex");
+	ImageFileName = "tex_file";
+	texstream.open(ImageFileName + ".tex");
 
 	addAndMakeVisible(compile_button);
 	compile_button.setButtonText("Compile");
@@ -20,44 +21,56 @@ MainContentComponent::MainContentComponent()
 	addAndMakeVisible(tex_text);
 	tex_text.addListener(this);
 
-	setSize(900, 400);
+	tex_search.setText("Search:", dontSendNotification);
+	tex_search.attachToComponent(&tex_text, FALSE);
+
+	addAndMakeVisible(tex_image);
+
+	setSize(800, 450);
 }
 
 void MainContentComponent::buttonClicked(Button* button)
 {
 	if (button == &compile_button)
 	{
-		try
-		{
-			message = "";
+		compile();
 
-			texstream.open_rewritemode();
-
-			to_tex(tex_text.getText().toStdString(), texstream);
-
-			message += texstream.to_png();
-
-			File teximage(File::getCurrentWorkingDirectory().getChildFile("sum.png"));
-
-			tex_preimage = PNGImageFormat::loadFrom(teximage);
-
-			if (tex_preimage.isValid())
-			{
-				message += " Image is valid";
-			}
-			else
-			{
-				message += " Image is not valid";
-			}
-
-			tex_image.setImage(tex_preimage);
-		}
-		catch (string exc)
-		{
-			message += " " + exc;
-		}
+		tex_image.repaint();
 
 		repaint();
+	}
+}
+
+void MainContentComponent::compile()
+{
+	try
+	{
+		message = "";
+
+		texstream.open_rewritemode();
+
+		to_tex(tex_text.getText().toStdString(), texstream);
+
+		message += texstream.to_png();
+
+		File teximage(File::getCurrentWorkingDirectory().getChildFile(String(ImageFileName + ".png")));
+
+		tex_preimage = PNGImageFormat::loadFrom(teximage);
+
+		if (tex_preimage.isValid())
+		{
+			message += " Image is valid";
+		}
+		else
+		{
+			message += " Image is not valid";
+		}
+
+		tex_image.setImage(tex_preimage);
+	}
+	catch (string exc)
+	{
+		message += " " + exc;
 	}
 }
 
@@ -71,22 +84,30 @@ void MainContentComponent::paint (Graphics& g)
 
     g.setFont (Font (16.0f));
     g.setColour (Colours::black);
-	g.drawText(message, getLocalBounds(), Justification::bottomRight, true);
 
-	g.drawImageAt(tex_preimage, 10, 10);
+	juce::Rectangle<int> base(0, getHeight() - 20, getWidth(), getHeight());
+
+	g.setColour(Colours::dimgrey);
+
+	g.fillRect(base);
+
+	g.setFont(Font(16.0f));
+	g.setColour(Colours::white);
+
+	g.drawText(message, juce::Rectangle<int>(0, 0, getWidth() - 5, getHeight() - 2), Justification::bottomRight, true);
 }
 
 void MainContentComponent::resized()
 {
-	tex_image.setBounds(0, 0, getWidth() / 1.5, getHeight() / 1.5);
-	tex_text.setBounds(10, getHeight()*0.8, getWidth()/2 - 10, 40);
-	compile_button.setBounds(getWidth()/2+10, getHeight()*0.8, getWidth()/2 - 20, 40);
+	tex_image.setBounds(10, 10, getWidth() / 2 - 15, getHeight() / 2 - 15);
+	tex_text.setBounds(getWidth() / 2 + 5, getHeight()*0.1, getWidth()/4 - 10, 25);
+	compile_button.setBounds(getWidth()*0.75 + 5, getHeight()*0.1, getWidth()/4 - 10, 25);
 }
 
 void to_tex(string formula, TeX & tw)
 {
 	tw << "\\documentclass{minimal}\n"
-		"\\usepackage[paperwidth=6.5cm, paperheight=3.5cm]{geometry}\n"
+		"\\usepackage[paperwidth=6.4cm, paperheight=3.6cm]{geometry}\n"
 		"\\begin{document}\n$$"
 		<< formula
 		<< "$$\n\\end{document}";
@@ -94,7 +115,9 @@ void to_tex(string formula, TeX & tw)
 	return;
 }
 
-/*void LatexDisplay::paint(Graphics & g)
+void LatexDisplay::paint(Graphics & g)
 {
-//	g.fillAll(Colours::white);
-}*/
+	g.fillAll(Colours::white);
+
+	g.drawImage(getImage(), juce::Rectangle<float>(0, 0, getWidth(), getHeight()));
+}

@@ -1,13 +1,33 @@
-﻿Build started 16/08/2017 21:31:25.
+﻿Build started 17/08/2017 18:15:22.
 Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Grafia.vcxproj" on node 2 (Build target(s)).
 InitializeBuildStatus:
   Creating "Debug\Grafia.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
 ClCompile:
-  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:\C++_libraries\Magick++\include /I..\..\JuceLibraryCode /I"C:\Program Files (x86)\JUCE\modules" /ZI /nologo /W4 /WX- /MP /O2 /Oy- /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D _WINDOWS /D DEBUG /D _DEBUG /D JUCER_VS2015_78A5022=1 /D JUCE_APP_VERSION=1.0.0 /D JUCE_APP_VERSION_HEX=0x10000 /Gm- /EHsc /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"Debug\\" /Fd"Debug\\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\Source\texlib.cpp
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:\C++_libraries\Magick++\include /I..\..\JuceLibraryCode /I"C:\Program Files (x86)\JUCE\modules" /ZI /nologo /W4 /WX- /MP /O2 /Oy- /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D _WINDOWS /D DEBUG /D _DEBUG /D JUCER_VS2015_78A5022=1 /D JUCE_APP_VERSION=1.0.0 /D JUCE_APP_VERSION_HEX=0x10000 /Gm- /EHsc /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"Debug\\" /Fd"Debug\\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\Source\MainComponent.cpp ..\..\Source\Main.cpp ..\..\JuceLibraryCode\juce_audio_basics.cpp ..\..\JuceLibraryCode\juce_audio_devices.cpp ..\..\JuceLibraryCode\juce_audio_formats.cpp ..\..\JuceLibraryCode\juce_audio_processors.cpp ..\..\JuceLibraryCode\juce_core.cpp ..\..\JuceLibraryCode\juce_cryptography.cpp ..\..\JuceLibraryCode\juce_data_structures.cpp ..\..\JuceLibraryCode\juce_events.cpp ..\..\JuceLibraryCode\juce_graphics.cpp ..\..\JuceLibraryCode\juce_gui_basics.cpp ..\..\JuceLibraryCode\juce_gui_extra.cpp ..\..\JuceLibraryCode\juce_opengl.cpp ..\..\JuceLibraryCode\juce_video.cpp ..\..\Source\texlib.cpp
+  MainComponent.cpp
+  Main.cpp
+  juce_audio_basics.cpp
+  juce_audio_devices.cpp
+  juce_audio_formats.cpp
+  juce_audio_processors.cpp
+  juce_core.cpp
+  juce_cryptography.cpp
+  juce_data_structures.cpp
+c:\users\nicoc_000\desktop\grafia\grafia\source\main.cpp(28): warning C4100: 'commandLine': unreferenced formal parameter
+c:\users\nicoc_000\desktop\grafia\grafia\source\main.cpp(50): warning C4100: 'commandLine': unreferenced formal parameter
+c:\users\nicoc_000\desktop\grafia\grafia\source\maincomponent.cpp(103): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\nicoc_000\desktop\grafia\grafia\source\maincomponent.cpp(104): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\nicoc_000\desktop\grafia\grafia\source\maincomponent.cpp(122): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  juce_events.cpp
+  juce_graphics.cpp
+  juce_gui_basics.cpp
+  juce_gui_extra.cpp
+  juce_opengl.cpp
+  juce_video.cpp
   texlib.cpp
 c:\users\nicoc_000\desktop\grafia\grafia\source\texlib.cpp(148): warning C4129: '.': unrecognized character escape sequence
 ResourceCompile:
-  All outputs are up-to-date.
+  C:\Program Files (x86)\Windows Kits\8.1\bin\x86\rc.exe /D _DEBUG /l"0x0409" /nologo /fo"Debug\resources.res" .\resources.rc 
 Link:
   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Debug\\Grafia.exe" /NOLOGO /LIBPATH:C:\C++_libraries\Magick++\mcvs_static_debug_x86\lib CORE_DB_Magick++_.lib CORE_DB_MagickCore_.lib CORE_DB_MagickWand_.lib CORE_DB_bzlib_.lib CORE_DB_cairo_.lib CORE_DB_coders_.lib CORE_DB_croco_.lib CORE_DB_exr_.lib CORE_DB_ffi_.lib CORE_DB_filters_.lib CORE_DB_flif_.lib CORE_DB_glib_.lib CORE_DB_jp2_.lib CORE_DB_jpeg_.lib CORE_DB_lcms_.lib CORE_DB_librsvg_.lib CORE_DB_libxml_.lib CORE_DB_lqr_.lib CORE_DB_openjpeg_.lib CORE_DB_pango_.lib CORE_DB_pixman_.lib CORE_DB_png_.lib CORE_DB_tiff_.lib CORE_DB_ttf_.lib CORE_DB_webp_.lib CORE_DB_zlib_.lib ImageMagickObject.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /NODEFAULTLIB:libcmt.lib /NODEFAULTLIB:msvcrt.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"Debug\\Grafia.pdb" /SUBSYSTEM:WINDOWS /LARGEADDRESSAWARE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Debug\Grafia.lib" /MACHINE:X86 /SAFESEH:NO Debug\resources.res
   Debug\\MainComponent.obj
@@ -35,4 +55,4 @@ Done Building Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStu
 
 Build succeeded.
 
-Time Elapsed 00:00:04.07
+Time Elapsed 00:00:34.58
