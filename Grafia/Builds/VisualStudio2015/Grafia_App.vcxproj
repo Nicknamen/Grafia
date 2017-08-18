@@ -75,10 +75,6 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp14</LanguageStandard>
-      <OmitFramePointers>true</OmitFramePointers>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
-      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -94,7 +90,7 @@
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
       <LargeAddressAware>true</LargeAddressAware>
       <AdditionalDependencies>CORE_DB_Magick++_.lib;CORE_DB_MagickCore_.lib;CORE_DB_MagickWand_.lib;CORE_DB_bzlib_.lib;CORE_DB_cairo_.lib;CORE_DB_coders_.lib;CORE_DB_croco_.lib;CORE_DB_exr_.lib;CORE_DB_ffi_.lib;CORE_DB_filters_.lib;CORE_DB_flif_.lib;CORE_DB_glib_.lib;CORE_DB_jp2_.lib;CORE_DB_jpeg_.lib;CORE_DB_lcms_.lib;CORE_DB_librsvg_.lib;CORE_DB_libxml_.lib;CORE_DB_lqr_.lib;CORE_DB_openjpeg_.lib;CORE_DB_pango_.lib;CORE_DB_pixman_.lib;CORE_DB_png_.lib;CORE_DB_tiff_.lib;CORE_DB_ttf_.lib;CORE_DB_webp_.lib;CORE_DB_zlib_.lib;ImageMagickObject.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/NODEFAULTLIB:"libcmt.lib" /NODEFAULTLIB:"msvcrt.lib" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/MANIFEST /NODEFAULTLIB:"libcmt.lib" /NODEFAULTLIB:"msvcrt.lib" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalLibraryDirectories>C:\C++_libraries\Magick++\mcvs_static_debug_x86\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Bscmake>
@@ -149,6 +145,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\MenuComponent.cpp" />
     <ClCompile Include="..\..\Source\texlib.cpp" />
     <ClCompile Include="..\..\Source\MainComponent.cpp" />
     <ClCompile Include="..\..\Source\Main.cpp" />
@@ -1736,6 +1733,7 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_video.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\MenuComponent.h" />
     <ClInclude Include="..\..\Source\texlib.h" />
     <ClInclude Include="..\..\Source\MainComponent.h" />
     <ClInclude Include="..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h" />

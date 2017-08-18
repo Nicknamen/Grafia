@@ -119,5 +119,11 @@ void LatexDisplay::paint(Graphics & g)
 {
 	g.fillAll(Colours::white);
 
-	g.drawImage(getImage(), juce::Rectangle<float>(0, 0, getWidth(), getHeight()));
+	juce::Rectangle<float> bounds(0, 0, getWidth(), getHeight());
+
+	g.drawImage(getImage(), bounds);
+
+	g.setColour(Colours::darkgrey);
+
+	g.drawRect(bounds);
 }

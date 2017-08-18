@@ -6,6 +6,9 @@
               splashScreenColour="Dark" cppLanguageStandard="11">
   <MAINGROUP id="cdnleW" name="Grafia">
     <GROUP id="{3D9344D3-A3B7-AE35-480A-4CAD7625B879}" name="Source">
+      <FILE id="wbXg91" name="MenuComponent.cpp" compile="1" resource="0"
+            file="Source/MenuComponent.cpp"/>
+      <FILE id="helM8B" name="MenuComponent.h" compile="0" resource="0" file="Source/MenuComponent.h"/>
       <FILE id="MPj7CD" name="texlib.cpp" compile="1" resource="0" file="Source/texlib.cpp"/>
       <FILE id="fh6y3x" name="texlib.h" compile="0" resource="0" file="Source/texlib.h"/>
       <FILE id="H5M9qE" name="MainComponent.cpp" compile="1" resource="0"

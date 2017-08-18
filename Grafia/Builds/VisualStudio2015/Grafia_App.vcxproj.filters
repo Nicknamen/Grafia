@@ -357,6 +357,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\MenuComponent.cpp">
+      <Filter>Grafia\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\texlib.cpp">
       <Filter>Grafia\Source</Filter>
     </ClCompile>
@@ -1976,6 +1979,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\MenuComponent.h">
+      <Filter>Grafia\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\texlib.h">
       <Filter>Grafia\Source</Filter>
     </ClInclude>
