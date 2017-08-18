@@ -31,3 +31,6 @@
 # Db
 *.VC.opendb
 *.VC.db
+
+# Debug files
+*.pdb

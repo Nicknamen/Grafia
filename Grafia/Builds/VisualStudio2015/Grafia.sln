@@ -1,6 +1,7 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2015
-Project("{349475FA-EB8E-E246-9C34-1B106BE4FFC9}") = "Grafia", "Grafia.vcxproj", "{E9368254-94AB-8570-3FE0-E2D3BF83EA7D}"
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Grafia - App", "Grafia_App.vcxproj", "{DB245620-6577-E4D6-6BA1-1975A5054DC5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,10 +9,10 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E9368254-94AB-8570-3FE0-E2D3BF83EA7D}.Debug|Win32.ActiveCfg = Debug|Win32
-		{E9368254-94AB-8570-3FE0-E2D3BF83EA7D}.Debug|Win32.Build.0 = Debug|Win32
-		{E9368254-94AB-8570-3FE0-E2D3BF83EA7D}.Release|Win32.ActiveCfg = Release|Win32
-		{E9368254-94AB-8570-3FE0-E2D3BF83EA7D}.Release|Win32.Build.0 = Release|Win32
+		{DB245620-6577-E4D6-6BA1-1975A5054DC5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DB245620-6577-E4D6-6BA1-1975A5054DC5}.Debug|Win32.Build.0 = Debug|Win32
+		{DB245620-6577-E4D6-6BA1-1975A5054DC5}.Release|Win32.ActiveCfg = Release|Win32
+		{DB245620-6577-E4D6-6BA1-1975A5054DC5}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

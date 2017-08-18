@@ -2,11 +2,12 @@
 
 <JUCERPROJECT id="Qr0nDZ" name="Grafia" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.yourcompany.Grafia" includeBinaryInAppConfig="1"
-              jucerVersion="4.3.1">
+              jucerVersion="5.1.1" displaySplashScreen="1" reportAppUsage="1"
+              splashScreenColour="Dark" cppLanguageStandard="11">
   <MAINGROUP id="cdnleW" name="Grafia">
     <GROUP id="{3D9344D3-A3B7-AE35-480A-4CAD7625B879}" name="Source">
-      <FILE id="BBvvoA" name="texlib.cpp" compile="1" resource="0" file="../../../../Desktop/texlib/main/main/texlib.cpp"/>
-      <FILE id="J6751i" name="texlib.h" compile="0" resource="0" file="../../../../Desktop/texlib/main/main/texlib.h"/>
+      <FILE id="MPj7CD" name="texlib.cpp" compile="1" resource="0" file="Source/texlib.cpp"/>
+      <FILE id="fh6y3x" name="texlib.h" compile="0" resource="0" file="Source/texlib.h"/>
       <FILE id="H5M9qE" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/MainComponent.cpp"/>
       <FILE id="dpw3Hf" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
@@ -14,7 +15,10 @@
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <VS2015 targetFolder="Builds/VisualStudio2015">
+    <VS2015 targetFolder="Builds/VisualStudio2015" extraDefs="_CRT_SECURE_NO_WARNINGS"
+            extraCompilerFlags="/W4&#10;/MP&#10;/ZI&#10;/O2&#10;/MTd&#10;"
+            externalLibraries="CORE_DB_Magick++_.lib&#10;CORE_DB_MagickCore_.lib&#10;CORE_DB_MagickWand_.lib&#10;CORE_DB_bzlib_.lib&#10;CORE_DB_cairo_.lib&#10;CORE_DB_coders_.lib&#10;CORE_DB_croco_.lib&#10;CORE_DB_exr_.lib&#10;CORE_DB_ffi_.lib&#10;CORE_DB_filters_.lib&#10;CORE_DB_flif_.lib&#10;CORE_DB_glib_.lib&#10;CORE_DB_jp2_.lib&#10;CORE_DB_jpeg_.lib&#10;CORE_DB_lcms_.lib&#10;CORE_DB_librsvg_.lib&#10;CORE_DB_libxml_.lib&#10;CORE_DB_lqr_.lib&#10;CORE_DB_openjpeg_.lib&#10;CORE_DB_pango_.lib&#10;CORE_DB_pixman_.lib&#10;CORE_DB_png_.lib&#10;CORE_DB_tiff_.lib&#10;CORE_DB_ttf_.lib&#10;CORE_DB_webp_.lib&#10;CORE_DB_zlib_.lib&#10;ImageMagickObject.lib"
+            extraLinkerFlags="/MANIFEST&#10;/NODEFAULTLIB:&quot;libcmt.lib&quot;&#10;/NODEFAULTLIB:&quot;msvcrt.lib&quot;">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="1" optimisation="1" targetName="Grafia"/>

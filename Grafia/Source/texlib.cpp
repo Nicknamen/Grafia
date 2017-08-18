@@ -193,7 +193,9 @@ void TeX::to_svg()
 
 string TeX::to_png(string ext)
 {
-	InitializeMagick(ExePath().c_str());
+	string path = ExePath();
+
+	InitializeMagick(path.c_str());
 
 	Image image;
 
@@ -292,7 +294,7 @@ void TeX::execute(const char* comand)
 string ExePath() {
 	char buffer[MAX_PATH];
 	GetModuleFileName(NULL, buffer, MAX_PATH);
-	string::size_type pos = string(buffer).find_last_of("\\/");
-	return string(buffer).substr(0, pos);
+	string::size_type pos = string(buffer).rfind("VisualStudio2015");
+	return string(buffer).substr(0, pos + 16);
 }
 #endif
