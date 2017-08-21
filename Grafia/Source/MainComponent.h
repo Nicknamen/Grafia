@@ -11,6 +11,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "texlib.h"
+#include "MenuComponent.h"
 
 using namespace std;
 
@@ -30,7 +31,8 @@ public:
 */
 class MainContentComponent   : public Component,
 							   public Button::Listener,
-							   public TextEditor::Listener
+							   public TextEditor::Listener,
+							   public ApplicationCommandTarget
 {
 public:
     //==============================================================================
@@ -44,10 +46,20 @@ public:
 
 	void compile();
 
+	enum CommandIDs
+	{
+		Save		= 1000,
+		Quit		= 1001,
+		New			= 1002,
+		Open		= 1003
+	};
+
 private:
 	TextEditor tex_text;
 	TextButton compile_button;
 	Label tex_search;
+
+	MenuComponent menubar;
 
 	LatexDisplay tex_image;
 	PNGImageFormat PNGreader;
@@ -57,6 +69,12 @@ private:
 	DrawableImage svg_image;
 	TeX texstream;
 	std::string ImageFileName;
+
+	ApplicationCommandTarget* getNextCommandTarget() override;
+	void getAllCommands(Array<CommandID>& commands) override;
+	void getCommandInfo(CommandID commandID, ApplicationCommandInfo& result) override;
+	bool perform(const InvocationInfo& info) override;
+	
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };

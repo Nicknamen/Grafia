@@ -13,36 +13,21 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+class MainContentComponent;
+
 class MenuComponent : public Component,
-				  public MenuBarModel,
-				  private Button::Listener
+					  public MenuBarModel
 {
 public:
-	MenuComponent()
-	{
-		addAndMakeVisible(menuBar = new MenuBarComponent(this));
-	}
+	MenuComponent();
 
-	~MenuComponent()
-	{
-	}
-
-	void resized() override
-	{
-		Rectangle<int> area(getLocalBounds());
-		menuBar->setBounds(area.removeFromTop(LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight()));
-
-		area.removeFromTop(20);
-		area = area.removeFromTop(33);
-	}
+	void resized() override;
 
 	//==============================================================================
-	StringArray getMenuBarNames() override
-	{
-		const char* const names[] = { "Demo", "Look-and-feel", "Tabs", "Misc", nullptr };
-
-		return StringArray(names);
-	}
+	StringArray getMenuBarNames() override;
+	PopupMenu getMenuForIndex(int menuIndex, const String &) override;
+	void menuItemSelected(int menuItemID, int /*topLevelMenuIndex*/) override;
+	
 
 private:
 	ScopedPointer<MenuBarComponent> menuBar;
