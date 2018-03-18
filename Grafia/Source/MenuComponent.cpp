@@ -10,14 +10,30 @@
 
 #include "MenuComponent.h"
 
+class MainContentComponent
+{
+public:
+	static ApplicationCommandManager& getApplicationCommandManager();
+
+	enum CommandIDs
+	{
+		Save = 1000,
+		Quit = 1001,
+		New = 1002,
+		Open = 1003
+	};
+};
+
 MenuComponent::MenuComponent()
 {
 	addAndMakeVisible(menuBar = new MenuBarComponent(this));
+
+	setApplicationCommandManagerToWatch(&MainContentComponent::getApplicationCommandManager());
 }
 
 void MenuComponent::resized()
 {
-		Rectangle<int> area(getLocalBounds());
+		juce::Rectangle<int> area(getLocalBounds());
 		menuBar->setBounds(area.removeFromTop(LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight()));
 
 		area.removeFromTop(20);
@@ -33,60 +49,35 @@ StringArray MenuComponent::getMenuBarNames()
 
 PopupMenu MenuComponent::getMenuForIndex(int menuIndex, const String& /*menuName*/)
 {
-//	ApplicationCommandManager* commandManager = &MainAppWindow::getApplicationCommandManager();
+	ApplicationCommandManager* commandManager = &MainContentComponent::getApplicationCommandManager();
 
 	PopupMenu menu;
 
 	if (menuIndex == 0)
 	{
-//		menu.addCommandItem(commandManager, MainAppWindow::showPreviousDemo);
-//		menu.addCommandItem(commandManager, MainAppWindow::showNextDemo);
+		menu.addCommandItem(commandManager, MainContentComponent::New);
+		menu.addCommandItem(commandManager, MainContentComponent::Save);
 		menu.addSeparator();
-//		menu.addCommandItem(commandManager, StandardApplicationCommandIDs::quit);
+		menu.addCommandItem(commandManager, StandardApplicationCommandIDs::quit);
 	}
 	else if (menuIndex == 1)
 	{
-//		menu.addCommandItem(commandManager, MainAppWindow::useLookAndFeelV1);
-//		menu.addCommandItem(commandManager, MainAppWindow::useLookAndFeelV2);
-//		menu.addCommandItem(commandManager, MainAppWindow::useLookAndFeelV3);
-
 		PopupMenu v4SubMenu;
-//		v4SubMenu.addCommandItem(commandManager, MainAppWindow::useLookAndFeelV4Dark);
-//		v4SubMenu.addCommandItem(commandManager, MainAppWindow::useLookAndFeelV4Midnight);
-//		v4SubMenu.addCommandItem(commandManager, MainAppWindow::useLookAndFeelV4Grey);
-//		v4SubMenu.addCommandItem(commandManager, MainAppWindow::useLookAndFeelV4Light);
+		v4SubMenu.addCommandItem(commandManager, MainContentComponent::Open);
 
 		menu.addSubMenu("Use LookAndFeel_V4", v4SubMenu);
 
 		menu.addSeparator();
-//		menu.addCommandItem(commandManager, MainAppWindow::useNativeTitleBar);
-
-#if ! JUCE_LINUX
-//		menu.addCommandItem(commandManager, MainAppWindow::goToKioskMode);
-#endif
-
-/*		if (MainAppWindow* mainWindow = MainAppWindow::getMainAppWindow())
-		{
-			StringArray engines(mainWindow->getRenderingEngines());
-
-			if (engines.size() > 1)
-			{
-				menu.addSeparator();
-
-				for (int i = 0; i < engines.size(); ++i)
-					menu.addCommandItem(commandManager, MainAppWindow::renderingEngineOne + i);
-			}
-		}
-*/	}
+	}
 	else if (menuIndex == 2)
 	{
-		if (TabbedComponent* tabs = findParentComponentOfClass<TabbedComponent>())
+		/*if (TabbedComponent* tabs = findParentComponentOfClass<TabbedComponent>())
 		{
 			menu.addItem(3000, "Tabs at Top", true, tabs->getOrientation() == TabbedButtonBar::TabsAtTop);
 			menu.addItem(3001, "Tabs at Bottom", true, tabs->getOrientation() == TabbedButtonBar::TabsAtBottom);
 			menu.addItem(3002, "Tabs on Left", true, tabs->getOrientation() == TabbedButtonBar::TabsAtLeft);
 			menu.addItem(3003, "Tabs on Right", true, tabs->getOrientation() == TabbedButtonBar::TabsAtRight);
-		}
+		}*/
 	}
 	else if (menuIndex == 3)
 	{

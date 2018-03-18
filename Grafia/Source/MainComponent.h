@@ -12,8 +12,10 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "texlib.h"
 #include "MenuComponent.h"
+#include <memory>
 
 using namespace std;
+
 
 void to_tex(string formula, TeX & tw);
 
@@ -24,6 +26,8 @@ public:
 	void paint(Graphics& g) override;
 };
 
+
+static ScopedPointer<ApplicationCommandManager> applicationCommandManager;
 //==============================================================================
 /*
     This component lives inside our window, and this is where you should put all
@@ -32,7 +36,8 @@ public:
 class MainContentComponent   : public Component,
 							   public Button::Listener,
 							   public TextEditor::Listener,
-							   public ApplicationCommandTarget
+							   public ApplicationCommandTarget,
+							   private AsyncUpdater
 {
 public:
     //==============================================================================
@@ -42,9 +47,14 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
+	ApplicationCommandTarget* getNextCommandTarget() override;
+	void getAllCommands(Array<CommandID>& commands) override;
+	void getCommandInfo(CommandID commandID, ApplicationCommandInfo& result) override;
+	bool perform(const InvocationInfo& info) override;
+
 	void buttonClicked(Button* button) override;
 
-	void compile();
+	static ApplicationCommandManager& getApplicationCommandManager();
 
 	enum CommandIDs
 	{
@@ -70,10 +80,9 @@ private:
 	TeX texstream;
 	std::string ImageFileName;
 
-	ApplicationCommandTarget* getNextCommandTarget() override;
-	void getAllCommands(Array<CommandID>& commands) override;
-	void getCommandInfo(CommandID commandID, ApplicationCommandInfo& result) override;
-	bool perform(const InvocationInfo& info) override;
+	void compile();
+
+	void handleAsyncUpdate() override;
 	
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)

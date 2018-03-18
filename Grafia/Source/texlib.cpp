@@ -201,7 +201,7 @@ string TeX::to_png(string ext)
 
 	string fname = _emptyname + "." + ext;
 
-	image.density("300");
+	image.density("600");
 
 	if (fexists(fname) && !_istexmodified) // to be compiled directly from dvi or pdf
 	{

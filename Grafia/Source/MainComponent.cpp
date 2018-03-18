@@ -14,7 +14,10 @@ MainContentComponent::MainContentComponent()
 	ImageFileName = "tex_file";
 	texstream.open(ImageFileName + ".tex");
 
+	applicationCommandManager->registerAllCommandsForTarget(this);
 	addAndMakeVisible(&menubar);
+
+	addKeyListener(applicationCommandManager->getKeyMappings());
 
 	addAndMakeVisible(compile_button);
 	compile_button.setButtonText("Compile");
@@ -41,6 +44,14 @@ void MainContentComponent::buttonClicked(Button* button)
 
 		repaint();
 	}
+}
+
+ApplicationCommandManager & MainContentComponent::getApplicationCommandManager()
+{
+	if (applicationCommandManager == nullptr)
+		applicationCommandManager = new ApplicationCommandManager();
+
+	return *applicationCommandManager;
 }
 
 void MainContentComponent::compile()
@@ -76,6 +87,16 @@ void MainContentComponent::compile()
 	}
 }
 
+void MainContentComponent::handleAsyncUpdate()
+{
+	// This registers all of our commands with the command manager but has to be done after the window has
+	// been created so we can find the number of rendering engines available
+	auto& commandManager = getApplicationCommandManager();
+
+//	commandManager.registerAllCommandsForTarget(MainContentComponent);
+//	commandManager.registerAllCommandsForTarget(JUCEApplication::getInstance());
+}
+
 ApplicationCommandTarget * MainContentComponent::getNextCommandTarget()
 {
 	// this will return the next parent component that is an ApplicationCommandTarget (in this
@@ -86,15 +107,13 @@ ApplicationCommandTarget * MainContentComponent::getNextCommandTarget()
 void MainContentComponent::getAllCommands(Array<CommandID>& commands)
 {
 	const CommandID ids[] = {
-								Save,
-								Quit,
-								New,
-								Open
+								MainContentComponent::Save,
+								MainContentComponent::Quit,
+								MainContentComponent::New,
+								MainContentComponent::Open
 							};
 
 	commands.addArray(ids, numElementsInArray(ids));
-
-
 }
 
 void MainContentComponent::getCommandInfo(CommandID commandID, ApplicationCommandInfo & result)
@@ -103,22 +122,22 @@ void MainContentComponent::getCommandInfo(CommandID commandID, ApplicationComman
 
 	switch (commandID)
 	{
-		case Save:
+		case MainContentComponent::Save:
 			result.setInfo("Save", "Saves the current project", filecommands, 0);
 			result.addDefaultKeypress('s', ModifierKeys::commandModifier);
 			break;
 
-		case New:
+		case MainContentComponent::New:
 			result.setInfo("New", "Opens new project", filecommands, 0);
 			result.addDefaultKeypress('n', ModifierKeys::commandModifier);
 			break;
 
-		case Quit:
+		case MainContentComponent::Quit:
 			result.setInfo("Quit", "Quits", filecommands, 0);
 			result.addDefaultKeypress('n', ModifierKeys::commandModifier);
 			break;
 
-		case Open:
+		case MainContentComponent::Open:
 			result.setInfo("Open", "Open an existing project", filecommands, 0);
 			result.addDefaultKeypress('o', ModifierKeys::commandModifier);
 			break;
@@ -133,15 +152,27 @@ bool MainContentComponent::perform(const InvocationInfo & info)
 	switch (info.commandID)
 	{
 		case Save:
+			message = "Save";
+
+			repaint();
 			break;
 
 		case New:
+			message = "New";
+
+			repaint();
 			break;
 
 		case Open:
+			message = "Open";
+
+			repaint();
 			break;
 
 		case Quit:
+			message = "Quit";
+
+			repaint();
 			break;
 	
 		default:
@@ -153,6 +184,7 @@ bool MainContentComponent::perform(const InvocationInfo & info)
 
 MainContentComponent::~MainContentComponent()
 {
+	applicationCommandManager = nullptr;
 }
 
 void MainContentComponent::paint (Graphics& g)
