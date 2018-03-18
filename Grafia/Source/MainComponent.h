@@ -16,7 +16,6 @@
 
 using namespace std;
 
-
 void to_tex(string formula, TeX & tw);
 
 class LatexDisplay : public ImageComponent
@@ -61,7 +60,8 @@ public:
 		Save		= 1000,
 		Quit		= 1001,
 		New			= 1002,
-		Open		= 1003
+		Open		= 1003,
+		Export		= 1004
 	};
 
 private:

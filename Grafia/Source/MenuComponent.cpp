@@ -20,7 +20,8 @@ public:
 		Save = 1000,
 		Quit = 1001,
 		New = 1002,
-		Open = 1003
+		Open = 1003,
+		Export = 1004
 	};
 };
 
@@ -42,7 +43,7 @@ void MenuComponent::resized()
 
 StringArray MenuComponent::getMenuBarNames()
 {
-	const char* const names[] = { "File", "Edit", "Tools", "Help", nullptr };
+	const char* const names[] = { "File", "Edit", "LaTex", "Help", nullptr };
 
 	return StringArray(names);
 }
@@ -57,6 +58,7 @@ PopupMenu MenuComponent::getMenuForIndex(int menuIndex, const String& /*menuName
 	{
 		menu.addCommandItem(commandManager, MainContentComponent::New);
 		menu.addCommandItem(commandManager, MainContentComponent::Save);
+		menu.addCommandItem(commandManager, MainContentComponent::Open);
 		menu.addSeparator();
 		menu.addCommandItem(commandManager, StandardApplicationCommandIDs::quit);
 	}
@@ -65,12 +67,13 @@ PopupMenu MenuComponent::getMenuForIndex(int menuIndex, const String& /*menuName
 		PopupMenu v4SubMenu;
 		v4SubMenu.addCommandItem(commandManager, MainContentComponent::Open);
 
-		menu.addSubMenu("Use LookAndFeel_V4", v4SubMenu);
+		menu.addSubMenu("submenu", v4SubMenu);
 
 		menu.addSeparator();
 	}
 	else if (menuIndex == 2)
 	{
+		menu.addCommandItem(commandManager, MainContentComponent::Export);
 		/*if (TabbedComponent* tabs = findParentComponentOfClass<TabbedComponent>())
 		{
 			menu.addItem(3000, "Tabs at Top", true, tabs->getOrientation() == TabbedButtonBar::TabsAtTop);

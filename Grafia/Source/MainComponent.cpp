@@ -14,7 +14,8 @@ MainContentComponent::MainContentComponent()
 	ImageFileName = "tex_file";
 	texstream.open(ImageFileName + ".tex");
 
-	applicationCommandManager->registerAllCommandsForTarget(this);
+	applicationCommandManager->registerAllCommandsForTarget(this); //registers the commands created by the user
+	applicationCommandManager->registerAllCommandsForTarget(JUCEApplication::getInstance()); //registers the standard commands, such as quit.
 	addAndMakeVisible(&menubar);
 
 	addKeyListener(applicationCommandManager->getKeyMappings());
@@ -110,7 +111,8 @@ void MainContentComponent::getAllCommands(Array<CommandID>& commands)
 								MainContentComponent::Save,
 								MainContentComponent::Quit,
 								MainContentComponent::New,
-								MainContentComponent::Open
+								MainContentComponent::Open,
+								MainContentComponent::Export
 							};
 
 	commands.addArray(ids, numElementsInArray(ids));
@@ -142,6 +144,11 @@ void MainContentComponent::getCommandInfo(CommandID commandID, ApplicationComman
 			result.addDefaultKeypress('o', ModifierKeys::commandModifier);
 			break;
 
+		case MainContentComponent::Export:
+			result.setInfo("Export", "Export the created symbol", filecommands, 0);
+			result.addDefaultKeypress('e', ModifierKeys::commandModifier);
+			break;
+
 		default:
 			break;
 	}
@@ -171,6 +178,12 @@ bool MainContentComponent::perform(const InvocationInfo & info)
 
 		case Quit:
 			message = "Quit";
+
+			repaint();
+			break;
+
+		case Export:
+			message = "Export";
 
 			repaint();
 			break;

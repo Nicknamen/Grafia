@@ -28,9 +28,13 @@
 *.out
 *.app
 
+#Latex Compilation Project
+tex_file.*
+
 # Db
 *.VC.opendb
 *.VC.db
 
 # Debug files
 *.pdb
+*.idb
