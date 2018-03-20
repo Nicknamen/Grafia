@@ -29,7 +29,10 @@
 *.app
 
 #Latex Compilation Project
-tex_file.*
+tex_file.png
+tex_file.tex
+tex_file.log
+tex_file.pdf
 
 # Db
 *.VC.opendb

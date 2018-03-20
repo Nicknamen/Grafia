@@ -69,6 +69,11 @@ private:
 	TextButton compile_button;
 	Label tex_search;
 
+	DrawableButton arrowUp;
+	DrawableButton arrowDown;
+	DrawableButton arrowLeft;
+	DrawableButton arrowRight;
+
 	MenuComponent menubar;
 
 	LatexDisplay tex_image;
@@ -81,6 +86,8 @@ private:
 	std::string ImageFileName;
 
 	void compile();
+
+	DrawablePath * create_triangle(Point<float> a, Point<float> b, Point<float> c);
 
 	void handleAsyncUpdate() override;
 	

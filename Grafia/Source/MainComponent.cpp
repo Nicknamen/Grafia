@@ -8,8 +8,20 @@
 
 #include "MainComponent.h"
 
+inline Colour getRandomColour(float brightness)
+{
+	return Colour::fromHSV(Random::getSystemRandom().nextFloat(), 0.5f, brightness, 1.0f);
+}
+
+inline Colour getRandomBrightColour() { return getRandomColour(0.8f); }
+inline Colour getRandomDarkColour() { return getRandomColour(0.3f); }
+
 //==============================================================================
-MainContentComponent::MainContentComponent()
+MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton::ImageOnButtonBackground),
+											   arrowDown("arrowDown", DrawableButton::ImageOnButtonBackground),
+											   arrowLeft("arrowLeft", DrawableButton::ImageOnButtonBackground),
+											   arrowRight("arrowRight", DrawableButton::ImageOnButtonBackground)
+
 {
 	ImageFileName = "tex_file";
 	texstream.open(ImageFileName + ".tex");
@@ -23,6 +35,21 @@ MainContentComponent::MainContentComponent()
 	addAndMakeVisible(compile_button);
 	compile_button.setButtonText("Compile");
 	compile_button.addListener(this);
+
+	addAndMakeVisible(arrowUp);
+	addAndMakeVisible(arrowDown);
+	addAndMakeVisible(arrowLeft);
+	addAndMakeVisible(arrowRight);
+
+	arrowUp.setImages(create_triangle(Point<float>(10, 0), Point<float>(20, 20), Point<float>(0, 20)), 0, 0);
+	arrowDown.setImages(create_triangle(Point<float>(), Point<float>(20, 0), Point<float>(10, 20)), 0, 0);
+	arrowLeft.setImages(create_triangle(Point<float>(0, 10), Point<float>(20, 0), Point<float>(20, 20)), 0, 0);
+	arrowRight.setImages(create_triangle(Point<float>(), Point<float>(0, 20), Point<float>(20, 10)), 0, 0);
+
+	arrowUp.addListener(this);
+	arrowDown.addListener(this);
+	arrowLeft.addListener(this);
+	arrowRight.addListener(this);
 
 	addAndMakeVisible(tex_text);
 	tex_text.addListener(this);
@@ -44,6 +71,22 @@ void MainContentComponent::buttonClicked(Button* button)
 		tex_image.repaint();
 
 		repaint();
+	}
+	else if (button == &arrowUp)
+	{
+		compile();
+	}
+	else if (button == &arrowDown)
+	{
+		compile();
+	}
+	else if (button == &arrowLeft)
+	{
+		compile();
+	}
+	else if (button == &arrowRight)
+	{
+		compile();
 	}
 }
 
@@ -86,6 +129,19 @@ void MainContentComponent::compile()
 	{
 		message += " " + exc;
 	}
+}
+
+DrawablePath * MainContentComponent::create_triangle(Point<float> a, Point<float> b, Point<float> c)
+{
+	static DrawablePath triangle;
+
+	Path p;
+	p.addTriangle(a, b, c);
+	triangle.setPath(p);
+	triangle.setFill(findColour(0x1000202)); //Using standard IDs of Juce
+	triangle.setStrokeFill(findColour(0x1000205));
+
+	return &triangle;
 }
 
 void MainContentComponent::handleAsyncUpdate()
@@ -226,6 +282,11 @@ void MainContentComponent::resized()
 	tex_image.setBounds(10, 30, getWidth() / 2 - 15, getHeight() / 2 - 15);
 	tex_text.setBounds(getWidth() / 2 + 5, getHeight()*0.1, getWidth()/4 - 10, 25);
 	compile_button.setBounds(getWidth()*0.75 + 5, getHeight()*0.1, getWidth()/4 - 10, 25);
+
+	arrowUp.setBounds(70, getHeight() - 140, 50, 50);
+	arrowDown.setBounds(70, getHeight() - 80, 50, 50);
+	arrowLeft.setBounds(10, getHeight() - 80, 50, 50);
+	arrowRight.setBounds(130, getHeight() - 80, 50, 50);
 }
 
 void to_tex(string formula, TeX & tw)
