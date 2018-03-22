@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.4.12)  20 MAR 2018 12:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.4.12)  22 MAR 2018 22:38
 entering extended mode
 **./tex_file.tex
 (tex_file.tex
@@ -89,19 +89,21 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 4.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 4.
-[1] (tex_file.aux) ) 
+[1{C:/Users/nicoc_000/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+(tex_file.aux) ) 
 Here is how much of TeX's memory you used:
- 540 strings out of 493363
- 8108 string characters out of 3139765
+ 541 strings out of 493363
+ 8118 string characters out of 3139765
  64639 words of memory out of 3000000
  4128 multiletter control sequences out of 15000+200000
  3640 words of font info for 14 fonts, out of 3000000 for 9000
  1127 hyphenation exceptions out of 8191
  23i,4n,19p,173b,92s stack positions out of 5000i,500n,10000p,200000b,50000s
-
-Output written on tex_file.pdf (1 page, 871 bytes).
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmm
+i10.pfb>
+Output written on tex_file.pdf (1 page, 9155 bytes).
 PDF statistics:
- 6 PDF objects out of 1000 (max. 8388607)
+ 10 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

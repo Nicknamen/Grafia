@@ -35,8 +35,8 @@ static ScopedPointer<ApplicationCommandManager> applicationCommandManager;
 class MainContentComponent   : public Component,
 							   public Button::Listener,
 							   public TextEditor::Listener,
-							   public ApplicationCommandTarget,
-							   private AsyncUpdater
+						  	   public Slider::Listener,
+							   public ApplicationCommandTarget
 {
 public:
     //==============================================================================
@@ -52,6 +52,7 @@ public:
 	bool perform(const InvocationInfo& info) override;
 
 	void buttonClicked(Button* button) override;
+	void sliderValueChanged(Slider* slider) override;
 
 	static ApplicationCommandManager& getApplicationCommandManager();
 
@@ -74,6 +75,11 @@ private:
 	DrawableButton arrowLeft;
 	DrawableButton arrowRight;
 
+	Slider sizeSlider;
+	Label sizeLabel;
+	Slider rotationSlider;
+	Label rotationLabel;
+
 	MenuComponent menubar;
 
 	LatexDisplay tex_image;
@@ -88,8 +94,6 @@ private:
 	void compile();
 
 	DrawablePath * create_triangle(Point<float> a, Point<float> b, Point<float> c);
-
-	void handleAsyncUpdate() override;
 	
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)

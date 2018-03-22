@@ -51,6 +51,27 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	arrowLeft.addListener(this);
 	arrowRight.addListener(this);
 
+	addAndMakeVisible(sizeSlider);
+	sizeSlider.setRange(0.0, 100.0);
+	sizeSlider.setSkewFactor(0.3);
+	sizeSlider.addListener(this);
+	sizeSlider.setValue(1.0);
+//	sizeSlider.setTextBoxStyle(Slider::TextBoxLeft, false, 100, sizeSlider.getTextBoxHeight());
+
+	addAndMakeVisible(sizeLabel);
+	sizeLabel.setText("Size", dontSendNotification);
+//	sizeLabel.setColour(100, findColour(0x1000200));
+	sizeLabel.attachToComponent(&sizeSlider, true);
+
+	addAndMakeVisible(rotationSlider);
+	rotationSlider.setRange(0.0, 360.0);
+	rotationSlider.setTextValueSuffix("d");
+	rotationSlider.addListener(this);
+
+	addAndMakeVisible(rotationLabel);
+	rotationLabel.setText("Rotation", dontSendNotification);
+	rotationLabel.attachToComponent(&rotationSlider, true);
+
 	addAndMakeVisible(tex_text);
 	tex_text.addListener(this);
 
@@ -87,6 +108,22 @@ void MainContentComponent::buttonClicked(Button* button)
 	else if (button == &arrowRight)
 	{
 		compile();
+	}
+}
+
+void MainContentComponent::sliderValueChanged(Slider * slider)
+{
+	if (slider == &sizeSlider)
+	{
+		message = to_string(sizeSlider.getValue());
+
+		repaint();
+	}
+	else if (slider == &rotationSlider)
+	{
+		message = to_string(rotationSlider.getValue());
+
+		repaint();
 	}
 }
 
@@ -142,16 +179,6 @@ DrawablePath * MainContentComponent::create_triangle(Point<float> a, Point<float
 	triangle.setStrokeFill(findColour(0x1000205));
 
 	return &triangle;
-}
-
-void MainContentComponent::handleAsyncUpdate()
-{
-	// This registers all of our commands with the command manager but has to be done after the window has
-	// been created so we can find the number of rendering engines available
-	auto& commandManager = getApplicationCommandManager();
-
-//	commandManager.registerAllCommandsForTarget(MainContentComponent);
-//	commandManager.registerAllCommandsForTarget(JUCEApplication::getInstance());
 }
 
 ApplicationCommandTarget * MainContentComponent::getNextCommandTarget()
@@ -287,6 +314,10 @@ void MainContentComponent::resized()
 	arrowDown.setBounds(70, getHeight() - 80, 50, 50);
 	arrowLeft.setBounds(10, getHeight() - 80, 50, 50);
 	arrowRight.setBounds(130, getHeight() - 80, 50, 50);
+
+	auto sliderLeft = 80;
+	sizeSlider.setBounds(sliderLeft, getHeight() / 2 + 20, getWidth()/2 - sliderLeft - 10, 20);
+	rotationSlider.setBounds(sliderLeft, getHeight() / 2 + 50, getWidth()/2 - sliderLeft - 10, 20);
 }
 
 void to_tex(string formula, TeX & tw)
