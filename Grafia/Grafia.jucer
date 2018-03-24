@@ -2,10 +2,14 @@
 
 <JUCERPROJECT id="Qr0nDZ" name="Grafia" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.yourcompany.Grafia" includeBinaryInAppConfig="1"
-              jucerVersion="5.1.1" displaySplashScreen="1" reportAppUsage="1"
+              jucerVersion="5.3.0" displaySplashScreen="1" reportAppUsage="1"
               splashScreenColour="Dark" cppLanguageStandard="11">
   <MAINGROUP id="cdnleW" name="Grafia">
     <GROUP id="{3D9344D3-A3B7-AE35-480A-4CAD7625B879}" name="Source">
+      <FILE id="Tj0qKU" name="TableComponent.cpp" compile="1" resource="0"
+            file="Source/TableComponent.cpp"/>
+      <FILE id="ATbOcD" name="TableComponent.h" compile="0" resource="0"
+            file="Source/TableComponent.h"/>
       <FILE id="wbXg91" name="MenuComponent.cpp" compile="1" resource="0"
             file="Source/MenuComponent.cpp"/>
       <FILE id="helM8B" name="MenuComponent.h" compile="0" resource="0" file="Source/MenuComponent.h"/>

@@ -6,6 +6,7 @@
   ==============================================================================
 */
 
+#include "TableComponent.h"
 #include "MainComponent.h"
 
 inline Colour getRandomColour(float brightness)
@@ -20,7 +21,8 @@ inline Colour getRandomDarkColour() { return getRandomColour(0.3f); }
 MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton::ImageOnButtonBackground),
 											   arrowDown("arrowDown", DrawableButton::ImageOnButtonBackground),
 											   arrowLeft("arrowLeft", DrawableButton::ImageOnButtonBackground),
-											   arrowRight("arrowRight", DrawableButton::ImageOnButtonBackground)
+											   arrowRight("arrowRight", DrawableButton::ImageOnButtonBackground),
+											   table(new TableComponent)
 
 {
 	ImageFileName = "tex_file";
@@ -71,6 +73,12 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	addAndMakeVisible(rotationLabel);
 	rotationLabel.setText("Rotation", dontSendNotification);
 	rotationLabel.attachToComponent(&rotationSlider, true);
+
+	symbolsList.push_back(LaTexSymbol(0,"example1","\\frac{2}{3}"));
+	symbolsList.push_back(LaTexSymbol(0, "example2", "\\int"));
+
+	addAndMakeVisible(*table);
+	table->setTableOwner(this);
 
 	addAndMakeVisible(tex_text);
 	tex_text.addListener(this);
@@ -318,6 +326,8 @@ void MainContentComponent::resized()
 	auto sliderLeft = 80;
 	sizeSlider.setBounds(sliderLeft, getHeight() / 2 + 20, getWidth()/2 - sliderLeft - 10, 20);
 	rotationSlider.setBounds(sliderLeft, getHeight() / 2 + 50, getWidth()/2 - sliderLeft - 10, 20);
+
+	table->setBounds(juce::Rectangle<int>(getWidth()/2 + 10, getHeight()/2 + 10, getWidth() / 2 - 20, getHeight() / 2 - 40));
 }
 
 void to_tex(string formula, TeX & tw)
@@ -342,4 +352,12 @@ void LatexDisplay::paint(Graphics & g)
 	g.setColour(Colours::darkgrey);
 
 	g.drawRect(bounds);
+}
+
+LaTexSymbol::LaTexSymbol(int symbolID, std::string name, std::string LaTex, bool selected)
+{
+	_symbolID = symbolID;
+	_name = name;
+	_LaTex = LaTex;
+	_selected = selected;
 }

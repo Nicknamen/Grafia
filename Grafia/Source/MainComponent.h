@@ -12,11 +12,14 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "texlib.h"
 #include "MenuComponent.h"
+
+#include <vector>
 #include <memory>
 
 using namespace std;
 
 void to_tex(string formula, TeX & tw);
+struct LaTexSymbol;
 
 class LatexDisplay : public ImageComponent
 {
@@ -24,7 +27,6 @@ public:
 
 	void paint(Graphics& g) override;
 };
-
 
 static ScopedPointer<ApplicationCommandManager> applicationCommandManager;
 //==============================================================================
@@ -38,6 +40,8 @@ class MainContentComponent   : public Component,
 						  	   public Slider::Listener,
 							   public ApplicationCommandTarget
 {
+	friend class TableComponent;
+
 public:
     //==============================================================================
     MainContentComponent();
@@ -66,9 +70,15 @@ public:
 	};
 
 private:
+	vector<LaTexSymbol> symbolsList;
+
 	TextEditor tex_text;
 	TextButton compile_button;
 	Label tex_search;
+
+	class TableComponent;
+
+	std::unique_ptr<TableComponent> table;
 
 	DrawableButton arrowUp;
 	DrawableButton arrowDown;
@@ -97,6 +107,59 @@ private:
 	
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
+};
+
+struct LaTexSymbol
+{
+	LaTexSymbol(int symbolID, std::string name, std::string LaTex, bool selected = false);
+
+	int _symbolID;
+	std::string _name;
+	std::string _LaTex;
+	bool _selected;
+
+	std::string getAttributeTextbyID(int id) const
+	{
+		if (id == symbolID_id)
+			return to_string(_symbolID);
+		else if (id == name_id)
+			return _name;
+		else if (id == LaTex_id)
+			return _LaTex;
+		else if (id == selected_id)
+			return _selected ? "Y" : "N";
+		else
+			return{};
+	}
+
+	void setAttributebyID(int id, std::string text)
+	{
+		if (id == symbolID_id)
+			_symbolID = stoi(text);
+		else if (id == name_id)
+			_name = text;
+		else if (id == LaTex_id)
+			_LaTex = text;
+		else if (id == selected_id)
+			_selected = ((text == "Y") ? 1 : 0);
+	}
+
+	void setAttributebyID(int id, int value)
+	{
+		if (id == symbolID_id)
+			_symbolID = value;
+		else if (id == selected_id)
+			_selected = value;
+	}
+
+private:
+	enum attributeIDs
+	{
+		symbolID_id = 0,
+		name_id,
+		LaTex_id,
+		selected_id
+	};
 };
 
 #endif  // MAINCOMPONENT_H_INCLUDED
