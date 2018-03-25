@@ -17,23 +17,27 @@ class MainContentComponent::TableComponent : public Component,
 {
 public:
 
-	TableComponent();
-
-	void setTableOwner(MainContentComponent* owner_ptr);
+	TableComponent(MainContentComponent* owner_ptr);
 
 	void resized() override;
 
 	String getText(const int columnNumber, const int rowNumber) const;
 	void setText(const int columnNumber, const int rowNumber, const String& newText);
 
+	int getSelection(const int rowNumber) const;
+	void setSelection(const int rowNumber, const int newSelection);
+
 	int getNumRows() override;
+
 	void paintRowBackground(Graphics& g, int rowNumber, int /*width*/, int /*height*/, bool rowIsSelected) override;
 	void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
-	void sortOrderChanged(int newSortColumnId, bool isForwards) override;
+
+//	void sortOrderChanged(int newSortColumnId, bool isForwards) override;
 	Component* refreshComponentForCell(int rowNumber, int columnId, bool /*isRowSelected*/, Component* existingComponentToUpdate) override;
 	int getColumnAutoSizeWidth(int columnId) override;
 
 	String getAttributeNameForColumnId(const int columnId) const;
+	int attributeIDfromColumnID(int columnId) const;
 
 private:
 
@@ -46,29 +50,29 @@ private:
 	class EditableTextCustomComponent : public Label
 	{
 	public:
-		EditableTextCustomComponent(TableComponent& td)
-			: owner(td)
-		{
-			setEditable(false, true, false);
-		}
+		EditableTextCustomComponent(TableComponent& td);
 
 		void mouseDown(const MouseEvent& event) override;
-
-		void textWasEdited() override
-		{
-			owner.setText(columnId, row, getText());
-		}
-
-		void setRowAndColumn(const int newRow, const int newColumn)
-		{
-			row = newRow;
-			columnId = newColumn;
-			setText(owner.getText(columnId, row), dontSendNotification);
-		}
+		void textWasEdited() override;
+		void setRowAndColumn(const int newRow, const int newColumn);
 
 	private:
 		TableComponent& owner;
 		int row, columnId;
 		Colour textColour;
+	};
+
+	class SelectionColumnCustomComponent : public Component
+	{
+	public:
+		SelectionColumnCustomComponent(TableComponent& td);
+
+		void resized() override;
+		void setRowAndColumn(int newRow, int newColumn);
+
+	private:
+		TableComponent& owner;
+		ToggleButton toggleButton;
+		int row, columnId;
 	};
 };

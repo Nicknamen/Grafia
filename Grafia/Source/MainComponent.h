@@ -19,7 +19,7 @@
 using namespace std;
 
 void to_tex(string formula, TeX & tw);
-struct LaTexSymbol;
+class LaTexSymbol;
 
 class LatexDisplay : public ImageComponent
 {
@@ -78,7 +78,7 @@ private:
 
 	class TableComponent;
 
-	std::unique_ptr<TableComponent> table;
+	std::unique_ptr<TableComponent> table_ptr;
 
 	DrawableButton arrowUp;
 	DrawableButton arrowDown;
@@ -109,14 +109,10 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };
 
-struct LaTexSymbol
+class LaTexSymbol
 {
+public:
 	LaTexSymbol(int symbolID, std::string name, std::string LaTex, bool selected = false);
-
-	int _symbolID;
-	std::string _name;
-	std::string _LaTex;
-	bool _selected;
 
 	std::string getAttributeTextbyID(int id) const
 	{
@@ -152,14 +148,22 @@ struct LaTexSymbol
 			_selected = value;
 	}
 
-private:
-	enum attributeIDs
+	bool get_selected() const;
+	void set_selected(const bool b);
+
+	static const enum attributeIDs
 	{
 		symbolID_id = 0,
 		name_id,
 		LaTex_id,
 		selected_id
 	};
+
+private:
+	int _symbolID;
+	std::string _name;
+	std::string _LaTex;
+	bool _selected;
 };
 
 #endif  // MAINCOMPONENT_H_INCLUDED
