@@ -28,7 +28,8 @@ public:
 	void paint(Graphics& g) override;
 };
 
-static ScopedPointer<ApplicationCommandManager> applicationCommandManager;
+static std::unique_ptr<ApplicationCommandManager> applicationCommandManager;
+
 //==============================================================================
 /*
     This component lives inside our window, and this is where you should put all
@@ -74,6 +75,11 @@ private:
 	TextButton compile_button;
 	Label tex_search;
 
+	Label xLabel;
+	TextEditor xTextBox;
+	Label yLabel;
+	TextEditor yTextBox;
+
 	class TableComponent;
 
 	std::unique_ptr<TableComponent> table_ptr;
@@ -100,6 +106,7 @@ private:
 	std::string ImageFileName;
 
 	void compile();
+	void add(LaTexSymbol newObject);
 
 	DrawablePath * create_triangle(Point<float> a, Point<float> b, Point<float> c);
 	
@@ -138,7 +145,7 @@ public:
 			_selected = ((text == "Y") ? 1 : 0);
 	}
 
-	void setAttributebyID(int id, int value)
+	void setAttributebyID(int id, double value)
 	{
 		if (id == symbolID_id)
 			_symbolID = value;
@@ -157,7 +164,7 @@ public:
 	bool get_selected() const;
 	void set_selected(const bool b);
 
-	static const enum attributeIDs
+	const enum attributeIDs
 	{
 		symbolID_id = 0,
 		name_id,

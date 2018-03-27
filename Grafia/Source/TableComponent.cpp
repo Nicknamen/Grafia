@@ -19,7 +19,8 @@ MainContentComponent::TableComponent::TableComponent(MainContentComponent * owne
 	addAndMakeVisible(table);
 
 	table.getHeader().addColumn(getAttributeNameForColumnId(object_columnId), 1, 200, 50, 400, TableHeaderComponent::defaultFlags);
-	table.getHeader().addColumn(getAttributeNameForColumnId(select_columnId), 2, 60, 40, 400, TableHeaderComponent::defaultFlags);
+	table.getHeader().addColumn(getAttributeNameForColumnId(LaTex_columndId), 2, 200, 50, 400, TableHeaderComponent::defaultFlags);
+	table.getHeader().addColumn(getAttributeNameForColumnId(select_columnId), 3, 60, 40, 400, TableHeaderComponent::defaultFlags);
 
 	table.setColour(ListBox::outlineColourId, Colours::grey);
 	table.setOutlineThickness(1);
@@ -104,17 +105,6 @@ void MainContentComponent::TableComponent::update()
 */
 Component * MainContentComponent::TableComponent::refreshComponentForCell(int rowNumber, int columnId, bool, Component * existingComponentToUpdate)
 {
-	if (columnId == 2)
-	{
-		auto* selectionBox = static_cast<SelectionColumnCustomComponent*> (existingComponentToUpdate);
-
-		if (selectionBox == nullptr)
-			selectionBox = new SelectionColumnCustomComponent(*this);
-
-		selectionBox->setRowAndColumn(rowNumber, columnId);
-
-		return selectionBox;
-	}
 	if (columnId == 1)
 	{
 		auto* textLabel = static_cast<EditableTextCustomComponent*> (existingComponentToUpdate);
@@ -126,6 +116,18 @@ Component * MainContentComponent::TableComponent::refreshComponentForCell(int ro
 
 		return textLabel;
 	}
+	if (columnId == 3)
+	{
+		auto* selectionBox = static_cast<SelectionColumnCustomComponent*> (existingComponentToUpdate);
+
+		if (selectionBox == nullptr)
+			selectionBox = new SelectionColumnCustomComponent(*this);
+
+		selectionBox->setRowAndColumn(rowNumber, columnId);
+
+		return selectionBox;
+	}
+	
 	jassert(existingComponentToUpdate == nullptr);
 	return nullptr;
 }
@@ -163,6 +165,8 @@ int MainContentComponent::TableComponent::attributeIDfromColumnID(int columnId) 
 	if (columnId == 1)
 		return LaTexSymbol::name_id;
 	else if (columnId == 2)
+		return LaTexSymbol::LaTex_id;
+	else if (columnId == 3)
 		return LaTexSymbol::selected_id;
 	else
 		return -1;

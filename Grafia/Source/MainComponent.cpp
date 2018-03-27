@@ -83,8 +83,22 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	addAndMakeVisible(tex_text);
 	tex_text.addListener(this);
 
+	addAndMakeVisible(xTextBox);
+	xTextBox.addListener(this);
+	xTextBox.setJustification(Justification::centredRight);
+
+	xLabel.setText("x", dontSendNotification);
+	xLabel.attachToComponent(&xTextBox, true);
+
+	addAndMakeVisible(yTextBox);
+	yTextBox.addListener(this);
+	yTextBox.setJustification(Justification::centredRight);
+
+	yLabel.setText("y", dontSendNotification);
+	yLabel.attachToComponent(&yTextBox, true);
+
 	tex_search.setText("Search:", dontSendNotification);
-	tex_search.attachToComponent(&tex_text, FALSE);
+	tex_search.attachToComponent(&tex_text, false);
 
 	addAndMakeVisible(tex_image);
 
@@ -137,8 +151,8 @@ void MainContentComponent::sliderValueChanged(Slider * slider)
 
 ApplicationCommandManager & MainContentComponent::getApplicationCommandManager()
 {
-	if (applicationCommandManager == nullptr)
-		applicationCommandManager = new ApplicationCommandManager();
+	if (!applicationCommandManager)
+		applicationCommandManager = make_unique<ApplicationCommandManager>();
 
 	return *applicationCommandManager;
 }
@@ -174,6 +188,13 @@ void MainContentComponent::compile()
 	{
 		message += " " + exc;
 	}
+}
+
+void MainContentComponent::add(LaTexSymbol newObject)
+{
+	symbolsList.push_back(newObject);
+
+	table_ptr->update();
 }
 
 DrawablePath * MainContentComponent::create_triangle(Point<float> a, Point<float> b, Point<float> c)
@@ -288,7 +309,7 @@ bool MainContentComponent::perform(const InvocationInfo & info)
 
 MainContentComponent::~MainContentComponent()
 {
-	applicationCommandManager = nullptr;
+	applicationCommandManager.reset();
 }
 
 void MainContentComponent::paint (Graphics& g)
@@ -317,6 +338,9 @@ void MainContentComponent::resized()
 	tex_image.setBounds(10, 30, getWidth() / 2 - 15, getHeight() / 2 - 15);
 	tex_text.setBounds(getWidth() / 2 + 5, getHeight()*0.1, getWidth()/4 - 10, 25);
 	compile_button.setBounds(getWidth()*0.75 + 5, getHeight()*0.1, getWidth()/4 - 10, 25);
+
+	xTextBox.setBounds(getWidth() * 3 / 8 - 10, getHeight() - 90, getWidth() / 8 - 10, 25);
+	yTextBox.setBounds(getWidth() * 3 / 8 - 10, getHeight() - 55, getWidth() / 8 - 10, 25);
 
 	arrowUp.setBounds(70, getHeight() - 140, 50, 50);
 	arrowDown.setBounds(70, getHeight() - 80, 50, 50);

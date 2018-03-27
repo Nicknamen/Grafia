@@ -27,7 +27,9 @@ public:
 
 MenuComponent::MenuComponent()
 {
-	addAndMakeVisible(menuBar = new MenuBarComponent(this));
+	menuBar = std::make_unique<MenuBarComponent>(this);
+
+	addAndMakeVisible(*menuBar);
 
 	setApplicationCommandManagerToWatch(&MainContentComponent::getApplicationCommandManager());
 }

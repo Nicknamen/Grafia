@@ -41,4 +41,7 @@ tex_file.pdf
 # Debug files
 *.pdb
 *.idb
+
+# Link files
+*.ilk
 /Grafia/Builds/VisualStudio2015/tex_file.aux

@@ -12,6 +12,7 @@
 #define MENUCOMPONENT_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include <memory>
 
 class MenuComponent : public Component,
 					  public MenuBarModel
@@ -27,11 +28,11 @@ public:
 	void menuItemSelected(int menuItemID, int /*topLevelMenuIndex*/) override;
 
 private:
-	ScopedPointer<MenuBarComponent> menuBar;
+	std::unique_ptr<MenuBarComponent> menuBar;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MenuComponent)
 };
 
-extern ScopedPointer<ApplicationCommandManager> applicationCommandManager;
+extern std::unique_ptr<ApplicationCommandManager> applicationCommandManager;
 
 #endif  // MENUCOMPONENT_H_INCLUDED
