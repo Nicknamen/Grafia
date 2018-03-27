@@ -40,8 +40,6 @@ class MainContentComponent   : public Component,
 						  	   public Slider::Listener,
 							   public ApplicationCommandTarget
 {
-	friend class TableComponent;
-
 public:
     //==============================================================================
     MainContentComponent();
@@ -112,7 +110,7 @@ private:
 class LaTexSymbol
 {
 public:
-	LaTexSymbol(int symbolID, std::string name, std::string LaTex, bool selected = false);
+	LaTexSymbol(int symbolID, std::string name, std::string LaTex, int x = 0, int y = 0, double rotAngle = 0, double sizeRatio = 1, bool selected = false);
 
 	std::string getAttributeTextbyID(int id) const
 	{
@@ -146,6 +144,14 @@ public:
 			_symbolID = value;
 		else if (id == selected_id)
 			_selected = value;
+		else if (id == x_id)
+			_x = value;
+		else if (id == y_id)
+			_y = value;
+		else if (id == rotAngle_id)
+			_rotAngle = value;
+		else if (id == sizeRatio_id)
+			_sizeRatio = value;
 	}
 
 	bool get_selected() const;
@@ -156,13 +162,21 @@ public:
 		symbolID_id = 0,
 		name_id,
 		LaTex_id,
-		selected_id
+		selected_id,
+		x_id,
+		y_id,
+		rotAngle_id,
+		sizeRatio_id
 	};
 
 private:
 	int _symbolID;
 	std::string _name;
 	std::string _LaTex;
+	int _x;
+	int _y;
+	double _rotAngle;
+	double _sizeRatio;
 	bool _selected;
 };
 

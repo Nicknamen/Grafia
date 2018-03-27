@@ -21,8 +21,8 @@ inline Colour getRandomDarkColour() { return getRandomColour(0.3f); }
 MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton::ImageOnButtonBackground),
 											   arrowDown("arrowDown", DrawableButton::ImageOnButtonBackground),
 											   arrowLeft("arrowLeft", DrawableButton::ImageOnButtonBackground),
-											   arrowRight("arrowRight", DrawableButton::ImageOnButtonBackground)
-//											   table(new TableComponent(this))
+											   arrowRight("arrowRight", DrawableButton::ImageOnButtonBackground),
+											   table_ptr(new TableComponent(this))
 
 {
 	ImageFileName = "tex_file";
@@ -77,9 +77,8 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	symbolsList.push_back(LaTexSymbol(0,"example1","\\frac{2}{3}"));
 	symbolsList.push_back(LaTexSymbol(0, "example2", "\\int"));
 
-	table_ptr = make_unique<TableComponent>(this);
-
 	addAndMakeVisible(*table_ptr);
+	table_ptr->update();
 
 	addAndMakeVisible(tex_text);
 	tex_text.addListener(this);
@@ -355,12 +354,16 @@ void LatexDisplay::paint(Graphics & g)
 	g.drawRect(bounds);
 }
 
-LaTexSymbol::LaTexSymbol(int symbolID, std::string name, std::string LaTex, bool selected)
+LaTexSymbol::LaTexSymbol(int symbolID, std::string name, std::string LaTex, int x, int y, double rotAngle, double sizeRatio, bool selected)
 {
 	_symbolID = symbolID;
 	_name = name;
 	_LaTex = LaTex;
 	_selected = selected;
+	_x = x;
+	_y = y;
+	_rotAngle = rotAngle;
+	_sizeRatio = sizeRatio;
 }
 
 bool LaTexSymbol::get_selected() const

@@ -12,8 +12,8 @@
 
 #include "MainComponent.h"
 
-class MainContentComponent::TableComponent : public Component,
-											 public TableListBoxModel
+class MainContentComponent::TableComponent final : public Component,
+												   public TableListBoxModel
 {
 public:
 
@@ -32,12 +32,20 @@ public:
 	void paintRowBackground(Graphics& g, int rowNumber, int /*width*/, int /*height*/, bool rowIsSelected) override;
 	void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
 
+	void update();
+
 //	void sortOrderChanged(int newSortColumnId, bool isForwards) override;
 	Component* refreshComponentForCell(int rowNumber, int columnId, bool /*isRowSelected*/, Component* existingComponentToUpdate) override;
 	int getColumnAutoSizeWidth(int columnId) override;
 
 	String getAttributeNameForColumnId(const int columnId) const;
 	int attributeIDfromColumnID(int columnId) const;
+
+	enum {
+		object_columnId = 1,
+		LaTex_columndId,
+		select_columnId
+	};
 
 private:
 

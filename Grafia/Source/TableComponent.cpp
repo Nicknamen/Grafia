@@ -18,8 +18,8 @@ MainContentComponent::TableComponent::TableComponent(MainContentComponent * owne
 
 	addAndMakeVisible(table);
 
-	table.getHeader().addColumn(getAttributeNameForColumnId(1), 1, 200, 50, 400, TableHeaderComponent::defaultFlags);
-	table.getHeader().addColumn(getAttributeNameForColumnId(2), 2, 40, 40, 400, TableHeaderComponent::defaultFlags);
+	table.getHeader().addColumn(getAttributeNameForColumnId(object_columnId), 1, 200, 50, 400, TableHeaderComponent::defaultFlags);
+	table.getHeader().addColumn(getAttributeNameForColumnId(select_columnId), 2, 60, 40, 400, TableHeaderComponent::defaultFlags);
 
 	table.setColour(ListBox::outlineColourId, Colours::grey);
 	table.setOutlineThickness(1);
@@ -54,7 +54,7 @@ void MainContentComponent::TableComponent::setSelection(const int rowNumber, con
 
 int MainContentComponent::TableComponent::getNumRows()
 {
-	return numRows;
+	return numRows = MainComponentOwner->symbolsList.size();
 }
 
 void MainContentComponent::TableComponent::paintRowBackground(Graphics & g, int rowNumber, int, int, bool rowIsSelected)
@@ -85,6 +85,13 @@ void MainContentComponent::TableComponent::paintCell(Graphics & g, int rowNumber
 		g.fillRect(width - 1, 0, 1, height);
 
 	}
+}
+
+void MainContentComponent::TableComponent::update()
+{
+	table.updateContent();
+
+	repaint();
 }
 
 /*void MainContentComponent::TableComponent::sortOrderChanged(int newSortColumnId, bool isForwards)
@@ -130,22 +137,23 @@ int MainContentComponent::TableComponent::getColumnAutoSizeWidth(int columnId)
 	int widest = 32;
 	for (auto i = getNumRows(); --i >= 0;)
 	{
-		/*		if (auto* rowElement = dataList->getChildElement(i))
+		if (auto* rowElement = &MainComponentOwner->symbolsList[i])
 		{
-		auto text = rowElement->getStringAttribute(getAttributeNameForColumnId(columnId));
+		auto text = rowElement->getAttributeTextbyID(attributeIDfromColumnID(columnId));
 		widest = jmax(widest, font.getStringWidth(text));
 		}
-		*/
 	}
 	return widest + 8;
 }
 
 String MainContentComponent::TableComponent::getAttributeNameForColumnId(const int columnId) const
 {
-	if (columnId == 1)
-		return String("Object");
-	else if (columnId == 2)
-		return String("Selcected");
+	if (columnId == object_columnId)
+		return String("Object name");
+	else if (columnId == LaTex_columndId)
+		return String("LaTex code");
+	else if (columnId == select_columnId)
+		return String("Selcect");
 	else
 		return{};
 }
