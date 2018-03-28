@@ -18,8 +18,8 @@ MainContentComponent::TableComponent::TableComponent(MainContentComponent * owne
 
 	addAndMakeVisible(table);
 
-	table.getHeader().addColumn(getAttributeNameForColumnId(object_columnId), 1, 200, 50, 400, TableHeaderComponent::defaultFlags);
-	table.getHeader().addColumn(getAttributeNameForColumnId(LaTex_columndId), 2, 200, 50, 400, TableHeaderComponent::defaultFlags);
+	table.getHeader().addColumn(getAttributeNameForColumnId(object_columnId), 1, 120, 50, 400, TableHeaderComponent::defaultFlags);
+	table.getHeader().addColumn(getAttributeNameForColumnId(LaTex_columndId), 2, 120, 50, 400, TableHeaderComponent::defaultFlags);
 	table.getHeader().addColumn(getAttributeNameForColumnId(select_columnId), 3, 60, 40, 400, TableHeaderComponent::defaultFlags);
 
 	table.setColour(ListBox::outlineColourId, Colours::grey);

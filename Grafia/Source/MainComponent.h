@@ -80,6 +80,10 @@ private:
 	Label yLabel;
 	TextEditor yTextBox;
 
+	TextButton add_button;
+
+	ToggleButton compileAtEachCommand;
+
 	class TableComponent;
 
 	std::unique_ptr<TableComponent> table_ptr;
@@ -117,7 +121,7 @@ private:
 class LaTexSymbol
 {
 public:
-	LaTexSymbol(int symbolID, std::string name, std::string LaTex, int x = 0, int y = 0, double rotAngle = 0, double sizeRatio = 1, bool selected = false);
+	LaTexSymbol( std::string name, std::string LaTex, int x = 0, int y = 0, double rotAngle = 0, double sizeRatio = 1, bool selected = false);
 
 	std::string getAttributeTextbyID(int id) const
 	{
@@ -135,9 +139,7 @@ public:
 
 	void setAttributebyID(int id, std::string text)
 	{
-		if (id == symbolID_id)
-			_symbolID = stoi(text);
-		else if (id == name_id)
+		if (id == name_id)
 			_name = text;
 		else if (id == LaTex_id)
 			_LaTex = text;
@@ -147,9 +149,7 @@ public:
 
 	void setAttributebyID(int id, double value)
 	{
-		if (id == symbolID_id)
-			_symbolID = value;
-		else if (id == selected_id)
+		if (id == selected_id)
 			_selected = value;
 		else if (id == x_id)
 			_x = value;
@@ -177,7 +177,7 @@ public:
 	};
 
 private:
-	int _symbolID;
+	const int _symbolID;
 	std::string _name;
 	std::string _LaTex;
 	int _x;
@@ -185,6 +185,8 @@ private:
 	double _rotAngle;
 	double _sizeRatio;
 	bool _selected;
+
+	static int _symbolCount;
 };
 
 #endif  // MAINCOMPONENT_H_INCLUDED

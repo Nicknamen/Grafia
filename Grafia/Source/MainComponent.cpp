@@ -38,6 +38,10 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	compile_button.setButtonText("Compile");
 	compile_button.addListener(this);
 
+	addAndMakeVisible(add_button);
+	add_button.setButtonText("Add");
+	add_button.addListener(this);
+
 	addAndMakeVisible(arrowUp);
 	addAndMakeVisible(arrowDown);
 	addAndMakeVisible(arrowLeft);
@@ -74,8 +78,8 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	rotationLabel.setText("Rotation", dontSendNotification);
 	rotationLabel.attachToComponent(&rotationSlider, true);
 
-	symbolsList.push_back(LaTexSymbol(0,"example1","\\frac{2}{3}"));
-	symbolsList.push_back(LaTexSymbol(0, "example2", "\\int"));
+	symbolsList.push_back(LaTexSymbol("example1","\\frac{2}{3}"));
+	symbolsList.push_back(LaTexSymbol("example2", "\\int"));
 
 	addAndMakeVisible(*table_ptr);
 	table_ptr->update();
@@ -100,6 +104,9 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	tex_search.setText("Search:", dontSendNotification);
 	tex_search.attachToComponent(&tex_text, false);
 
+	addAndMakeVisible(compileAtEachCommand);
+	compileAtEachCommand.setButtonText("Compile at each command");
+
 	addAndMakeVisible(tex_image);
 
 	setSize(800, 450);
@@ -115,21 +122,29 @@ void MainContentComponent::buttonClicked(Button* button)
 
 		repaint();
 	}
+	else if (button == &add_button)
+	{
+		add(LaTexSymbol(tex_text.getText().toStdString(), tex_text.getText().toStdString()));
+	}
 	else if (button == &arrowUp)
 	{
-		compile();
+		if (compileAtEachCommand.getToggleState())
+			compile();
 	}
 	else if (button == &arrowDown)
 	{
-		compile();
+		if (compileAtEachCommand.getToggleState())
+			compile();
 	}
 	else if (button == &arrowLeft)
 	{
-		compile();
+		if (compileAtEachCommand.getToggleState())
+			compile();
 	}
 	else if (button == &arrowRight)
 	{
-		compile();
+		if (compileAtEachCommand.getToggleState())
+			compile();
 	}
 }
 
@@ -339,6 +354,8 @@ void MainContentComponent::resized()
 	tex_text.setBounds(getWidth() / 2 + 5, getHeight()*0.1, getWidth()/4 - 10, 25);
 	compile_button.setBounds(getWidth()*0.75 + 5, getHeight()*0.1, getWidth()/4 - 10, 25);
 
+	add_button.setBounds(getWidth()*0.75 + 5, getHeight()*0.1 + 30, getWidth() / 4 - 10, 25);
+
 	xTextBox.setBounds(getWidth() * 3 / 8 - 10, getHeight() - 90, getWidth() / 8 - 10, 25);
 	yTextBox.setBounds(getWidth() * 3 / 8 - 10, getHeight() - 55, getWidth() / 8 - 10, 25);
 
@@ -346,6 +363,8 @@ void MainContentComponent::resized()
 	arrowDown.setBounds(70, getHeight() - 80, 50, 50);
 	arrowLeft.setBounds(10, getHeight() - 80, 50, 50);
 	arrowRight.setBounds(130, getHeight() - 80, 50, 50);
+
+	compileAtEachCommand.setBounds(getWidth() / 2 + 5, getHeight()*0.1+30, getWidth() / 4 - 10, 25);
 
 	auto sliderLeft = 80;
 	sizeSlider.setBounds(sliderLeft, getHeight() / 2 + 20, getWidth()/2 - sliderLeft - 10, 20);
@@ -378,9 +397,11 @@ void LatexDisplay::paint(Graphics & g)
 	g.drawRect(bounds);
 }
 
-LaTexSymbol::LaTexSymbol(int symbolID, std::string name, std::string LaTex, int x, int y, double rotAngle, double sizeRatio, bool selected)
+int LaTexSymbol::_symbolCount = 0;
+
+LaTexSymbol::LaTexSymbol(std::string name, std::string LaTex, int x, int y, double rotAngle, double sizeRatio, bool selected):
+	_symbolID(_symbolCount++)
 {
-	_symbolID = symbolID;
 	_name = name;
 	_LaTex = LaTex;
 	_selected = selected;

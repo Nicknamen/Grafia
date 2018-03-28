@@ -19,7 +19,8 @@ class MenuComponent : public Component,
 {
 public:
 	MenuComponent();
-
+	~MenuComponent();
+	
 	void resized() override;
 
 	//==============================================================================
