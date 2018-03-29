@@ -163,6 +163,7 @@ public:
 
 	bool get_selected() const;
 	void set_selected(const bool b);
+	std::string getLaTex() const;
 
 	const enum attributeIDs
 	{

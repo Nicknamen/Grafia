@@ -180,7 +180,14 @@ void MainContentComponent::compile()
 
 		texstream.open_rewritemode();
 
-		to_tex(tex_text.getText().toStdString(), texstream);
+		texstream << "\\documentclass{minimal}\n"
+			"\\usepackage[paperwidth=6.4cm, paperheight=3.6cm]{geometry}\n"
+			"\\begin{document}\n$$";
+
+		for (auto symbol : symbolsList)
+			texstream << symbol.getLaTex() + " ";
+
+		texstream << "$$\n\\end{document}";
 
 		message += texstream.to_png();
 
@@ -419,4 +426,9 @@ bool LaTexSymbol::get_selected() const
 void LaTexSymbol::set_selected(const bool b)
 {
 	_selected = b;
+}
+
+std::string LaTexSymbol::getLaTex() const
+{
+	return _LaTex;
 }
