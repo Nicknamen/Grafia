@@ -71,6 +71,8 @@ public:
 private:
 	vector<LaTexSymbol> symbolsList;
 
+	std::string newCommandName;
+
 	TextEditor tex_text;
 	TextButton compile_button;
 	Label tex_search;
@@ -81,6 +83,7 @@ private:
 	TextEditor yTextBox;
 
 	TextButton add_button;
+	TextButton remove_button;
 
 	ToggleButton compileAtEachCommand;
 
@@ -111,6 +114,7 @@ private:
 
 	void compile();
 	void add(LaTexSymbol newObject);
+	void remove();
 
 	DrawablePath * create_triangle(Point<float> a, Point<float> b, Point<float> c);
 	
@@ -123,45 +127,14 @@ class LaTexSymbol
 public:
 	LaTexSymbol( std::string name, std::string LaTex, int x = 0, int y = 0, double rotAngle = 0, double sizeRatio = 1, bool selected = false);
 
-	std::string getAttributeTextbyID(int id) const
-	{
-		if (id == symbolID_id)
-			return to_string(_symbolID);
-		else if (id == name_id)
-			return _name;
-		else if (id == LaTex_id)
-			return _LaTex;
-		else if (id == selected_id)
-			return _selected ? "Y" : "N";
-		else
-			return{};
-	}
+	LaTexSymbol& operator=(const LaTexSymbol& other);
+	LaTexSymbol(const LaTexSymbol& other);
 
-	void setAttributebyID(int id, std::string text)
-	{
-		if (id == name_id)
-			_name = text;
-		else if (id == LaTex_id)
-			_LaTex = text;
-		else if (id == selected_id)
-			_selected = ((text == "Y") ? 1 : 0);
-	}
+	std::string getAttributeTextbyID(int id) const;
+	void setAttributebyID(int id, std::string text);
+	void setAttributebyID(int id, double value);
 
-	void setAttributebyID(int id, double value)
-	{
-		if (id == selected_id)
-			_selected = value;
-		else if (id == x_id)
-			_x = value;
-		else if (id == y_id)
-			_y = value;
-		else if (id == rotAngle_id)
-			_rotAngle = value;
-		else if (id == sizeRatio_id)
-			_sizeRatio = value;
-	}
-
-	bool get_selected() const;
+	bool is_selected() const;
 	void set_selected(const bool b);
 	std::string getLaTex() const;
 
@@ -178,7 +151,7 @@ public:
 	};
 
 private:
-	const int _symbolID;
+	const int _symbolID; //danger: the price for declaring it const is that iterators brake the continuity. See the operator= implementation.
 	std::string _name;
 	std::string _LaTex;
 	int _x;

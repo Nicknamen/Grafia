@@ -45,7 +45,7 @@ void MainContentComponent::TableComponent::setText(const int columnNumber, const
 
 int MainContentComponent::TableComponent::getSelection(const int rowNumber) const
 {
-	return MainComponentOwner->symbolsList[rowNumber].get_selected();
+	return MainComponentOwner->symbolsList[rowNumber].is_selected();
 }
 
 void MainContentComponent::TableComponent::setSelection(const int rowNumber, const int newSelection)

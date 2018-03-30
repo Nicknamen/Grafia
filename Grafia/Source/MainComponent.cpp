@@ -42,6 +42,10 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	add_button.setButtonText("Add");
 	add_button.addListener(this);
 
+	addAndMakeVisible(remove_button);
+	remove_button.setButtonText("Remove");
+	remove_button.addListener(this);
+
 	addAndMakeVisible(arrowUp);
 	addAndMakeVisible(arrowDown);
 	addAndMakeVisible(arrowLeft);
@@ -78,8 +82,8 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	rotationLabel.setText("Rotation", dontSendNotification);
 	rotationLabel.attachToComponent(&rotationSlider, true);
 
-	symbolsList.push_back(LaTexSymbol("example1","\\frac{2}{3}"));
-	symbolsList.push_back(LaTexSymbol("example2", "\\int"));
+	symbolsList.push_back(LaTexSymbol("Freccia a destra","\\longrightarrow"));
+	symbolsList.push_back(LaTexSymbol("Integrale", "\\int"));
 
 	addAndMakeVisible(*table_ptr);
 	table_ptr->update();
@@ -109,6 +113,8 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 
 	addAndMakeVisible(tex_image);
 
+	newCommandName = "pippo";
+
 	setSize(800, 450);
 }
 
@@ -125,6 +131,10 @@ void MainContentComponent::buttonClicked(Button* button)
 	else if (button == &add_button)
 	{
 		add(LaTexSymbol(tex_text.getText().toStdString(), tex_text.getText().toStdString()));
+	}
+	else if (button == &remove_button)
+	{
+		remove();
 	}
 	else if (button == &arrowUp)
 	{
@@ -180,14 +190,18 @@ void MainContentComponent::compile()
 
 		texstream.open_rewritemode();
 
-		texstream << "\\documentclass{minimal}\n"
+		texstream << "\\documentclass{minimal}\n\n"
 			"\\usepackage[paperwidth=6.4cm, paperheight=3.6cm]{geometry}\n"
-			"\\begin{document}\n$$";
+			"\\usepackage{graphicx, amsmath, amssymb, amsthm}\n"
+			"\\newcommand{\\" +  newCommandName + "}{\\mathbin{\\ooalign{";
 
 		for (auto symbol : symbolsList)
-			texstream << symbol.getLaTex() + " ";
+			texstream << "$" + symbol.getLaTex() + "$\\cr";
 
-		texstream << "$$\n\\end{document}";
+		texstream << "}}}\n\n"
+			"\\begin{document}\n"
+			"$$\\" + newCommandName + "$$\n"
+			"\\end{document}";
 
 		message += texstream.to_png();
 
@@ -215,6 +229,17 @@ void MainContentComponent::compile()
 void MainContentComponent::add(LaTexSymbol newObject)
 {
 	symbolsList.push_back(newObject);
+
+	table_ptr->update();
+}
+
+void MainContentComponent::remove()
+{
+	for (vector<LaTexSymbol>::const_iterator it = symbolsList.begin(); it != symbolsList.end();)
+		if (it->is_selected())
+			it = symbolsList.erase(it);
+		else
+			++it;
 
 	table_ptr->update();
 }
@@ -362,6 +387,7 @@ void MainContentComponent::resized()
 	compile_button.setBounds(getWidth()*0.75 + 5, getHeight()*0.1, getWidth()/4 - 10, 25);
 
 	add_button.setBounds(getWidth()*0.75 + 5, getHeight()*0.1 + 30, getWidth() / 4 - 10, 25);
+	remove_button.setBounds(getWidth()*0.75 + 5, getHeight() / 2 + - 25, getWidth() / 4 - 10, 25);
 
 	xTextBox.setBounds(getWidth() * 3 / 8 - 10, getHeight() - 90, getWidth() / 8 - 10, 25);
 	yTextBox.setBounds(getWidth() * 3 / 8 - 10, getHeight() - 55, getWidth() / 8 - 10, 25);
@@ -418,7 +444,69 @@ LaTexSymbol::LaTexSymbol(std::string name, std::string LaTex, int x, int y, doub
 	_sizeRatio = sizeRatio;
 }
 
-bool LaTexSymbol::get_selected() const
+LaTexSymbol & LaTexSymbol::operator=(const LaTexSymbol & other)
+{
+	_name = other._name;
+	_LaTex = other._LaTex;
+	_x = other._x;
+	_y = other._y;
+	_rotAngle = other._rotAngle;
+	_sizeRatio = other._sizeRatio;
+	_selected = other._selected;
+	return *this;
+}
+
+LaTexSymbol::LaTexSymbol(const LaTexSymbol & other):
+	_symbolID(other._symbolID),
+	_name(other._name),
+	_LaTex(other._LaTex),
+	_x(other._x),
+	_y(other._y),
+	_rotAngle(other._rotAngle),
+	_sizeRatio(other._sizeRatio),
+	_selected(other._selected)
+{
+}
+
+std::string LaTexSymbol::getAttributeTextbyID(int id) const
+{
+	if (id == symbolID_id)
+		return to_string(_symbolID);
+	else if (id == name_id)
+		return _name;
+	else if (id == LaTex_id)
+		return _LaTex;
+	else if (id == selected_id)
+		return _selected ? "Y" : "N";
+	else
+		return{};
+}
+
+void LaTexSymbol::setAttributebyID(int id, std::string text)
+{
+	if (id == name_id)
+		_name = text;
+	else if (id == LaTex_id)
+		_LaTex = text;
+	else if (id == selected_id)
+		_selected = ((text == "Y") ? 1 : 0);
+}
+
+void LaTexSymbol::setAttributebyID(int id, double value)
+{
+	if (id == selected_id)
+		_selected = value;
+	else if (id == x_id)
+		_x = value;
+	else if (id == y_id)
+		_y = value;
+	else if (id == rotAngle_id)
+		_rotAngle = value;
+	else if (id == sizeRatio_id)
+		_sizeRatio = value;
+}
+
+bool LaTexSymbol::is_selected() const
 {
 	return _selected;
 }
