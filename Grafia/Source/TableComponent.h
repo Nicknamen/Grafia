@@ -29,6 +29,8 @@ public:
 
 	int getNumRows() override;
 
+	void cellDoubleClicked(int rowNumber, int columnId, const MouseEvent&) override;
+
 	void paintRowBackground(Graphics& g, int rowNumber, int /*width*/, int /*height*/, bool rowIsSelected) override;
 	void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
 
@@ -39,7 +41,8 @@ public:
 	int getColumnAutoSizeWidth(int columnId) override;
 
 	String getAttributeNameForColumnId(const int columnId) const;
-	int attributeIDfromColumnID(int columnId) const;
+	static int attributeIDfromColumnID(int columnId);
+	static int columnIDfromAttributeID(int attributeId);
 
 	enum {
 		object_columnId = 1,

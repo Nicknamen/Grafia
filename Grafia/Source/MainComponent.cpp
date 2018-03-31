@@ -82,8 +82,8 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	rotationLabel.setText("Rotation", dontSendNotification);
 	rotationLabel.attachToComponent(&rotationSlider, true);
 
-	symbolsList.push_back(LaTexSymbol("Freccia a destra","\\longrightarrow"));
-	symbolsList.push_back(LaTexSymbol("Integrale", "\\int"));
+	symbolsList.push_back(LaTexSymbol("Freccia a destra", "\\longrightarrow"));
+	symbolsList.push_back(LaTexSymbol("Integrale", "\\int", 1.5, -1.5, 60, 2));
 
 	addAndMakeVisible(*table_ptr);
 	table_ptr->update();
@@ -94,6 +94,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	addAndMakeVisible(xTextBox);
 	xTextBox.addListener(this);
 	xTextBox.setJustification(Justification::centredRight);
+	xTextBox.setInputRestrictions(10, "0123456789+-,.");
 
 	xLabel.setText("x", dontSendNotification);
 	xLabel.attachToComponent(&xTextBox, true);
@@ -101,6 +102,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	addAndMakeVisible(yTextBox);
 	yTextBox.addListener(this);
 	yTextBox.setJustification(Justification::centredRight);
+	yTextBox.setInputRestrictions(10, "0123456789+-,.");
 
 	yLabel.setText("y", dontSendNotification);
 	yLabel.attachToComponent(&yTextBox, true);
@@ -138,21 +140,25 @@ void MainContentComponent::buttonClicked(Button* button)
 	}
 	else if (button == &arrowUp)
 	{
+		raisey(1);
 		if (compileAtEachCommand.getToggleState())
 			compile();
 	}
 	else if (button == &arrowDown)
 	{
+		raisey(-1);
 		if (compileAtEachCommand.getToggleState())
 			compile();
 	}
 	else if (button == &arrowLeft)
 	{
+		raisex(-1);
 		if (compileAtEachCommand.getToggleState())
 			compile();
 	}
 	else if (button == &arrowRight)
 	{
+		raisex(1);
 		if (compileAtEachCommand.getToggleState())
 			compile();
 	}
@@ -193,10 +199,18 @@ void MainContentComponent::compile()
 		texstream << "\\documentclass{minimal}\n\n"
 			"\\usepackage[paperwidth=6.4cm, paperheight=3.6cm]{geometry}\n"
 			"\\usepackage{graphicx, amsmath, amssymb, amsthm}\n"
-			"\\newcommand{\\" +  newCommandName + "}{\\mathbin{\\ooalign{";
+			"\\newcommand{\\" +  newCommandName + "}{\\mathbin{\\ooalign{\n";
 
-		for (auto symbol : symbolsList)
-			texstream << "$" + symbol.getLaTex() + "$\\cr";
+		texstream << "	$" + symbolsList[0].getLaTex() + "$\\cr\n"; //The first symbol is dominant
+
+		for (auto it = symbolsList.begin() + 1; it != symbolsList.end(); ++it)
+		{
+			double x = it->getx();
+			double y = it->gety();
+
+			texstream << "	\\hidewidth\\kern" + to_string(x) + "pt\\raise" + to_string(y)
+					+ "pt\\hbox{$" + it->getLaTex() + "$}\\hidewidth\\cr\n";
+		}
 
 		texstream << "}}}\n\n"
 			"\\begin{document}\n"
@@ -242,6 +256,34 @@ void MainContentComponent::remove()
 			++it;
 
 	table_ptr->update();
+}
+
+void MainContentComponent::raisex(const double x)
+{
+	for (auto & symbol : symbolsList)
+		if (symbol.is_selected())
+			symbol.setx(symbol.getx() + x);
+}
+
+void MainContentComponent::raisey(const double y)
+{
+	for (auto & symbol : symbolsList)
+		if (symbol.is_selected())
+			symbol.sety(symbol.gety() + y);
+}
+
+void MainContentComponent::scale(double factor)
+{
+	for (auto & symbol : symbolsList)
+		if (symbol.is_selected())
+			symbol.setSizeRatio(symbol.getSizeRatio()*factor);
+}
+
+void MainContentComponent::rotate(double angle)
+{
+	for (auto & symbol : symbolsList)
+		if (symbol.is_selected())
+			symbol.setRotAngle(symbol.getRotAngle() + angle);
 }
 
 DrawablePath * MainContentComponent::create_triangle(Point<float> a, Point<float> b, Point<float> c)
@@ -384,9 +426,9 @@ void MainContentComponent::resized()
 
 	tex_image.setBounds(10, 30, getWidth() / 2 - 15, getHeight() / 2 - 15);
 	tex_text.setBounds(getWidth() / 2 + 5, getHeight()*0.1, getWidth()/4 - 10, 25);
-	compile_button.setBounds(getWidth()*0.75 + 5, getHeight()*0.1, getWidth()/4 - 10, 25);
+	compile_button.setBounds(getWidth()*0.75 + 5, getHeight()*0.1 + 30, getWidth() / 4 - 10, 25);
 
-	add_button.setBounds(getWidth()*0.75 + 5, getHeight()*0.1 + 30, getWidth() / 4 - 10, 25);
+	add_button.setBounds(getWidth()*0.75 + 5, getHeight()*0.1, getWidth() / 4 - 10, 25);
 	remove_button.setBounds(getWidth()*0.75 + 5, getHeight() / 2 + - 25, getWidth() / 4 - 10, 25);
 
 	xTextBox.setBounds(getWidth() * 3 / 8 - 10, getHeight() - 90, getWidth() / 8 - 10, 25);
@@ -406,17 +448,6 @@ void MainContentComponent::resized()
 	table_ptr->setBounds(juce::Rectangle<int>(getWidth()/2 + 10, getHeight()/2 + 10, getWidth() / 2 - 20, getHeight() / 2 - 40));
 }
 
-void to_tex(string formula, TeX & tw)
-{
-	tw << "\\documentclass{minimal}\n"
-		"\\usepackage[paperwidth=6.4cm, paperheight=3.6cm]{geometry}\n"
-		"\\begin{document}\n$$"
-		<< formula
-		<< "$$\n\\end{document}";
-
-	return;
-}
-
 void LatexDisplay::paint(Graphics & g)
 {
 	g.fillAll(Colours::white);
@@ -432,7 +463,7 @@ void LatexDisplay::paint(Graphics & g)
 
 int LaTexSymbol::_symbolCount = 0;
 
-LaTexSymbol::LaTexSymbol(std::string name, std::string LaTex, int x, int y, double rotAngle, double sizeRatio, bool selected):
+LaTexSymbol::LaTexSymbol(std::string name, std::string LaTex, double x, double y, double rotAngle, double sizeRatio, bool selected):
 	_symbolID(_symbolCount++)
 {
 	_name = name;
@@ -519,4 +550,44 @@ void LaTexSymbol::set_selected(const bool b)
 std::string LaTexSymbol::getLaTex() const
 {
 	return _LaTex;
+}
+
+double LaTexSymbol::getx() const
+{
+	return _x;
+}
+
+void LaTexSymbol::setx(const double x)
+{
+	_x = x;
+}
+
+double LaTexSymbol::gety() const
+{
+	return _y;
+}
+
+void LaTexSymbol::sety(const double y)
+{
+	_y = y;
+}
+
+double LaTexSymbol::getSizeRatio() const
+{
+	return _sizeRatio;
+}
+
+void LaTexSymbol::setSizeRatio(const double size_ratio)
+{
+	_sizeRatio = size_ratio;
+}
+
+double LaTexSymbol::getRotAngle() const
+{
+	return _rotAngle;
+}
+
+void LaTexSymbol::setRotAngle(const double rotation_angle)
+{
+	_rotAngle = rotation_angle;
 }

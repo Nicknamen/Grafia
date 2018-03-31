@@ -18,7 +18,6 @@
 
 using namespace std;
 
-void to_tex(string formula, TeX & tw);
 class LaTexSymbol;
 
 class LatexDisplay : public ImageComponent
@@ -35,11 +34,11 @@ static std::unique_ptr<ApplicationCommandManager> applicationCommandManager;
     This component lives inside our window, and this is where you should put all
     your controls and content.
 */
-class MainContentComponent   : public Component,
-							   public Button::Listener,
-							   public TextEditor::Listener,
-						  	   public Slider::Listener,
-							   public ApplicationCommandTarget
+class MainContentComponent final  : public Component,
+									public Button::Listener,
+									public TextEditor::Listener,
+									public Slider::Listener,
+									public ApplicationCommandTarget
 {
 public:
     //==============================================================================
@@ -116,6 +115,11 @@ private:
 	void add(LaTexSymbol newObject);
 	void remove();
 
+	void raisex(const double x);
+	void raisey(const double y);
+	void scale(double factor);
+	void rotate(double angle);
+
 	DrawablePath * create_triangle(Point<float> a, Point<float> b, Point<float> c);
 	
     //==============================================================================
@@ -125,7 +129,7 @@ private:
 class LaTexSymbol
 {
 public:
-	LaTexSymbol( std::string name, std::string LaTex, int x = 0, int y = 0, double rotAngle = 0, double sizeRatio = 1, bool selected = false);
+	LaTexSymbol( std::string name, std::string LaTex, double x = 0, double y = 0, double rotAngle = 0, double sizeRatio = 1, bool selected = false);
 
 	LaTexSymbol& operator=(const LaTexSymbol& other);
 	LaTexSymbol(const LaTexSymbol& other);
@@ -137,6 +141,16 @@ public:
 	bool is_selected() const;
 	void set_selected(const bool b);
 	std::string getLaTex() const;
+
+	double getx() const;
+	void setx(const double x);
+	double gety() const;
+	void sety(const double y);
+
+	double getSizeRatio() const;
+	void setSizeRatio(const double size_ratio);
+	double getRotAngle() const;
+	void setRotAngle(const double rotation_angle);
 
 	const enum attributeIDs
 	{
@@ -154,8 +168,8 @@ private:
 	const int _symbolID; //danger: the price for declaring it const is that iterators brake the continuity. See the operator= implementation.
 	std::string _name;
 	std::string _LaTex;
-	int _x;
-	int _y;
+	double _x;
+	double _y;
 	double _rotAngle;
 	double _sizeRatio;
 	bool _selected;
