@@ -66,6 +66,12 @@ void MainContentComponent::TableComponent::cellDoubleClicked(int rowNumber, int 
 		MainComponentOwner->sizeSlider.setValue(symbolsListRef[rowNumber].getSizeRatio());
 		MainComponentOwner->xTextBox.setText(to_string(symbolsListRef[rowNumber].getx()));
 		MainComponentOwner->yTextBox.setText(to_string(symbolsListRef[rowNumber].gety()));
+
+		symbolsListRef[rowNumber].set_selected(true);
+
+		update();
+
+		MainComponentOwner->selected_symbol = make_unique<LaTexSymbol>(symbolsListRef[rowNumber]);
 }
 
 void MainContentComponent::TableComponent::paintRowBackground(Graphics & g, int rowNumber, int, int, bool rowIsSelected)

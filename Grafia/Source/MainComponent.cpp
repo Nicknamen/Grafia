@@ -23,7 +23,6 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 											   arrowLeft("arrowLeft", DrawableButton::ImageOnButtonBackground),
 											   arrowRight("arrowRight", DrawableButton::ImageOnButtonBackground),
 											   table_ptr(new TableComponent(this))
-
 {
 	ImageFileName = "tex_file";
 	texstream.open(ImageFileName + ".tex");
@@ -66,6 +65,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	sizeSlider.setSkewFactor(0.3);
 	sizeSlider.addListener(this);
 	sizeSlider.setValue(1.0);
+	sizeSlider.setChangeNotificationOnlyOnRelease(true); // this might change when implementing with KaTex
 //	sizeSlider.setTextBoxStyle(Slider::TextBoxLeft, false, 100, sizeSlider.getTextBoxHeight());
 
 	addAndMakeVisible(sizeLabel);
@@ -168,9 +168,22 @@ void MainContentComponent::sliderValueChanged(Slider * slider)
 {
 	if (slider == &sizeSlider)
 	{
-		message = to_string(sizeSlider.getValue());
+		if (selected_symbol == nullptr)
+		{
+			message = "No symbol is being visualized";
+			repaint();
+		}
+		else
+		{
+			double previous_value = selected_symbol->getSizeRatio();
 
-		repaint();
+			for (auto & symbol : symbolsList)
+				if (symbol.is_selected())
+					symbol.setSizeRatio((symbol.getSizeRatio() / previous_value) * sizeSlider.getValue());
+
+			if (compileAtEachCommand.getToggleState())
+				compile();
+		}
 	}
 	else if (slider == &rotationSlider)
 	{
@@ -209,7 +222,7 @@ void MainContentComponent::compile()
 			double y = it->gety();
 
 			texstream << "	\\hidewidth\\kern" + to_string(x) + "pt\\raise" + to_string(y)
-					+ "pt\\hbox{$" + it->getLaTex() + "$}\\hidewidth\\cr\n";
+				+ "pt\\hbox{\\scalebox{" + to_string(it->getSizeRatio()) +"}{$" + it->getLaTex() + "$}}\\hidewidth\\cr\n";
 		}
 
 		texstream << "}}}\n\n"
@@ -497,6 +510,25 @@ LaTexSymbol::LaTexSymbol(const LaTexSymbol & other):
 	_sizeRatio(other._sizeRatio),
 	_selected(other._selected)
 {
+}
+
+bool LaTexSymbol::operator==(const LaTexSymbol & other)
+{
+	if (_symbolID == other._symbolID &&
+		_name == other._name &&
+		_LaTex == other._LaTex &&
+		_x == other._x &&
+		_y == other._y &&
+		_rotAngle == other._rotAngle &&
+		_sizeRatio == other._sizeRatio)
+		return true;
+	else
+		return false;
+}
+
+bool LaTexSymbol::operator!=(const LaTexSymbol & other)
+{
+	return !operator==(other);
 }
 
 std::string LaTexSymbol::getAttributeTextbyID(int id) const

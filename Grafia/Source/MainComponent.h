@@ -89,6 +89,7 @@ private:
 	class TableComponent;
 
 	std::unique_ptr<TableComponent> table_ptr;
+	std::unique_ptr<LaTexSymbol> selected_symbol = nullptr;
 
 	DrawableButton arrowUp;
 	DrawableButton arrowDown;
@@ -96,8 +97,16 @@ private:
 	DrawableButton arrowRight;
 
 	Slider sizeSlider;
+
 	Label sizeLabel;
+
+	/*class RotationSlider final : public Slider
+	{
+	public:
+		void stoppedDragging() override;
+	}*/
 	Slider rotationSlider;
+
 	Label rotationLabel;
 
 	MenuComponent menubar;
@@ -133,6 +142,9 @@ public:
 
 	LaTexSymbol& operator=(const LaTexSymbol& other);
 	LaTexSymbol(const LaTexSymbol& other);
+	
+	bool operator==(const LaTexSymbol & other);
+	bool operator!=(const LaTexSymbol & other);
 
 	std::string getAttributeTextbyID(int id) const;
 	void setAttributebyID(int id, std::string text);
