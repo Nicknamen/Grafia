@@ -10,6 +10,17 @@
 
 #include "TableComponent.h"
 
+std::string eatRightZeros(std::string & input)
+{
+	for (int i = input.size() - 1; i != 0; --i) // apparently the string iterator is not deferentiable...
+		if (input[i] == '0')
+			input.erase(i);
+		else
+			break;
+
+	return input;
+}
+
 MainContentComponent::TableComponent::TableComponent(MainContentComponent * owner_ptr)
 {
 	MainComponentOwner = owner_ptr;
@@ -64,8 +75,8 @@ void MainContentComponent::TableComponent::cellDoubleClicked(int rowNumber, int 
 
 		MainComponentOwner->rotationSlider.setValue(symbolsListRef[rowNumber].getRotAngle());
 		MainComponentOwner->sizeSlider.setValue(symbolsListRef[rowNumber].getSizeRatio());
-		MainComponentOwner->xTextBox.setText(to_string(symbolsListRef[rowNumber].getx()));
-		MainComponentOwner->yTextBox.setText(to_string(symbolsListRef[rowNumber].gety()));
+		MainComponentOwner->xTextBox.setText(eatRightZeros(to_string(symbolsListRef[rowNumber].getx())));
+		MainComponentOwner->yTextBox.setText(eatRightZeros(to_string(symbolsListRef[rowNumber].gety())));
 
 		symbolsListRef[rowNumber].set_selected(true);
 

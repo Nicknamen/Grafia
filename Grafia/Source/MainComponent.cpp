@@ -77,6 +77,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	rotationSlider.setRange(0.0, 360.0);
 	rotationSlider.setTextValueSuffix("d");
 	rotationSlider.addListener(this);
+	rotationSlider.setChangeNotificationOnlyOnRelease(true); // this might change when implementing with KaTex
 
 	addAndMakeVisible(rotationLabel);
 	rotationLabel.setText("Rotation", dontSendNotification);
@@ -170,7 +171,7 @@ void MainContentComponent::sliderValueChanged(Slider * slider)
 	{
 		if (selected_symbol == nullptr)
 		{
-			message = "No symbol is being visualized";
+			message = "No symbol is being visualized: no size to be changed";
 			repaint();
 		}
 		else
@@ -187,10 +188,24 @@ void MainContentComponent::sliderValueChanged(Slider * slider)
 	}
 	else if (slider == &rotationSlider)
 	{
-		message = to_string(rotationSlider.getValue());
+		if (selected_symbol == nullptr)
+		{
+			message = "No symbol is being visualized: no rotation to be changed";
+			repaint();
+		}
+		else
+		{
+			double previous_value = selected_symbol->getRotAngle();
 
-		repaint();
+			for (auto & symbol : symbolsList)
+				if (symbol.is_selected())
+					symbol.setRotAngle((symbol.getRotAngle() - previous_value) + rotationSlider.getValue());
+
+			if (compileAtEachCommand.getToggleState())
+				compile();
+		}
 	}
+	
 }
 
 ApplicationCommandManager & MainContentComponent::getApplicationCommandManager()
@@ -214,7 +229,9 @@ void MainContentComponent::compile()
 			"\\usepackage{graphicx, amsmath, amssymb, amsthm}\n"
 			"\\newcommand{\\" +  newCommandName + "}{\\mathbin{\\ooalign{\n";
 
-		texstream << "	$" + symbolsList[0].getLaTex() + "$\\cr\n"; //The first symbol is dominant
+		texstream << "	\\rotatebox[origin=c]{" + to_string(symbolsList[0].getRotAngle())
+			+ "}{\\scalebox{" + to_string(symbolsList[0].getSizeRatio())
+			+ "}{$" + symbolsList[0].getLaTex() + "$}}\\cr\n"; //The first symbol is dominant
 
 		for (auto it = symbolsList.begin() + 1; it != symbolsList.end(); ++it)
 		{
@@ -222,7 +239,8 @@ void MainContentComponent::compile()
 			double y = it->gety();
 
 			texstream << "	\\hidewidth\\kern" + to_string(x) + "pt\\raise" + to_string(y)
-				+ "pt\\hbox{\\scalebox{" + to_string(it->getSizeRatio()) +"}{$" + it->getLaTex() + "$}}\\hidewidth\\cr\n";
+				+ "pt\\hbox{\\rotatebox[origin=c]{" + to_string(it->getRotAngle()) + "}{\\scalebox{"
+				+ to_string(it->getSizeRatio()) +"}{$" + it->getLaTex() + "$}}}\\hidewidth\\cr\n";
 		}
 
 		texstream << "}}}\n\n"

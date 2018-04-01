@@ -97,16 +97,8 @@ private:
 	DrawableButton arrowRight;
 
 	Slider sizeSlider;
-
 	Label sizeLabel;
-
-	/*class RotationSlider final : public Slider
-	{
-	public:
-		void stoppedDragging() override;
-	}*/
 	Slider rotationSlider;
-
 	Label rotationLabel;
 
 	MenuComponent menubar;
