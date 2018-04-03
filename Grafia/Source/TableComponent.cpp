@@ -10,16 +10,7 @@
 
 #include "TableComponent.h"
 
-std::string eatRightZeros(std::string & input)
-{
-	for (int i = input.size() - 1; i != 0; --i) // apparently the string iterator is not deferentiable...
-		if (input[i] == '0')
-			input.erase(i);
-		else
-			break;
-
-	return input;
-}
+extern std::string eatRightZeros(std::string & input);
 
 MainContentComponent::TableComponent::TableComponent(MainContentComponent * owner_ptr)
 {
@@ -82,7 +73,8 @@ void MainContentComponent::TableComponent::cellDoubleClicked(int rowNumber, int 
 
 		update();
 
-		MainComponentOwner->selected_symbol = make_unique<LaTexSymbol>(symbolsListRef[rowNumber]);
+//		MainComponentOwner->selected_symbol = make_unique<LaTexSymbol>(MainComponentOwner->symbolsList[rowNumber]); questo non funziona non so perché
+		MainComponentOwner->selected_symbol = &(MainComponentOwner->symbolsList[rowNumber]);
 }
 
 void MainContentComponent::TableComponent::paintRowBackground(Graphics & g, int rowNumber, int, int, bool rowIsSelected)

@@ -55,6 +55,10 @@ public:
 
 	void buttonClicked(Button* button) override;
 	void sliderValueChanged(Slider* slider) override;
+	void textEditorTextChanged(TextEditor& textEditor) override;
+
+	void update_displayed();
+	void zero_displayed();
 
 	static ApplicationCommandManager& getApplicationCommandManager();
 
@@ -89,7 +93,8 @@ private:
 	class TableComponent;
 
 	std::unique_ptr<TableComponent> table_ptr;
-	std::unique_ptr<LaTexSymbol> selected_symbol = nullptr;
+//	std::unique_ptr<LaTexSymbol> selected_symbol = nullptr; unique pointer does not work... it looks i creates copies. I don't get why
+	LaTexSymbol * selected_symbol = nullptr;
 
 	DrawableButton arrowUp;
 	DrawableButton arrowDown;
@@ -135,8 +140,8 @@ public:
 	LaTexSymbol& operator=(const LaTexSymbol& other);
 	LaTexSymbol(const LaTexSymbol& other);
 	
-	bool operator==(const LaTexSymbol & other);
-	bool operator!=(const LaTexSymbol & other);
+	bool operator==(const LaTexSymbol & other) const; // why is this not accepted without const at the end?
+	bool operator!=(const LaTexSymbol & other) const;
 
 	std::string getAttributeTextbyID(int id) const;
 	void setAttributebyID(int id, std::string text);

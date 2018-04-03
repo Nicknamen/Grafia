@@ -17,6 +17,17 @@ inline Colour getRandomColour(float brightness)
 inline Colour getRandomBrightColour() { return getRandomColour(0.8f); }
 inline Colour getRandomDarkColour() { return getRandomColour(0.3f); }
 
+std::string eatRightZeros(std::string & input)
+{
+	for (int i = input.size() - 1; i != 0; --i) // apparently the string iterator is not deferentiable...
+		if (input[i] == '0')
+			input.erase(i);
+		else
+			break;
+
+	return input;
+}
+
 //==============================================================================
 MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton::ImageOnButtonBackground),
 											   arrowDown("arrowDown", DrawableButton::ImageOnButtonBackground),
@@ -142,24 +153,32 @@ void MainContentComponent::buttonClicked(Button* button)
 	else if (button == &arrowUp)
 	{
 		raisey(1);
+
+		update_displayed();
 		if (compileAtEachCommand.getToggleState())
 			compile();
 	}
 	else if (button == &arrowDown)
 	{
 		raisey(-1);
+
+		update_displayed();
 		if (compileAtEachCommand.getToggleState())
 			compile();
 	}
 	else if (button == &arrowLeft)
 	{
 		raisex(-1);
+
+		update_displayed();
 		if (compileAtEachCommand.getToggleState())
 			compile();
 	}
 	else if (button == &arrowRight)
 	{
 		raisex(1);
+
+		update_displayed();
 		if (compileAtEachCommand.getToggleState())
 			compile();
 	}
@@ -206,6 +225,37 @@ void MainContentComponent::sliderValueChanged(Slider * slider)
 		}
 	}
 	
+}
+
+void MainContentComponent::textEditorTextChanged(TextEditor & textEditor)
+{
+	if (&textEditor == &xTextBox)
+		message = "sei una vacca pelosa";
+}
+
+void MainContentComponent::update_displayed()
+{
+	if (selected_symbol != nullptr)
+	{
+		rotationSlider.setValue(selected_symbol->getRotAngle());
+		sizeSlider.setValue(selected_symbol->getSizeRatio());
+		xTextBox.setText(eatRightZeros(to_string(selected_symbol->getx())));
+		yTextBox.setText(eatRightZeros(to_string(selected_symbol->gety())));
+	}
+
+	table_ptr->update();
+
+	repaint();
+}
+
+void MainContentComponent::zero_displayed()
+{
+	selected_symbol = nullptr;
+
+	rotationSlider.setValue(0);
+	sizeSlider.setValue(1);
+	xTextBox.setText("0");
+	yTextBox.setText("0");
 }
 
 ApplicationCommandManager & MainContentComponent::getApplicationCommandManager()
@@ -282,7 +332,12 @@ void MainContentComponent::remove()
 {
 	for (vector<LaTexSymbol>::const_iterator it = symbolsList.begin(); it != symbolsList.end();)
 		if (it->is_selected())
+		{
+			if (*it == *selected_symbol)
+				zero_displayed();
+
 			it = symbolsList.erase(it);
+		}
 		else
 			++it;
 
@@ -530,7 +585,7 @@ LaTexSymbol::LaTexSymbol(const LaTexSymbol & other):
 {
 }
 
-bool LaTexSymbol::operator==(const LaTexSymbol & other)
+bool LaTexSymbol::operator==(const LaTexSymbol & other) const
 {
 	if (_symbolID == other._symbolID &&
 		_name == other._name &&
@@ -544,7 +599,7 @@ bool LaTexSymbol::operator==(const LaTexSymbol & other)
 		return false;
 }
 
-bool LaTexSymbol::operator!=(const LaTexSymbol & other)
+bool LaTexSymbol::operator!=(const LaTexSymbol & other) const
 {
 	return !operator==(other);
 }
