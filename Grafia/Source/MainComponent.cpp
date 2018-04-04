@@ -229,8 +229,57 @@ void MainContentComponent::sliderValueChanged(Slider * slider)
 
 void MainContentComponent::textEditorTextChanged(TextEditor & textEditor)
 {
-	if (&textEditor == &xTextBox)
-		message = "sei una vacca pelosa";
+	try
+	{
+		if (&textEditor == &xTextBox)
+		{
+			if (selected_symbol == nullptr)
+			{
+				message = "No symbol is being displayed. No x value to be changed";
+
+				xTextBox.setText("");
+			}
+			else
+			{
+				double previous_value = selected_symbol->getx();
+
+				for (auto & symbol : symbolsList)
+					if (symbol.is_selected())
+						symbol.setx((symbol.getx() - previous_value)
+							+ stod(xTextBox.getText().toStdString() == "" ? "0" : xTextBox.getText().toStdString()));
+
+				message = "";
+			}
+		}
+		else if (&textEditor == &yTextBox)
+		{
+			if (selected_symbol == nullptr)
+			{
+				message = "No symbol is being displayed. No y value to be changed";
+
+				yTextBox.setText("");
+			}
+			else
+			{
+				double previous_value = selected_symbol->gety();
+
+				for (auto & symbol : symbolsList)
+					if (symbol.is_selected())
+						symbol.sety((symbol.gety() - previous_value)
+							+ stod(yTextBox.getText().toStdString() == "" ? "0" : yTextBox.getText().toStdString()));
+
+				message = "";
+			}
+		}
+
+		repaint();
+	}
+	catch (exception & error_)
+	{
+		message = error_.what();
+
+		repaint();
+	}
 }
 
 void MainContentComponent::update_displayed()
@@ -279,8 +328,8 @@ void MainContentComponent::compile()
 			"\\usepackage{graphicx, amsmath, amssymb, amsthm}\n"
 			"\\newcommand{\\" +  newCommandName + "}{\\mathbin{\\ooalign{\n";
 
-		texstream << "	\\rotatebox[origin=c]{" + to_string(symbolsList[0].getRotAngle())
-			+ "}{\\scalebox{" + to_string(symbolsList[0].getSizeRatio())
+		texstream << "	\\rotatebox[origin=c]{" + eatRightZeros(to_string(symbolsList[0].getRotAngle()))
+			+ "}{\\scalebox{" + eatRightZeros(to_string(symbolsList[0].getSizeRatio()))
 			+ "}{$" + symbolsList[0].getLaTex() + "$}}\\cr\n"; //The first symbol is dominant
 
 		for (auto it = symbolsList.begin() + 1; it != symbolsList.end(); ++it)
@@ -288,9 +337,9 @@ void MainContentComponent::compile()
 			double x = it->getx();
 			double y = it->gety();
 
-			texstream << "	\\hidewidth\\kern" + to_string(x) + "pt\\raise" + to_string(y)
-				+ "pt\\hbox{\\rotatebox[origin=c]{" + to_string(it->getRotAngle()) + "}{\\scalebox{"
-				+ to_string(it->getSizeRatio()) +"}{$" + it->getLaTex() + "$}}}\\hidewidth\\cr\n";
+			texstream << "	\\hidewidth\\kern" + eatRightZeros(to_string(x)) + "pt\\raise" + eatRightZeros(to_string(y))
+				+ "pt\\hbox{\\rotatebox[origin=c]{" + eatRightZeros((to_string(it->getRotAngle()))) + "}{\\scalebox{"
+				+ eatRightZeros(to_string(it->getSizeRatio())) +"}{$" + it->getLaTex() + "$}}}\\hidewidth\\cr\n";
 		}
 
 		texstream << "}}}\n\n"
@@ -314,6 +363,8 @@ void MainContentComponent::compile()
 		}
 
 		tex_image.setImage(tex_preimage);
+
+		update_displayed();
 	}
 	catch (string exc)
 	{
