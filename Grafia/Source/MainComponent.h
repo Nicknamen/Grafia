@@ -14,6 +14,7 @@
 #include "MenuComponent.h"
 
 #include <vector>
+#include <list>
 #include <memory>
 
 using namespace std;
@@ -53,6 +54,8 @@ public:
 	void getCommandInfo(CommandID commandID, ApplicationCommandInfo& result) override;
 	bool perform(const InvocationInfo& info) override;
 
+	void setMessage(std::string to_be_written);
+
 	void buttonClicked(Button* button) override;
 	void sliderValueChanged(Slider* slider) override;
 	void textEditorTextChanged(TextEditor& textEditor) override;
@@ -72,7 +75,7 @@ public:
 	};
 
 private:
-	vector<LaTexSymbol> symbolsList;
+	std::vector<LaTexSymbol> symbolsList;
 
 	std::string newCommandName;
 
@@ -93,13 +96,17 @@ private:
 	class TableComponent;
 
 	std::unique_ptr<TableComponent> table_ptr;
-//	std::unique_ptr<LaTexSymbol> selected_symbol = nullptr; unique pointer does not work... it looks i creates copies. I don't get why
+//	std::shared_ptr<LaTexSymbol> selected_symbol = nullptr; //unique  or shared pointer does not work... it looks it creates copies. I don't get why
+// but why should it ever work? there is no point in using a shared_ptr or unique ptr here.
 	LaTexSymbol * selected_symbol = nullptr;
 
 	DrawableButton arrowUp;
 	DrawableButton arrowDown;
 	DrawableButton arrowLeft;
 	DrawableButton arrowRight;
+
+	DrawableButton moveUp;
+	DrawableButton moveDown;
 
 	Slider sizeSlider;
 	Label sizeLabel;
@@ -121,6 +128,9 @@ private:
 	void add(LaTexSymbol newObject);
 	void remove();
 
+	void moveSymbolUp();
+	void moveSymbolDown();
+
 	void raisex(const double x);
 	void raisey(const double y);
 	void scale(double factor);
@@ -140,7 +150,7 @@ public:
 	LaTexSymbol& operator=(const LaTexSymbol& other);
 	LaTexSymbol(const LaTexSymbol& other);
 	
-	bool operator==(const LaTexSymbol & other) const; // why is this not accepted without const at the end?
+	bool operator==(const LaTexSymbol & other) const;
 	bool operator!=(const LaTexSymbol & other) const;
 
 	std::string getAttributeTextbyID(int id) const;
@@ -174,7 +184,7 @@ public:
 	};
 
 private:
-	const int _symbolID; //danger: the price for declaring it const is that iterators brake the continuity. See the operator= implementation.
+	const int _symbolID; //danger: the price for declaring it const is that iterators break the continuity. See the operator= implementation.
 	std::string _name;
 	std::string _LaTex;
 	double _x;

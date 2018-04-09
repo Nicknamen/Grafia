@@ -25,6 +25,15 @@ std::string eatRightZeros(std::string & input)
 		else
 			break;
 
+/*
+	for (auto it = input.begin(); it != input.end();)
+		if (*it == 0)
+		{
+			it = input.erase(it);
+		}
+		else
+			--it;
+*/
 	return input;
 }
 
@@ -33,6 +42,8 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 											   arrowDown("arrowDown", DrawableButton::ImageOnButtonBackground),
 											   arrowLeft("arrowLeft", DrawableButton::ImageOnButtonBackground),
 											   arrowRight("arrowRight", DrawableButton::ImageOnButtonBackground),
+											   moveUp("moveSymbolUp", DrawableButton::ImageOnButtonBackground),
+											   moveDown("armoveSymbolDown", DrawableButton::ImageOnButtonBackground),
 											   table_ptr(new TableComponent(this))
 {
 	ImageFileName = "tex_file";
@@ -70,6 +81,15 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	arrowDown.addListener(this);
 	arrowLeft.addListener(this);
 	arrowRight.addListener(this);
+
+	addAndMakeVisible(moveUp);
+	addAndMakeVisible(moveDown);
+
+	moveUp.setImages(create_triangle(Point<float>(5, 0), Point<float>(10, 10), Point<float>(0, 10)), 0, 0);
+	moveDown.setImages(create_triangle(Point<float>(), Point<float>(10, 0), Point<float>(5, 10)), 0, 0);
+
+	moveUp.addListener(this);
+	moveDown.addListener(this);
 
 	addAndMakeVisible(sizeSlider);
 	sizeSlider.setRange(0.0, 100.0);
@@ -130,10 +150,14 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	newCommandName = "pippo";
 
 	setSize(800, 450);
+
+	setMessage("");
 }
 
 void MainContentComponent::buttonClicked(Button* button)
 {
+	const double raiseValue = 1;
+
 	if (button == &compile_button)
 	{
 		compile();
@@ -152,7 +176,7 @@ void MainContentComponent::buttonClicked(Button* button)
 	}
 	else if (button == &arrowUp)
 	{
-		raisey(1);
+		raisey(raiseValue);
 
 		update_displayed();
 		if (compileAtEachCommand.getToggleState())
@@ -160,7 +184,7 @@ void MainContentComponent::buttonClicked(Button* button)
 	}
 	else if (button == &arrowDown)
 	{
-		raisey(-1);
+		raisey(-raiseValue);
 
 		update_displayed();
 		if (compileAtEachCommand.getToggleState())
@@ -168,7 +192,7 @@ void MainContentComponent::buttonClicked(Button* button)
 	}
 	else if (button == &arrowLeft)
 	{
-		raisex(-1);
+		raisex(-raiseValue);
 
 		update_displayed();
 		if (compileAtEachCommand.getToggleState())
@@ -176,11 +200,20 @@ void MainContentComponent::buttonClicked(Button* button)
 	}
 	else if (button == &arrowRight)
 	{
-		raisex(1);
+		raisex(raiseValue);
 
 		update_displayed();
 		if (compileAtEachCommand.getToggleState())
 			compile();
+	}
+	else if (button == &moveUp)
+	{
+		moveSymbolUp();
+	}
+	else if (button == &moveDown)
+	{
+		moveSymbolDown();
+		update_displayed();
 	}
 }
 
@@ -189,10 +222,7 @@ void MainContentComponent::sliderValueChanged(Slider * slider)
 	if (slider == &sizeSlider)
 	{
 		if (selected_symbol == nullptr)
-		{
-			message = "No symbol is being visualized: no size to be changed";
-			repaint();
-		}
+			setMessage("No symbol is being visualized: no size to be changed");
 		else
 		{
 			double previous_value = selected_symbol->getSizeRatio();
@@ -208,10 +238,7 @@ void MainContentComponent::sliderValueChanged(Slider * slider)
 	else if (slider == &rotationSlider)
 	{
 		if (selected_symbol == nullptr)
-		{
-			message = "No symbol is being visualized: no rotation to be changed";
-			repaint();
-		}
+			setMessage("No symbol is being visualized: no rotation to be changed");
 		else
 		{
 			double previous_value = selected_symbol->getRotAngle();
@@ -235,7 +262,7 @@ void MainContentComponent::textEditorTextChanged(TextEditor & textEditor)
 		{
 			if (selected_symbol == nullptr)
 			{
-				message = "No symbol is being displayed. No x value to be changed";
+				setMessage("No symbol is being displayed. No x value to be changed");
 
 				xTextBox.setText("");
 			}
@@ -319,7 +346,9 @@ void MainContentComponent::compile()
 {
 	try
 	{
-		message = "";
+		string error_messages;
+
+		setMessage("Writing file"); // non funziona
 
 		texstream.open_rewritemode();
 
@@ -347,24 +376,31 @@ void MainContentComponent::compile()
 			"$$\\" + newCommandName + "$$\n"
 			"\\end{document}";
 
-		message += texstream.to_png();
+		setMessage("Compiling...");
+		repaint();
+
+		error_messages += texstream.to_png();
 
 		File teximage(File::getCurrentWorkingDirectory().getChildFile(String(ImageFileName + ".png")));
+
+		setMessage("Processing picture");
 
 		tex_preimage = PNGImageFormat::loadFrom(teximage);
 
 		if (tex_preimage.isValid())
 		{
-			message += " Image is valid";
+			error_messages += " Image is valid";
 		}
 		else
 		{
-			message += " Image is not valid";
+			error_messages += " Image is not valid";
 		}
 
 		tex_image.setImage(tex_preimage);
 
 		update_displayed();
+
+		setMessage(error_messages);
 	}
 	catch (string exc)
 	{
@@ -381,11 +417,12 @@ void MainContentComponent::add(LaTexSymbol newObject)
 
 void MainContentComponent::remove()
 {
-	for (vector<LaTexSymbol>::const_iterator it = symbolsList.begin(); it != symbolsList.end();)
+	for (auto it = symbolsList.begin(); it != symbolsList.end();)
 		if (it->is_selected())
 		{
-			if (*it == *selected_symbol)
-				zero_displayed();
+			if (selected_symbol != nullptr)
+				if (*it == *selected_symbol)
+					zero_displayed();
 
 			it = symbolsList.erase(it);
 		}
@@ -393,6 +430,66 @@ void MainContentComponent::remove()
 			++it;
 
 	table_ptr->update();
+}
+
+void MainContentComponent::moveSymbolUp()
+{
+	if (selected_symbol == nullptr)
+		setMessage("No symbol selected");
+	else
+	{
+		int i = 0;
+
+		for (auto symbol : symbolsList)
+		{
+			if (symbol == *selected_symbol)
+				break;
+
+			++i;
+		}
+
+		if (i != 0)
+		{
+			LaTexSymbol temp = symbolsList[i - 1];
+			symbolsList[i - 1] = symbolsList[i];
+			symbolsList[i] = temp;
+
+			selected_symbol = &symbolsList[i - 1];
+		}
+
+		update_displayed();
+
+		setMessage("");
+	}
+}
+
+void MainContentComponent::moveSymbolDown()
+{
+	if (selected_symbol == nullptr)
+		setMessage("No symbol selected");
+	else
+	{
+		int i = 0;
+
+		for (auto symbol : symbolsList)
+		{
+			if (symbol == *selected_symbol)
+				break;
+
+			++i;
+		}
+
+		if (i != symbolsList.size() - 1)
+		{
+			LaTexSymbol temp = symbolsList[i + 1];
+			symbolsList[i + 1] = symbolsList[i];
+			symbolsList[i] = temp;
+
+			selected_symbol = &symbolsList[i + 1];
+		}
+
+		setMessage("");
+	}
 }
 
 void MainContentComponent::raisex(const double x)
@@ -533,6 +630,13 @@ bool MainContentComponent::perform(const InvocationInfo & info)
 	return true;
 }
 
+void MainContentComponent::setMessage(std::string to_be_written)
+{
+	message = to_be_written;
+
+	repaint();
+}
+
 MainContentComponent::~MainContentComponent()
 {
 	applicationCommandManager.reset();
@@ -566,7 +670,7 @@ void MainContentComponent::resized()
 	compile_button.setBounds(getWidth()*0.75 + 5, getHeight()*0.1 + 30, getWidth() / 4 - 10, 25);
 
 	add_button.setBounds(getWidth()*0.75 + 5, getHeight()*0.1, getWidth() / 4 - 10, 25);
-	remove_button.setBounds(getWidth()*0.75 + 5, getHeight() / 2 + - 25, getWidth() / 4 - 10, 25);
+	remove_button.setBounds(getWidth() * 5 / 6 + 5, getHeight() / 2 + - 25, getWidth() / 6 - 10, 25);
 
 	xTextBox.setBounds(getWidth() * 3 / 8 - 10, getHeight() - 90, getWidth() / 8 - 10, 25);
 	yTextBox.setBounds(getWidth() * 3 / 8 - 10, getHeight() - 55, getWidth() / 8 - 10, 25);
@@ -575,6 +679,9 @@ void MainContentComponent::resized()
 	arrowDown.setBounds(70, getHeight() - 80, 50, 50);
 	arrowLeft.setBounds(10, getHeight() - 80, 50, 50);
 	arrowRight.setBounds(130, getHeight() - 80, 50, 50);
+
+	moveUp.setBounds(getWidth() / 2 + 5, getHeight() / 2 + -25, getWidth() / 6 - 10, 25);
+	moveDown.setBounds(getWidth() * 2 / 3 + 5, getHeight() / 2 + -25, getWidth() / 6 - 10, 25);
 
 	compileAtEachCommand.setBounds(getWidth() / 2 + 5, getHeight()*0.1+30, getWidth() / 4 - 10, 25);
 

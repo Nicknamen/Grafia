@@ -73,7 +73,7 @@ void MainContentComponent::TableComponent::cellDoubleClicked(int rowNumber, int 
 
 		update();
 
-//		MainComponentOwner->selected_symbol = make_unique<LaTexSymbol>(MainComponentOwner->symbolsList[rowNumber]); questo non funziona non so perché
+//		MainComponentOwner->selected_symbol = make_shared<LaTexSymbol>(MainComponentOwner->symbolsList[rowNumber]); //questo non funziona non so perché
 		MainComponentOwner->selected_symbol = &(MainComponentOwner->symbolsList[rowNumber]);
 }
 
