@@ -71,6 +71,7 @@ private:
 		TableComponent & tableOwner;
 
 	public:
+		~TeXHeader() = default;
 		TeXHeader(TableComponent& owner);
 	} header;
 

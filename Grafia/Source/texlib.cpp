@@ -91,7 +91,7 @@ TeX::~TeX()
 {
 	close();
 
-	execute(("rm " + _texname + ".pdf " + _texname + ".log " + _texname + ".aux " + _texname + ".tex " + _texname + ".png ").c_str());
+	execute(("rm " + _emptyname + ".pdf " + _emptyname + ".log " + _emptyname + ".aux " + _emptyname + ".tex " + _emptyname + ".png ").c_str());
 }
 
 ostream & TeX::operator<<(string & s)

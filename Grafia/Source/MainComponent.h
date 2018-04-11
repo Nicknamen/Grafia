@@ -64,6 +64,8 @@ public:
 	void update_displayed();
 	void zero_displayed();
 
+	void exportSymbol();
+
 	static ApplicationCommandManager& getApplicationCommandManager();
 
 	enum CommandIDs
@@ -125,6 +127,7 @@ private:
 	TeX texstream;
 	std::string ImageFileName;
 
+	void writeSymbolTeXCode(TeX & texStream);
 	void compile();
 	void add(LaTexSymbol newObject);
 	void remove();
@@ -136,6 +139,8 @@ private:
 	void raisey(const double y);
 	void scale(double factor);
 	void rotate(double angle);
+
+	unique_ptr<FileChooser> fc;
 
 	DrawablePath * create_triangle(Point<float> a, Point<float> b, Point<float> c);
 	

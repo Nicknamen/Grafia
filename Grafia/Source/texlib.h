@@ -17,8 +17,8 @@
 class TeX
 {
 public:
-	TeX(bool show_shell = FALSE);
-	TeX(std::string filename, bool show_shell = FALSE);
+	TeX(bool show_shell = false);
+	TeX(std::string filename, bool show_shell = false);
 
 	~TeX();
 

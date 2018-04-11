@@ -32,6 +32,8 @@ MainContentComponent::TableComponent::TableComponent(MainContentComponent * owne
 
 MainContentComponent::TableComponent::~TableComponent()
 {
+	TableHeaderComponent h;
+	table.setHeader(&h);
 }
 
 void MainContentComponent::TableComponent::resized()

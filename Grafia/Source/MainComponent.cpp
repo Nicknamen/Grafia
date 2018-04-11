@@ -361,6 +361,54 @@ ApplicationCommandManager & MainContentComponent::getApplicationCommandManager()
 	return *applicationCommandManager;
 }
 
+void MainContentComponent::exportSymbol()
+{
+	{
+		fc.reset(new FileChooser("Export as .tex file",
+			File::getCurrentWorkingDirectory().getChildFile(StringRef(newCommandName)),
+			"*.tex"));
+
+		fc->launchAsync(FileBrowserComponent::saveMode | FileBrowserComponent::canSelectFiles,
+			[&](const FileChooser& chooser)
+		{
+			auto result = chooser.getURLResult();
+			string name = result.isEmpty() ? string()
+										   : (result.isLocalFile() ? result.getLocalFile().getFullPathName().toStdString()
+																   : result.toString(true).toStdString());
+
+			TeX saveSymbol(name);
+			saveSymbol << "\\documentclass{minimal}\n\n"
+				"\\usepackage{graphicx, amsmath, amssymb}\n";
+
+			writeSymbolTeXCode(saveSymbol);
+
+			saveSymbol << "\\begin{document}\n"
+				"$$\\" + newCommandName + "$$\n"
+				"\\end{document}";
+		});
+	}
+}
+
+void MainContentComponent::writeSymbolTeXCode(TeX & texStream)
+{
+	texStream << "\\newcommand{\\" + newCommandName + "}{\\mathbin{\\ooalign{\n"
+		"	\\rotatebox[origin=c]{" + eatRightZeros(to_string(symbolsList[0].getRotAngle()))
+		+ "}{\\scalebox{" + eatRightZeros(to_string(symbolsList[0].getSizeRatio()))
+		+ "}{$" + symbolsList[0].getLaTex() + "$}}\\cr\n"; //The first symbol is dominant
+
+	for (auto it = symbolsList.begin() + 1; it != symbolsList.end(); ++it)
+	{
+		double x = it->getx();
+		double y = it->gety();
+
+		texStream << "	\\hidewidth\\kern" + eatRightZeros(to_string(x)) + "pt\\raise" + eatRightZeros(to_string(y))
+			+ "pt\\hbox{\\rotatebox[origin=c]{" + eatRightZeros((to_string(it->getRotAngle()))) + "}{\\scalebox{"
+			+ eatRightZeros(to_string(it->getSizeRatio())) + "}{$" + it->getLaTex() + "$}}}\\hidewidth\\cr\n";
+	}
+
+	texStream << "}}}\n\n";
+}
+
 void MainContentComponent::compile()
 {
 	try
@@ -373,25 +421,11 @@ void MainContentComponent::compile()
 
 		texstream << "\\documentclass{minimal}\n\n"
 			"\\usepackage[paperwidth=6.4cm, paperheight=3.6cm]{geometry}\n"
-			"\\usepackage{graphicx, amsmath, amssymb, amsthm}\n"
-			"\\newcommand{\\" +  newCommandName + "}{\\mathbin{\\ooalign{\n";
+			"\\usepackage{graphicx, amsmath, amssymb}\n";
 
-		texstream << "	\\rotatebox[origin=c]{" + eatRightZeros(to_string(symbolsList[0].getRotAngle()))
-			+ "}{\\scalebox{" + eatRightZeros(to_string(symbolsList[0].getSizeRatio()))
-			+ "}{$" + symbolsList[0].getLaTex() + "$}}\\cr\n"; //The first symbol is dominant
-
-		for (auto it = symbolsList.begin() + 1; it != symbolsList.end(); ++it)
-		{
-			double x = it->getx();
-			double y = it->gety();
-
-			texstream << "	\\hidewidth\\kern" + eatRightZeros(to_string(x)) + "pt\\raise" + eatRightZeros(to_string(y))
-				+ "pt\\hbox{\\rotatebox[origin=c]{" + eatRightZeros((to_string(it->getRotAngle()))) + "}{\\scalebox{"
-				+ eatRightZeros(to_string(it->getSizeRatio())) +"}{$" + it->getLaTex() + "$}}}\\hidewidth\\cr\n";
-		}
-
-		texstream << "}}}\n\n"
-			"\\begin{document}\n"
+		writeSymbolTeXCode(texstream);
+		
+		texstream << "\\begin{document}\n"
 			"$$\\" + newCommandName + "$$\n"
 			"\\end{document}";
 
@@ -644,6 +678,8 @@ bool MainContentComponent::perform(const InvocationInfo & info)
 			message = "Export";
 
 			repaint();
+
+			exportSymbol();
 			break;
 	
 		default:
