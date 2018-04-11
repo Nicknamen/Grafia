@@ -59,6 +59,7 @@ public:
 	void buttonClicked(Button* button) override;
 	void sliderValueChanged(Slider* slider) override;
 	void textEditorTextChanged(TextEditor& textEditor) override;
+	void textEditorReturnKeyPressed(TextEditor& textEditor) override;
 
 	void update_displayed();
 	void zero_displayed();

@@ -12,22 +12,26 @@
 
 extern std::string eatRightZeros(std::string & input);
 
-MainContentComponent::TableComponent::TableComponent(MainContentComponent * owner_ptr)
+MainContentComponent::TableComponent::TableComponent(MainContentComponent * owner_ptr) : header(*this)
 {
 	MainComponentOwner = owner_ptr;
 	
+	table.setHeader(&header);
+
 	numRows = MainComponentOwner->symbolsList.size();
 
 	addAndMakeVisible(table);
 
-	table.getHeader().addColumn(getAttributeNameForColumnId(object_columnId), 1, 120, 50, 400, TableHeaderComponent::defaultFlags);
-	table.getHeader().addColumn(getAttributeNameForColumnId(LaTex_columndId), 2, 120, 50, 400, TableHeaderComponent::defaultFlags);
-	table.getHeader().addColumn(getAttributeNameForColumnId(select_columnId), 3, 60, 40, 400, TableHeaderComponent::defaultFlags);
+	numColumns = 3;
 
 	table.setColour(ListBox::outlineColourId, Colours::grey);
 	table.setOutlineThickness(1);
 
 	table.setMultipleSelectionEnabled(true);
+}
+
+MainContentComponent::TableComponent::~TableComponent()
+{
 }
 
 void MainContentComponent::TableComponent::resized()
@@ -77,6 +81,13 @@ void MainContentComponent::TableComponent::cellDoubleClicked(int rowNumber, int 
 		MainComponentOwner->selected_symbol = &(MainComponentOwner->symbolsList[rowNumber]);
 }
 
+void MainContentComponent::TableComponent::backgroundClicked(const MouseEvent &)
+{
+	MainComponentOwner->selected_symbol = nullptr;
+
+	MainComponentOwner->zero_displayed();
+}
+
 void MainContentComponent::TableComponent::paintRowBackground(Graphics & g, int rowNumber, int, int, bool rowIsSelected)
 {
 	auto alternateColour = getLookAndFeel().findColour(ListBox::backgroundColourId)
@@ -107,11 +118,21 @@ void MainContentComponent::TableComponent::paintCell(Graphics & g, int rowNumber
 	}
 }
 
+void MainContentComponent::TableComponent::forceRowSelected(int i)
+{
+	table.selectRow(i);
+}
+
 void MainContentComponent::TableComponent::update()
 {
 	table.updateContent();
 
 	repaint();
+}
+
+TableHeaderComponent& MainContentComponent::TableComponent::getHeader()
+{
+	return table.getHeader();
 }
 
 /*void MainContentComponent::TableComponent::sortOrderChanged(int newSortColumnId, bool isForwards)
@@ -247,4 +268,32 @@ void MainContentComponent::TableComponent::SelectionColumnCustomComponent::setRo
 	row = newRow;
 	columnId = newColumn;
 	toggleButton.setToggleState((bool)owner.getSelection(row), dontSendNotification);
+}
+
+MainContentComponent::TableComponent::TeXHeader::TeXHeader(TableComponent& owner) : tableOwner(owner)
+{
+	addColumn(tableOwner.getAttributeNameForColumnId(object_columnId), 1, 120, 50, 400, TableHeaderComponent::defaultFlags);
+	addColumn(tableOwner.getAttributeNameForColumnId(LaTex_columndId), 2, 120, 50, 400, TableHeaderComponent::defaultFlags);
+	addColumn(tableOwner.getAttributeNameForColumnId(select_columnId), 3, 60, 40, 400, TableHeaderComponent::defaultFlags);
+}
+
+void MainContentComponent::TableComponent::TeXHeader::columnClicked(int columnId, const ModifierKeys & mods)
+{
+	if (columnId == 3)
+	{
+		for (auto symbol : tableOwner.MainComponentOwner->symbolsList)
+			if (!symbol.is_selected())
+			{
+				for (auto & write_symbol : tableOwner.MainComponentOwner->symbolsList)
+					write_symbol.set_selected(true);
+
+				tableOwner.update();
+				return;
+			}
+
+		for (auto & write_symbol : tableOwner.MainComponentOwner->symbolsList)
+			write_symbol.set_selected(false);
+
+		tableOwner.update();
+	}
 }

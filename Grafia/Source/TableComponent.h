@@ -18,6 +18,7 @@ class MainContentComponent::TableComponent final : public Component,
 public:
 
 	TableComponent(MainContentComponent* owner_ptr);
+	~TableComponent();
 
 	void resized() override;
 
@@ -30,11 +31,16 @@ public:
 	int getNumRows() override;
 
 	void cellDoubleClicked(int rowNumber, int columnId, const MouseEvent&) override;
+	void backgroundClicked(const MouseEvent&) override;
 
 	void paintRowBackground(Graphics& g, int rowNumber, int /*width*/, int /*height*/, bool rowIsSelected) override;
 	void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
 
+	void forceRowSelected(int i);
+
 	void update();
+
+	TableHeaderComponent& getHeader();
 
 //	void sortOrderChanged(int newSortColumnId, bool isForwards) override;
 	Component* refreshComponentForCell(int rowNumber, int columnId, bool /*isRowSelected*/, Component* existingComponentToUpdate) override;
@@ -57,6 +63,16 @@ private:
 	TableListBox table{ {}, this };
 	Font font{ 14.0f };
 	int numRows = 0;
+	int numColumns = 0;
+
+	class TeXHeader final: public TableHeaderComponent
+	{
+		void columnClicked(int columnId, const ModifierKeys &mods) override;
+		TableComponent & tableOwner;
+
+	public:
+		TeXHeader(TableComponent& owner);
+	} header;
 
 	class EditableTextCustomComponent : public Label
 	{

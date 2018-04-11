@@ -213,7 +213,6 @@ void MainContentComponent::buttonClicked(Button* button)
 	else if (button == &moveDown)
 	{
 		moveSymbolDown();
-		update_displayed();
 	}
 }
 
@@ -307,6 +306,26 @@ void MainContentComponent::textEditorTextChanged(TextEditor & textEditor)
 
 		repaint();
 	}
+}
+
+void MainContentComponent::textEditorReturnKeyPressed(TextEditor & textEditor)
+{
+	try
+	{
+		if (&textEditor == &tex_text)
+		{
+			add(LaTexSymbol(tex_text.getText().toStdString(), tex_text.getText().toStdString()));
+
+			tex_text.setText("");
+		}
+	}
+	catch (exception & error_)
+	{
+		message = error_.what();
+
+		repaint();
+	}
+
 }
 
 void MainContentComponent::update_displayed()
@@ -455,6 +474,8 @@ void MainContentComponent::moveSymbolUp()
 			symbolsList[i] = temp;
 
 			selected_symbol = &symbolsList[i - 1];
+
+			table_ptr->forceRowSelected(i - 1);
 		}
 
 		update_displayed();
@@ -486,6 +507,8 @@ void MainContentComponent::moveSymbolDown()
 			symbolsList[i] = temp;
 
 			selected_symbol = &symbolsList[i + 1];
+
+			table_ptr->forceRowSelected(i + 1);
 		}
 
 		setMessage("");
@@ -683,7 +706,7 @@ void MainContentComponent::resized()
 	moveUp.setBounds(getWidth() / 2 + 5, getHeight() / 2 + -25, getWidth() / 6 - 10, 25);
 	moveDown.setBounds(getWidth() * 2 / 3 + 5, getHeight() / 2 + -25, getWidth() / 6 - 10, 25);
 
-	compileAtEachCommand.setBounds(getWidth() / 2 + 5, getHeight()*0.1+30, getWidth() / 4 - 10, 25);
+	compileAtEachCommand.setBounds(getWidth() / 2 + 5, getHeight()/10 + 30, getWidth() / 4 - 10, 25);
 
 	auto sliderLeft = 80;
 	sizeSlider.setBounds(sliderLeft, getHeight() / 2 + 20, getWidth()/2 - sliderLeft - 10, 20);
