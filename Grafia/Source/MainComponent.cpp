@@ -9,6 +9,8 @@
 #include "TableComponent.h"
 #include "MainComponent.h"
 
+extern 
+
 inline Colour getRandomColour(float brightness)
 {
 	return Colour::fromHSV(Random::getSystemRandom().nextFloat(), 0.5f, brightness, 1.0f);
@@ -385,6 +387,8 @@ void MainContentComponent::exportSymbol()
 			saveSymbol << "\\begin{document}\n"
 				"$$\\" + newCommandName + "$$\n"
 				"\\end{document}";
+
+			saveSymbol.do_not_cancel("tex", "log");
 		});
 	}
 }
@@ -413,8 +417,6 @@ void MainContentComponent::compile()
 {
 	try
 	{
-		string error_messages;
-
 		setMessage("Writing file"); // non funziona
 
 		texstream.open_rewritemode();
@@ -432,7 +434,7 @@ void MainContentComponent::compile()
 		setMessage("Compiling...");
 		repaint();
 
-		error_messages += texstream.to_png();
+		texstream.to_png();
 
 		File teximage(File::getCurrentWorkingDirectory().getChildFile(String(ImageFileName + ".png")));
 
@@ -440,24 +442,22 @@ void MainContentComponent::compile()
 
 		tex_preimage = PNGImageFormat::loadFrom(teximage);
 
-		if (tex_preimage.isValid())
+		if (!tex_preimage.isValid())
 		{
-			error_messages += " Image is valid";
-		}
-		else
-		{
-			error_messages += " Image is not valid";
+			throw GrafiaException("Image is not valid");
 		}
 
 		tex_image.setImage(tex_preimage);
 
 		update_displayed();
 
-		setMessage(error_messages);
+		setMessage("Compiled succesfully");
 	}
-	catch (string exc)
+	catch (exception& exc)
 	{
-		message += " " + exc;
+		setMessage("Error caught during compilation");
+
+		AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon, "Error", String(exc.what()));
 	}
 }
 

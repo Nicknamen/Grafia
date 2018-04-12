@@ -7,8 +7,30 @@
 using namespace Magick;
 using namespace std;
 
+template<class T, class Compare = std::less<Key>, class Allocator = std::allocator<Key>>
+std::set<T, Compare, Allocator> set_difference(const std::set<T, Compare, Allocator> & A, 
+											   const std::set<T, Compare, Allocator> & B) //returns A - B
+{
+	std::set<T, Compare, Allocator> C;
+
+	for (T a : A)									//I can for sure optimize this function
+		if (B.find(a) == B.end())
+			C.insert(a);
+
+	return C;
+}
+
+template<class T, class Compare = std::less<Key>, class Allocator = std::allocator<Key>>
+std::set<T, Compare, Allocator> operator-(const std::set<T, Compare, Allocator> & A,
+										  const std::set<T, Compare, Allocator> & B) //returns A - B
+{
+	return set_difference(A, B);
+}
+
 TeX::TeX(bool show_shell)
 {
+	InitializeMagick("");//ExePath().forward("magickbin").c_str());
+
 	_istexcreated = false;
 	_istexmodified = true;
 
@@ -17,6 +39,8 @@ TeX::TeX(bool show_shell)
 
 TeX::TeX(string filename, bool show_shell)
 {
+	InitializeMagick("");//ExePath().forward("magickbin").c_str());
+
 	open(filename);
 
 	_is_shell_hidden = !show_shell;
@@ -91,7 +115,12 @@ TeX::~TeX()
 {
 	close();
 
-	execute(("rm " + _emptyname + ".pdf " + _emptyname + ".log " + _emptyname + ".aux " + _emptyname + ".tex " + _emptyname + ".png ").c_str());
+	string command;
+
+	for (auto ext : extensions - extensions_not_to_cancel)
+		command += "rm " + _emptyname + "." + ext + " ";
+
+	execute(command.c_str());
 }
 
 ostream & TeX::operator<<(string & s)
@@ -191,12 +220,8 @@ void TeX::to_svg()
 	}
 }
 
-string TeX::to_png(string ext)
+void TeX::to_png(string ext)
 {
-	string path = ExePath();
-
-	InitializeMagick(path.c_str());
-
 	Image image;
 
 	string fname = _emptyname + "." + ext;
@@ -215,7 +240,7 @@ string TeX::to_png(string ext)
 		}
 		catch (Exception &error_)
 		{
-			cout << "Caught exception: " << error_.what() << endl;
+			throw TeXException("Magick exception: " + string(error_.what()) + " ");
 		}
 	}
 	else if (exists()) // to be compiled from tex
@@ -225,7 +250,7 @@ string TeX::to_png(string ext)
 		else if (ext == "dvi")
 			to_dvi();
 		else
-			throw "Extension " + ext + " not recognized";
+			throw TeXException("Extension " + ext + " not recognized");
 
 		try
 		{
@@ -237,16 +262,16 @@ string TeX::to_png(string ext)
 		}
 		catch (Exception &error_)
 		{
-			return "Magick has caught exception: " + string(error_.what()) + " ";
+			throw TeXException("Magick exception: " + string(error_.what()) + " ");
 		}
 	}
 	else
 	{
-		throw "Unable to produce pdf or png";
+		throw TeXException("Unable to produce pdf or png");
 	}
-
-	return "";
 }
+
+set<string> TeX::extensions = {"pdf", "tex", "log", "aux", "png"};
 
 void TeX::execute(const char* comand)
 {
@@ -291,10 +316,45 @@ void TeX::execute(const char* comand)
 }
 
 #ifdef _WIN32
-string ExePath() {
+path ExePath() {
 	char buffer[MAX_PATH];
 	GetModuleFileName(NULL, buffer, MAX_PATH);
 	string::size_type pos = string(buffer).rfind("VisualStudio2015");
-	return string(buffer).substr(0, pos + 16);
+	return path(string(buffer).substr(0, pos + 16));
 }
 #endif
+
+path path::back()
+{
+	remove_last_backslash();
+
+	path backpath = *this;
+
+	for (auto it = backpath.end() - 1; it != backpath.begin(); --it)
+		if (*it == '\\')
+		{
+			backpath.pop_back();
+			break;
+		}
+		else
+			backpath.pop_back();
+
+	return backpath;
+}
+
+path path::forward(std::string folder)
+{
+	remove_last_backslash();
+
+	path forwardpath = *this;
+
+	forwardpath.append("\\" + folder);
+
+	return forwardpath;
+}
+
+void path::remove_last_backslash()
+{
+	if (this->at(this->size() - 1) == '\\')
+		this->pop_back();
+}

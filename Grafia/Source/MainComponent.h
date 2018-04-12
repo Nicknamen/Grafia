@@ -77,6 +77,22 @@ public:
 		Export		= 1004
 	};
 
+	//exceptions
+	class GrafiaException : public std::exception
+	{
+	public:
+		template<typename T>
+		GrafiaException(T what) { error_what = "Error: " + (std::string)what; }
+
+		virtual const char* what() const throw()
+		{
+			return error_what.c_str();
+		}
+
+	private:
+		std::string error_what;
+	};
+
 private:
 	std::vector<LaTexSymbol> symbolsList;
 
