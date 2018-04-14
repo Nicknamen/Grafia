@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <Magick++.h>
+#include <string>
 
 using namespace Magick;
 using namespace std;
@@ -29,8 +30,6 @@ std::set<T, Compare, Allocator> operator-(const std::set<T, Compare, Allocator> 
 
 TeX::TeX(bool show_shell)
 {
-	InitializeMagick("");//ExePath().forward("magickbin").c_str());
-
 	_istexcreated = false;
 	_istexmodified = true;
 
@@ -39,8 +38,6 @@ TeX::TeX(bool show_shell)
 
 TeX::TeX(string filename, bool show_shell)
 {
-	InitializeMagick("");//ExePath().forward("magickbin").c_str());
-
 	open(filename);
 
 	_is_shell_hidden = !show_shell;
@@ -222,11 +219,13 @@ void TeX::to_svg()
 
 void TeX::to_png(string ext)
 {
+	InitializeMagick(ExePath().forward("magickbin").c_str()); // not able to properly initialize magick
+
 	Image image;
 
 	string fname = _emptyname + "." + ext;
 
-	image.density("600");
+	image.density(to_string(get_image_density()));
 
 	if (fexists(fname) && !_istexmodified) // to be compiled directly from dvi or pdf
 	{
@@ -269,6 +268,16 @@ void TeX::to_png(string ext)
 	{
 		throw TeXException("Unable to produce pdf or png");
 	}
+}
+
+void TeX::set_image_density(const int density)
+{
+	_density = density;
+}
+
+int TeX::get_image_density() const
+{
+	return _density;
 }
 
 set<string> TeX::extensions = {"pdf", "tex", "log", "aux", "png"};

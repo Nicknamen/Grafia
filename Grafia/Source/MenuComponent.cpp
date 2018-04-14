@@ -18,10 +18,10 @@ public:
 	enum CommandIDs
 	{
 		Save = 1000,
-		Quit = 1001,
-		New = 1002,
-		Open = 1003,
-		Export = 1004
+		New,
+		Open,
+		Export,
+		Settings
 	};
 };
 
@@ -71,12 +71,12 @@ PopupMenu MenuComponent::getMenuForIndex(int menuIndex, const String& /*menuName
 	}
 	else if (menuIndex == 1)
 	{
-		PopupMenu v4SubMenu;
-		v4SubMenu.addCommandItem(commandManager, MainContentComponent::Open);
+		menu.addCommandItem(commandManager, MainContentComponent::Settings);
 
-		menu.addSubMenu("submenu", v4SubMenu);
+//		PopupMenu v4SubMenu;
+//		v4SubMenu.addCommandItem(commandManager, MainContentComponent::Open);
 
-		menu.addSeparator();
+//		menu.addSubMenu("submenu", v4SubMenu);
 	}
 	else if (menuIndex == 2)
 	{
@@ -101,37 +101,4 @@ void MenuComponent::menuItemSelected(int menuItemID, int)
 {
 	// most of our menu items are invoked automatically as commands, but we can handle the
 	// other special cases here..
-
-	if (menuItemID == 6000)
-	{
-#if JUCE_MAC
-		if (MenuBarModel::getMacMainMenu() != nullptr)
-		{
-			MenuBarModel::setMacMainMenu(nullptr);
-			menuBar->setModel(this);
-		}
-		else
-		{
-			menuBar->setModel(nullptr);
-			MenuBarModel::setMacMainMenu(this);
-		}
-#endif
-	}
-	else if (menuItemID >= 3000 && menuItemID <= 3003)
-	{
-		if (TabbedComponent* tabs = findParentComponentOfClass<TabbedComponent>())
-		{
-			TabbedButtonBar::Orientation o = TabbedButtonBar::TabsAtTop;
-
-			if (menuItemID == 3001) o = TabbedButtonBar::TabsAtBottom;
-			if (menuItemID == 3002) o = TabbedButtonBar::TabsAtLeft;
-			if (menuItemID == 3003) o = TabbedButtonBar::TabsAtRight;
-
-			tabs->setOrientation(o);
-		}
-	}
-	else if (menuItemID >= 12298 && menuItemID <= 12305)
-	{
-//		sendChangeMessage();
-	}
 }

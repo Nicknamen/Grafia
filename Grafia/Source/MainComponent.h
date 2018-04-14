@@ -66,15 +66,17 @@ public:
 
 	void exportSymbol();
 
+	void runSettings();
+
 	static ApplicationCommandManager& getApplicationCommandManager();
 
 	enum CommandIDs
 	{
 		Save		= 1000,
-		Quit		= 1001,
-		New			= 1002,
-		Open		= 1003,
-		Export		= 1004
+		New,
+		Open,
+		Export,
+		Settings
 	};
 
 	//exceptions
@@ -96,11 +98,14 @@ public:
 private:
 	std::vector<LaTexSymbol> symbolsList;
 
-	std::string newCommandName;
+	std::string newSymbolName = "newSymbol";
 
 	TextEditor tex_text;
 	TextButton compile_button;
 	Label tex_search;
+
+	Label symbolNameLabel;
+	TextEditor symbolNameEditor;
 
 	Label xLabel;
 	TextEditor xTextBox;
@@ -155,6 +160,8 @@ private:
 	void raisey(const double y);
 	void scale(double factor);
 	void rotate(double angle);
+
+	void errorAlert(const std::exception & exc);
 
 	unique_ptr<FileChooser> fc;
 

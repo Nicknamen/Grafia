@@ -125,6 +125,14 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	addAndMakeVisible(tex_text);
 	tex_text.addListener(this);
 
+	addAndMakeVisible(symbolNameEditor);
+	symbolNameEditor.addListener(this);
+	symbolNameEditor.setText(newSymbolName, dontSendNotification);
+
+	addAndMakeVisible(symbolNameLabel);
+	symbolNameLabel.setText("Symbol name:", dontSendNotification);
+	symbolNameLabel.attachToComponent(&symbolNameEditor, true);
+
 	addAndMakeVisible(xTextBox);
 	xTextBox.addListener(this);
 	xTextBox.setJustification(Justification::centredRight);
@@ -148,8 +156,6 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	compileAtEachCommand.setButtonText("Compile at each command");
 
 	addAndMakeVisible(tex_image);
-
-	newCommandName = "pippo";
 
 	setSize(800, 450);
 
@@ -299,14 +305,16 @@ void MainContentComponent::textEditorTextChanged(TextEditor & textEditor)
 				message = "";
 			}
 		}
+		else if (&textEditor == &symbolNameEditor)
+		{
+			newSymbolName = symbolNameEditor.getText().toStdString();
+		}
 
 		repaint();
 	}
-	catch (exception & error_)
+	catch (exception & exc)
 	{
-		message = error_.what();
-
-		repaint();
+		errorAlert(exc);
 	}
 }
 
@@ -367,7 +375,7 @@ void MainContentComponent::exportSymbol()
 {
 	{
 		fc.reset(new FileChooser("Export as .tex file",
-			File::getCurrentWorkingDirectory().getChildFile(StringRef(newCommandName)),
+			File::getCurrentWorkingDirectory().getChildFile(StringRef(newSymbolName)),
 			"*.tex"));
 
 		fc->launchAsync(FileBrowserComponent::saveMode | FileBrowserComponent::canSelectFiles,
@@ -385,7 +393,7 @@ void MainContentComponent::exportSymbol()
 			writeSymbolTeXCode(saveSymbol);
 
 			saveSymbol << "\\begin{document}\n"
-				"$$\\" + newCommandName + "$$\n"
+				"$$\\" + newSymbolName + "$$\n"
 				"\\end{document}";
 
 			saveSymbol.do_not_cancel("tex", "log");
@@ -393,9 +401,35 @@ void MainContentComponent::exportSymbol()
 	}
 }
 
+void MainContentComponent::runSettings()
+{
+#if JUCE_MODAL_LOOPS_PERMITTED
+	AlertWindow w("Settings",
+		"The following parameters control the functionalities of this application.",
+		AlertWindow::NoIcon);
+
+	w.addTextEditor("image_density", to_string(texstream.get_image_density()), "Image density:");
+	w.addComboBox("option", { "option 1", "option 2", "option 3", "option 4" }, "some options");
+	w.addButton("OK", 1, KeyPress(KeyPress::returnKey, 0, 0));
+	w.addButton("Cancel", 0, KeyPress(KeyPress::escapeKey, 0, 0));
+
+	w.getTextEditor("image_density")->setInputRestrictions(5, "0123456789+-,.");
+
+	if (w.runModalLoop() != 0) // is they picked 'ok'
+	{
+		// this is the item they chose in the drop-down list..
+		auto optionIndexChosen = w.getComboBoxComponent("option")->getSelectedItemIndex();
+		ignoreUnused(optionIndexChosen);
+
+		// this is the text they entered..
+		texstream.set_image_density(stoi(w.getTextEditorContents("image_density").toStdString()));
+	}
+#endif
+}
+
 void MainContentComponent::writeSymbolTeXCode(TeX & texStream)
 {
-	texStream << "\\newcommand{\\" + newCommandName + "}{\\mathbin{\\ooalign{\n"
+	texStream << "\\newcommand{\\" + newSymbolName + "}{\\mathbin{\\ooalign{\n"
 		"	\\rotatebox[origin=c]{" + eatRightZeros(to_string(symbolsList[0].getRotAngle()))
 		+ "}{\\scalebox{" + eatRightZeros(to_string(symbolsList[0].getSizeRatio()))
 		+ "}{$" + symbolsList[0].getLaTex() + "$}}\\cr\n"; //The first symbol is dominant
@@ -428,7 +462,7 @@ void MainContentComponent::compile()
 		writeSymbolTeXCode(texstream);
 		
 		texstream << "\\begin{document}\n"
-			"$$\\" + newCommandName + "$$\n"
+			"$$\\" + newSymbolName + "$$\n"
 			"\\end{document}";
 
 		setMessage("Compiling...");
@@ -455,15 +489,15 @@ void MainContentComponent::compile()
 	}
 	catch (exception& exc)
 	{
-		setMessage("Error caught during compilation");
-
-		AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon, "Error", String(exc.what()));
+		errorAlert(exc);
 	}
 }
 
 void MainContentComponent::add(LaTexSymbol newObject)
 {
 	symbolsList.push_back(newObject);
+
+	tex_text.setText("");
 
 	table_ptr->update();
 }
@@ -577,6 +611,13 @@ void MainContentComponent::rotate(double angle)
 			symbol.setRotAngle(symbol.getRotAngle() + angle);
 }
 
+void MainContentComponent::errorAlert(const std::exception & exc)
+{
+	setMessage("Error caught during compilation");
+
+	AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon, "Error", String(exc.what()));
+}
+
 DrawablePath * MainContentComponent::create_triangle(Point<float> a, Point<float> b, Point<float> c)
 {
 	static DrawablePath triangle;
@@ -601,10 +642,10 @@ void MainContentComponent::getAllCommands(Array<CommandID>& commands)
 {
 	const CommandID ids[] = {
 								MainContentComponent::Save,
-								MainContentComponent::Quit,
 								MainContentComponent::New,
 								MainContentComponent::Open,
-								MainContentComponent::Export
+								MainContentComponent::Export,
+								MainContentComponent::Settings
 							};
 
 	commands.addArray(ids, numElementsInArray(ids));
@@ -626,11 +667,6 @@ void MainContentComponent::getCommandInfo(CommandID commandID, ApplicationComman
 			result.addDefaultKeypress('n', ModifierKeys::commandModifier);
 			break;
 
-		case MainContentComponent::Quit:
-			result.setInfo("Quit", "Quits", filecommands, 0);
-			result.addDefaultKeypress('n', ModifierKeys::commandModifier);
-			break;
-
 		case MainContentComponent::Open:
 			result.setInfo("Open", "Open an existing project", filecommands, 0);
 			result.addDefaultKeypress('o', ModifierKeys::commandModifier);
@@ -640,6 +676,10 @@ void MainContentComponent::getCommandInfo(CommandID commandID, ApplicationComman
 			result.setInfo("Export", "Export the created symbol", filecommands, 0);
 			result.addDefaultKeypress('e', ModifierKeys::commandModifier);
 			break;
+
+		case MainContentComponent::Settings:
+			result.setInfo("Settings", "Runs a settings window", filecommands, 0);
+			result.addDefaultKeypress('j', ModifierKeys::commandModifier);
 
 		default:
 			break;
@@ -668,18 +708,12 @@ bool MainContentComponent::perform(const InvocationInfo & info)
 			repaint();
 			break;
 
-		case Quit:
-			message = "Quit";
-
-			repaint();
+		case Export:
+			exportSymbol();
 			break;
 
-		case Export:
-			message = "Export";
-
-			repaint();
-
-			exportSymbol();
+		case Settings:
+			runSettings();
 			break;
 	
 		default:
@@ -725,10 +759,12 @@ void MainContentComponent::resized()
 	menubar.setBounds(0, 0, getWidth(), 20);
 
 	tex_image.setBounds(10, 30, getWidth() / 2 - 15, getHeight() / 2 - 15);
-	tex_text.setBounds(getWidth() / 2 + 5, getHeight()*0.1, getWidth()/4 - 10, 25);
-	compile_button.setBounds(getWidth()*0.75 + 5, getHeight()*0.1 + 30, getWidth() / 4 - 10, 25);
+	tex_text.setBounds(getWidth() / 2 + 5, 50, getWidth()/4 - 10, 25);
+	compile_button.setBounds(getWidth()*0.75 + 5, 80, getWidth() / 4 - 10, 25);
 
-	add_button.setBounds(getWidth()*0.75 + 5, getHeight()*0.1, getWidth() / 4 - 10, 25);
+	symbolNameEditor.setBounds(getWidth()*0.75 + 5, 110, getWidth() / 4 - 10, 25);
+
+	add_button.setBounds(getWidth()*0.75 + 5, 50, getWidth() / 4 - 10, 25);
 	remove_button.setBounds(getWidth() * 5 / 6 + 5, getHeight() / 2 + - 25, getWidth() / 6 - 10, 25);
 
 	xTextBox.setBounds(getWidth() * 3 / 8 - 10, getHeight() - 90, getWidth() / 8 - 10, 25);
@@ -742,9 +778,9 @@ void MainContentComponent::resized()
 	moveUp.setBounds(getWidth() / 2 + 5, getHeight() / 2 + -25, getWidth() / 6 - 10, 25);
 	moveDown.setBounds(getWidth() * 2 / 3 + 5, getHeight() / 2 + -25, getWidth() / 6 - 10, 25);
 
-	compileAtEachCommand.setBounds(getWidth() / 2 + 5, getHeight()/10 + 30, getWidth() / 4 - 10, 25);
+	compileAtEachCommand.setBounds(getWidth() / 2 + 5, 80, getWidth() / 4 - 10, 25);
 
-	auto sliderLeft = 80;
+	int sliderLeft = 80;
 	sizeSlider.setBounds(sliderLeft, getHeight() / 2 + 20, getWidth()/2 - sliderLeft - 10, 20);
 	rotationSlider.setBounds(sliderLeft, getHeight() / 2 + 50, getWidth()/2 - sliderLeft - 10, 20);
 

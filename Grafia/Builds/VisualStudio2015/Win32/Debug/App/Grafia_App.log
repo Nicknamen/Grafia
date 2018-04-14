@@ -1,144 +1,55 @@
-﻿Build started 13/04/2018 00:33:38.
-Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Grafia_App.vcxproj" on node 2 (Rebuild target(s)).
-_PrepareForClean:
-  Deleting file "Win32\Debug\App\Grafia_App.tlog\Grafia_App.lastbuildstate".
+﻿Build started 14/04/2018 19:32:32.
+Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Grafia_App.vcxproj" on node 2 (Build target(s)).
 InitializeBuildStatus:
   Creating "Win32\Debug\App\Grafia_App.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
 ClCompile:
-  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:\C++_libraries\Magick++\include /I..\..\JuceLibraryCode /I"..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules" /Zi /nologo /W4 /WX- /MP /O2 /Oy- /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D _WINDOWS /D DEBUG /D _DEBUG /D JUCER_VS2015_78A5022=1 /D JUCE_APP_VERSION=1.0.0 /D JUCE_APP_VERSION_HEX=0x10000 /D JucePlugin_Build_VST=0 /D JucePlugin_Build_VST3=0 /D JucePlugin_Build_AU=0 /D JucePlugin_Build_AUv3=0 /D JucePlugin_Build_RTAS=0 /D JucePlugin_Build_AAX=0 /D JucePlugin_Build_Standalone=0 /Gm- /EHsc /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"Win32\Debug\App\\" /Fd"Win32\Debug\App\\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt /FS ..\..\Source\TableComponent.cpp ..\..\Source\MenuComponent.cpp ..\..\Source\texlib.cpp ..\..\Source\MainComponent.cpp ..\..\Source\Main.cpp ..\..\JuceLibraryCode\include_juce_audio_basics.cpp ..\..\JuceLibraryCode\include_juce_audio_devices.cpp ..\..\JuceLibraryCode\include_juce_audio_formats.cpp ..\..\JuceLibraryCode\include_juce_audio_processors.cpp ..\..\JuceLibraryCode\include_juce_core.cpp ..\..\JuceLibraryCode\include_juce_cryptography.cpp ..\..\JuceLibraryCode\include_juce_data_structures.cpp ..\..\JuceLibraryCode\include_juce_events.cpp ..\..\JuceLibraryCode\include_juce_graphics.cpp ..\..\JuceLibraryCode\include_juce_gui_basics.cpp ..\..\JuceLibraryCode\include_juce_gui_extra.cpp ..\..\JuceLibraryCode\include_juce_opengl.cpp ..\..\JuceLibraryCode\include_juce_video.cpp
-  TableComponent.cpp
-  MenuComponent.cpp
-  texlib.cpp
-  MainComponent.cpp
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:\C++_libraries\Magick++\include /I..\..\JuceLibraryCode /I"..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules" /Zi /nologo /W4 /WX- /MP /O2 /Oy- /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D _WINDOWS /D DEBUG /D _DEBUG /D JUCER_VS2015_78A5022=1 /D JUCE_APP_VERSION=1.0.0 /D JUCE_APP_VERSION_HEX=0x10000 /D JucePlugin_Build_VST=0 /D JucePlugin_Build_VST3=0 /D JucePlugin_Build_AU=0 /D JucePlugin_Build_AUv3=0 /D JucePlugin_Build_RTAS=0 /D JucePlugin_Build_AAX=0 /D JucePlugin_Build_Standalone=0 /Gm- /EHsc /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"Win32\Debug\App\\" /Fd"Win32\Debug\App\\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt /FS ..\..\Source\Main.cpp ..\..\Source\MainComponent.cpp ..\..\Source\TableComponent.cpp
   Main.cpp
-  include_juce_audio_basics.cpp
-  include_juce_audio_devices.cpp
-  include_juce_audio_formats.cpp
-..\..\Source\texlib.cpp(177): warning C4129: '.': unrecognized character escape sequence
-c:\program files (x86)\juce\modules\juce_core\containers/juce_Array.h(936): warning C4101: 'error_': unreferenced local variable (compiling source file ..\..\JuceLibraryCode\include_juce_audio_basics.cpp)
-  c:\program files (x86)\juce\modules\juce_core\containers/juce_Array.h(920): note: while compiling class template member function 'void juce::Array<juce::MidiKeyboardStateListener *,juce::DummyCriticalSection,0>::removeFirstMatchingValue(juce::MidiKeyboardStateListener *)' (compiling source file ..\..\JuceLibraryCode\include_juce_audio_basics.cpp)
-  c:\program files (x86)\juce\modules\juce_audio_basics\midi/juce_MidiKeyboardState.cpp(183): note: see reference to function template instantiation 'void juce::Array<juce::MidiKeyboardStateListener *,juce::DummyCriticalSection,0>::removeFirstMatchingValue(juce::MidiKeyboardStateListener *)' being compiled (compiling source file ..\..\JuceLibraryCode\include_juce_audio_basics.cpp)
-  c:\program files (x86)\juce\modules\juce_audio_basics\midi/juce_MidiKeyboardState.h(198): note: see reference to class template instantiation 'juce::Array<juce::MidiKeyboardStateListener *,juce::DummyCriticalSection,0>' being compiled (compiling source file ..\..\JuceLibraryCode\include_juce_audio_basics.cpp)
-c:\program files (x86)\juce\modules\juce_core\containers/juce_Array.h(936): warning C4101: 'error_': unreferenced local variable (compiling source file ..\..\JuceLibraryCode\include_juce_audio_devices.cpp)
-  c:\program files (x86)\juce\modules\juce_core\containers/juce_Array.h(920): note: while compiling class template member function 'void juce::Array<juce::WindowsMidiService::WindowsOutputWrapper::MidiOutHandle *,juce::DummyCriticalSection,0>::removeFirstMatchingValue(juce::WindowsMidiService::WindowsOutputWrapper::MidiOutHandle *)' (compiling source file ..\..\JuceLibraryCode\include_juce_audio_devices.cpp)
-  c:\program files (x86)\juce\modules\juce_audio_devices\native/juce_win32_Midi.cpp(394): note: see reference to function template instantiation 'void juce::Array<juce::WindowsMidiService::WindowsOutputWrapper::MidiOutHandle *,juce::DummyCriticalSection,0>::removeFirstMatchingValue(juce::WindowsMidiService::WindowsOutputWrapper::MidiOutHandle *)' being compiled (compiling source file ..\..\JuceLibraryCode\include_juce_audio_devices.cpp)
-  c:\program files (x86)\juce\modules\juce_audio_devices\native/juce_win32_Midi.cpp(524): note: see reference to class template instantiation 'juce::Array<juce::WindowsMidiService::WindowsOutputWrapper::MidiOutHandle *,juce::DummyCriticalSection,0>' being compiled (compiling source file ..\..\JuceLibraryCode\include_juce_audio_devices.cpp)
-  include_juce_audio_processors.cpp
+  MainComponent.cpp
+  TableComponent.cpp
 c:\users\nicoc_000\desktop\grafia\grafia\source\MainComponent.h(31): warning C4211: nonstandard extension used: redefined extern to static (compiling source file ..\..\Source\MainComponent.cpp)
 c:\users\nicoc_000\desktop\grafia\grafia\source\MainComponent.h(31): warning C4211: nonstandard extension used: redefined extern to static (compiling source file ..\..\Source\Main.cpp)
-  include_juce_core.cpp
-..\..\Source\MainComponent.cpp(339): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(339): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(340): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(340): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(389): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(389): note: A non-const reference may only be bound to an lvalue
+c:\users\nicoc_000\desktop\grafia\grafia\source\MainComponent.h(31): warning C4211: nonstandard extension used: redefined extern to static (compiling source file ..\..\Source\TableComponent.cpp)
 ..\..\Source\Main.cpp(28): warning C4100: 'commandLine': unreferenced formal parameter
 ..\..\Source\Main.cpp(50): warning C4100: 'commandLine': unreferenced formal parameter
-..\..\Source\MainComponent.cpp(399): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(399): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(400): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(400): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(401): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(401): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(408): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(408): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(409): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(409): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(410): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(410): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(410): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(410): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(432): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(432): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(537): warning C4389: '!=': signed/unsigned mismatch
-..\..\Source\MainComponent.cpp(728): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-..\..\Source\MainComponent.cpp(729): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-..\..\Source\MainComponent.cpp(731): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-..\..\Source\MainComponent.cpp(758): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-..\..\Source\MainComponent.cpp(851): warning C4800: 'double': forcing value to bool 'true' or 'false' (performance warning)
-c:\users\nicoc_000\desktop\grafia\grafia\source\MainComponent.h(31): warning C4211: nonstandard extension used: redefined extern to static (compiling source file ..\..\Source\TableComponent.cpp)
 ..\..\Source\TableComponent.cpp(61): warning C4800: 'const int': forcing value to bool 'true' or 'false' (performance warning)
 ..\..\Source\TableComponent.cpp(75): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
   ..\..\Source\TableComponent.cpp(75): note: A non-const reference may only be bound to an lvalue
 ..\..\Source\TableComponent.cpp(76): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
   ..\..\Source\TableComponent.cpp(76): note: A non-const reference may only be bound to an lvalue
 ..\..\Source\TableComponent.cpp(69): warning C4100: 'columnId': unreferenced formal parameter
+..\..\Source\MainComponent.cpp(347): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(347): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(348): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(348): note: A non-const reference may only be bound to an lvalue
 ..\..\Source\TableComponent.cpp(272): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+..\..\Source\MainComponent.cpp(397): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(397): note: A non-const reference may only be bound to an lvalue
 ..\..\Source\TableComponent.cpp(282): warning C4100: 'mods': unreferenced formal parameter
-  include_juce_cryptography.cpp
-  include_juce_data_structures.cpp
-  include_juce_events.cpp
-  include_juce_graphics.cpp
-  include_juce_gui_basics.cpp
-c:\program files (x86)\juce\modules\juce_core\containers/juce_Array.h(936): warning C4101: 'error_': unreferenced local variable (compiling source file ..\..\JuceLibraryCode\include_juce_core.cpp)
-  c:\program files (x86)\juce\modules\juce_core\containers/juce_Array.h(920): note: while compiling class template member function 'void juce::Array<void *,juce::CriticalSection,0>::removeFirstMatchingValue(void *)' (compiling source file ..\..\JuceLibraryCode\include_juce_core.cpp)
-  c:\program files (x86)\juce\modules\juce_core\streams/juce_OutputStream.cpp(61): note: see reference to function template instantiation 'void juce::Array<void *,juce::CriticalSection,0>::removeFirstMatchingValue(void *)' being compiled (compiling source file ..\..\JuceLibraryCode\include_juce_core.cpp)
-  c:\program files (x86)\juce\modules\juce_core\streams/juce_OutputStream.cpp(43): note: see reference to class template instantiation 'juce::Array<void *,juce::CriticalSection,0>' being compiled (compiling source file ..\..\JuceLibraryCode\include_juce_core.cpp)
-  include_juce_gui_extra.cpp
-  include_juce_opengl.cpp
-c:\program files (x86)\juce\modules\juce_core\containers/juce_Array.h(936): warning C4101: 'error_': unreferenced local variable (compiling source file ..\..\JuceLibraryCode\include_juce_audio_processors.cpp)
-  c:\program files (x86)\juce\modules\juce_core\containers/juce_Array.h(920): note: while compiling class template member function 'void juce::Array<juce::AudioProcessorListener *,juce::DummyCriticalSection,0>::removeFirstMatchingValue(juce::AudioProcessorListener *)' (compiling source file ..\..\JuceLibraryCode\include_juce_audio_processors.cpp)
-  c:\program files (x86)\juce\modules\juce_audio_processors\processors/juce_AudioProcessor.cpp(336): note: see reference to function template instantiation 'void juce::Array<juce::AudioProcessorListener *,juce::DummyCriticalSection,0>::removeFirstMatchingValue(juce::AudioProcessorListener *)' being compiled (compiling source file ..\..\JuceLibraryCode\include_juce_audio_processors.cpp)
-  c:\program files (x86)\juce\modules\juce_audio_processors\processors/juce_AudioProcessor.h(1586): note: see reference to class template instantiation 'juce::Array<juce::AudioProcessorListener *,juce::DummyCriticalSection,0>' being compiled (compiling source file ..\..\JuceLibraryCode\include_juce_audio_processors.cpp)
-c:\program files (x86)\juce\modules\juce_core\containers/juce_Array.h(936): warning C4101: 'error_': unreferenced local variable (compiling source file ..\..\JuceLibraryCode\include_juce_data_structures.cpp)
-  c:\program files (x86)\juce\modules\juce_core\containers/juce_Array.h(920): note: while compiling class template member function 'void juce::Array<ListenerClass *,juce::DummyCriticalSection,0>::removeFirstMatchingValue(juce::ValueTree::Listener *)'
-          with
-          [
-              ListenerClass=juce::ValueTree::Listener
-          ] (compiling source file ..\..\JuceLibraryCode\include_juce_data_structures.cpp)
-  c:\program files (x86)\juce\modules\juce_core\containers/juce_ListenerList.h(98): note: see reference to function template instantiation 'void juce::Array<ListenerClass *,juce::DummyCriticalSection,0>::removeFirstMatchingValue(juce::ValueTree::Listener *)' being compiled
-          with
-          [
-              ListenerClass=juce::ValueTree::Listener
-          ] (compiling source file ..\..\JuceLibraryCode\include_juce_data_structures.cpp)
-  c:\program files (x86)\juce\modules\juce_core\containers/juce_ListenerList.h(292): note: see reference to class template instantiation 'juce::Array<ListenerClass *,juce::DummyCriticalSection,0>' being compiled
-          with
-          [
-              ListenerClass=juce::ValueTree::Listener
-          ] (compiling source file ..\..\JuceLibraryCode\include_juce_data_structures.cpp)
-  c:\program files (x86)\juce\modules\juce_data_structures\values/juce_ValueTree.h(607): note: see reference to class template instantiation 'juce::ListenerList<juce::ValueTree::Listener,juce::Array<ListenerClass *,juce::DummyCriticalSection,0>>' being compiled
-          with
-          [
-              ListenerClass=juce::ValueTree::Listener
-          ] (compiling source file ..\..\JuceLibraryCode\include_juce_data_structures.cpp)
-  include_juce_video.cpp
-c:\program files (x86)\juce\modules\juce_core\containers/juce_Array.h(936): warning C4101: 'error_': unreferenced local variable (compiling source file ..\..\JuceLibraryCode\include_juce_events.cpp)
-  c:\program files (x86)\juce\modules\juce_core\containers/juce_Array.h(920): note: while compiling class template member function 'void juce::Array<juce::DeletedAtShutdown *,juce::DummyCriticalSection,0>::removeFirstMatchingValue(juce::DeletedAtShutdown *)' (compiling source file ..\..\JuceLibraryCode\include_juce_events.cpp)
-  c:\program files (x86)\juce\modules\juce_events\messages/juce_DeletedAtShutdown.cpp(43): note: see reference to function template instantiation 'void juce::Array<juce::DeletedAtShutdown *,juce::DummyCriticalSection,0>::removeFirstMatchingValue(juce::DeletedAtShutdown *)' being compiled (compiling source file ..\..\JuceLibraryCode\include_juce_events.cpp)
-  c:\program files (x86)\juce\modules\juce_events\messages/juce_DeletedAtShutdown.cpp(30): note: see reference to class template instantiation 'juce::Array<juce::DeletedAtShutdown *,juce::DummyCriticalSection,0>' being compiled (compiling source file ..\..\JuceLibraryCode\include_juce_events.cpp)
-c:\program files (x86)\juce\modules\juce_core\containers/juce_Array.h(936): warning C4101: 'error_': unreferenced local variable (compiling source file ..\..\JuceLibraryCode\include_juce_gui_extra.cpp)
-  c:\program files (x86)\juce\modules\juce_core\containers/juce_Array.h(920): note: while compiling class template member function 'void juce::Array<juce::ActiveXControlComponent *,juce::DummyCriticalSection,0>::removeFirstMatchingValue(juce::ActiveXControlComponent *)' (compiling source file ..\..\JuceLibraryCode\include_juce_gui_extra.cpp)
-  c:\program files (x86)\juce\modules\juce_gui_extra\native/juce_win32_ActiveXComponent.cpp(345): note: see reference to function template instantiation 'void juce::Array<juce::ActiveXControlComponent *,juce::DummyCriticalSection,0>::removeFirstMatchingValue(juce::ActiveXControlComponent *)' being compiled (compiling source file ..\..\JuceLibraryCode\include_juce_gui_extra.cpp)
-  c:\program files (x86)\juce\modules\juce_gui_extra\native/juce_win32_ActiveXComponent.cpp(184): note: see reference to class template instantiation 'juce::Array<juce::ActiveXControlComponent *,juce::DummyCriticalSection,0>' being compiled (compiling source file ..\..\JuceLibraryCode\include_juce_gui_extra.cpp)
-c:\program files (x86)\juce\modules\juce_core\containers/juce_Array.h(936): warning C4101: 'error_': unreferenced local variable (compiling source file ..\..\JuceLibraryCode\include_juce_opengl.cpp)
-  c:\program files (x86)\juce\modules\juce_core\containers/juce_Array.h(920): note: while compiling class template member function 'void juce::Array<ListenerClass *,juce::DummyCriticalSection,0>::removeFirstMatchingValue(juce::ImagePixelData::Listener *)'
-          with
-          [
-              ListenerClass=juce::ImagePixelData::Listener
-          ] (compiling source file ..\..\JuceLibraryCode\include_juce_opengl.cpp)
-  c:\program files (x86)\juce\modules\juce_core\containers/juce_ListenerList.h(98): note: see reference to function template instantiation 'void juce::Array<ListenerClass *,juce::DummyCriticalSection,0>::removeFirstMatchingValue(juce::ImagePixelData::Listener *)' being compiled
-          with
-          [
-              ListenerClass=juce::ImagePixelData::Listener
-          ] (compiling source file ..\..\JuceLibraryCode\include_juce_opengl.cpp)
-  c:\program files (x86)\juce\modules\juce_core\containers/juce_ListenerList.h(292): note: see reference to class template instantiation 'juce::Array<ListenerClass *,juce::DummyCriticalSection,0>' being compiled
-          with
-          [
-              ListenerClass=juce::ImagePixelData::Listener
-          ] (compiling source file ..\..\JuceLibraryCode\include_juce_opengl.cpp)
-  c:\program files (x86)\juce\modules\juce_graphics\images/juce_Image.h(486): note: see reference to class template instantiation 'juce::ListenerList<juce::ImagePixelData::Listener,juce::Array<ListenerClass *,juce::DummyCriticalSection,0>>' being compiled
-          with
-          [
-              ListenerClass=juce::ImagePixelData::Listener
-          ] (compiling source file ..\..\JuceLibraryCode\include_juce_opengl.cpp)
-c:\program files (x86)\juce\modules\juce_core\containers/juce_Array.h(936): warning C4101: 'error_': unreferenced local variable (compiling source file ..\..\JuceLibraryCode\include_juce_gui_basics.cpp)
-  c:\program files (x86)\juce\modules\juce_core\containers/juce_Array.h(920): note: while compiling class template member function 'void juce::Array<juce::TopLevelWindow *,juce::DummyCriticalSection,0>::removeFirstMatchingValue(juce::TopLevelWindow *)' (compiling source file ..\..\JuceLibraryCode\include_juce_gui_basics.cpp)
-  c:\program files (x86)\juce\modules\juce_gui_basics\windows/juce_TopLevelWindow.cpp(78): note: see reference to function template instantiation 'void juce::Array<juce::TopLevelWindow *,juce::DummyCriticalSection,0>::removeFirstMatchingValue(juce::TopLevelWindow *)' being compiled (compiling source file ..\..\JuceLibraryCode\include_juce_gui_basics.cpp)
-  c:\program files (x86)\juce\modules\juce_gui_basics\windows/juce_TopLevelWindow.cpp(84): note: see reference to class template instantiation 'juce::Array<juce::TopLevelWindow *,juce::DummyCriticalSection,0>' being compiled (compiling source file ..\..\JuceLibraryCode\include_juce_gui_basics.cpp)
-  c:\program files (x86)\juce\modules\juce_graphics\colour/juce_ColourGradient.h(196): note: see reference to class template instantiation 'juce::Point<float>' being compiled (compiling source file ..\..\JuceLibraryCode\include_juce_gui_basics.cpp)
+..\..\Source\MainComponent.cpp(433): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(433): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(434): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(434): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(435): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(435): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(442): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(442): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(443): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(443): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(444): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(444): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(444): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(444): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(466): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(466): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(571): warning C4389: '!=': signed/unsigned mismatch
+..\..\Source\MainComponent.cpp(763): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+..\..\Source\MainComponent.cpp(765): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+..\..\Source\MainComponent.cpp(767): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+..\..\Source\MainComponent.cpp(794): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+..\..\Source\MainComponent.cpp(887): warning C4800: 'double': forcing value to bool 'true' or 'false' (performance warning)
 ResourceCompile:
-  C:\Program Files (x86)\Windows Kits\8.1\bin\x86\rc.exe /D _DEBUG /l"0x0409" /IC:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\bin /nologo /fo"Win32\Debug\App\resources.res" .\resources.rc 
+  All outputs are up-to-date.
 Link:
   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Win32\Debug\App\\Grafia.exe" /NOLOGO /LIBPATH:C:\C++_libraries\Magick++\mcvs_static_debug_x86\lib CORE_DB_Magick++_.lib CORE_DB_MagickCore_.lib CORE_DB_MagickWand_.lib CORE_DB_bzlib_.lib CORE_DB_cairo_.lib CORE_DB_coders_.lib CORE_DB_croco_.lib CORE_DB_exr_.lib CORE_DB_ffi_.lib CORE_DB_filters_.lib CORE_DB_flif_.lib CORE_DB_glib_.lib CORE_DB_jp2_.lib CORE_DB_jpeg_.lib CORE_DB_lcms_.lib CORE_DB_librsvg_.lib CORE_DB_libxml_.lib CORE_DB_lqr_.lib CORE_DB_openjpeg_.lib CORE_DB_pango_.lib CORE_DB_pixman_.lib CORE_DB_png_.lib CORE_DB_tiff_.lib CORE_DB_ttf_.lib CORE_DB_webp_.lib CORE_DB_zlib_.lib ImageMagickObject.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /NODEFAULTLIB:libcmt.lib /NODEFAULTLIB:msvcrt.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"Win32\Debug\App\\Grafia.pdb" /SUBSYSTEM:WINDOWS /LARGEADDRESSAWARE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Win32\Debug\App\Grafia.lib" /MACHINE:X86 /SAFESEH Win32\Debug\App\resources.res
   Win32\Debug\App\\TableComponent.obj
@@ -164,8 +75,8 @@ Link:
 FinalizeBuildStatus:
   Deleting file "Win32\Debug\App\Grafia_App.tlog\unsuccessfulbuild".
   Touching "Win32\Debug\App\Grafia_App.tlog\Grafia_App.lastbuildstate".
-Done Building Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Grafia_App.vcxproj" (Rebuild target(s)).
+Done Building Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Grafia_App.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:47.88
+Time Elapsed 00:00:06.20

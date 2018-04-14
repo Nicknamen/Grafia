@@ -32,6 +32,9 @@ public:
 	void to_svg();
 	void to_png(std::string ext = "pdf");
 
+	void set_image_density(const int density);
+	int get_image_density() const;
+
 	void execute(const char* comand);
 
 	bool open();
@@ -77,6 +80,9 @@ public:
 	};
 
 private:
+	int _density = 600; // I do not want this to go in the constructors:
+						// the user might want to only compile tex files and forget about image features.
+
 	std::string _texname;
 	std::string _emptyname;
 	std::string _texpath;
