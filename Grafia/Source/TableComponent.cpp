@@ -15,7 +15,7 @@ extern std::string eatRightZeros(std::string & input);
 MainContentComponent::TableComponent::TableComponent(MainContentComponent * owner_ptr) : header(*this)
 {
 	MainComponentOwner = owner_ptr;
-	
+
 	table.setHeader(&header);
 
 	numRows = MainComponentOwner->symbolsList.size();
@@ -229,6 +229,11 @@ int MainContentComponent::TableComponent::columnIDfromAttributeID(int attributeI
 MainContentComponent::TableComponent::EditableTextCustomComponent::EditableTextCustomComponent(TableComponent & td) : owner(td)
 {
 	setEditable(false, true, false);
+
+	TextLookAndFeel.setColour(Label::textColourId, Colours::white);
+	TextLookAndFeel.setColour(Label::textWhenEditingColourId, Colours::darkblue);
+
+	setLookAndFeel(&TextLookAndFeel);
 }
 
 void MainContentComponent::TableComponent::EditableTextCustomComponent::mouseDown(const MouseEvent & event)
@@ -253,6 +258,12 @@ void MainContentComponent::TableComponent::EditableTextCustomComponent::setRowAn
 MainContentComponent::TableComponent::SelectionColumnCustomComponent::SelectionColumnCustomComponent(TableComponent & td)
 	: owner(td)
 {
+	SelectionLookAndFeel.setColour(ToggleButton::ColourIds::textColourId, Colours::white);
+	SelectionLookAndFeel.setColour(ToggleButton::ColourIds::tickColourId, Colours::white);
+	SelectionLookAndFeel.setColour(ToggleButton::ColourIds::tickDisabledColourId, Colours::white);
+
+	setLookAndFeel(&SelectionLookAndFeel);
+
 	addAndMakeVisible(toggleButton);
 
 	toggleButton.addListener(td.MainComponentOwner);

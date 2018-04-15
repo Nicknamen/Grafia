@@ -2384,7 +2384,7 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\logo\coloured_logo.png"/>
+    <None Include="..\..\logo\coloured_logo_6.png"/>
     <None Include="..\..\logo\logo.png"/>
     <None Include="..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules\juce_audio_formats\codecs\flac\Flac Licence.txt"/>
     <None Include="..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules\juce_audio_formats\codecs\oggvorbis\Ogg Vorbis Licence.txt"/>

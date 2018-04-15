@@ -57,7 +57,6 @@ public:
 	};
 
 private:
-
 	MainContentComponent * MainComponentOwner;
 
 	TableListBox table{ {}, this };
@@ -87,7 +86,7 @@ private:
 	private:
 		TableComponent& owner;
 		int row, columnId;
-		Colour textColour;
+		LookAndFeel_V4 TextLookAndFeel;
 	};
 
 	class SelectionColumnCustomComponent : public Component
@@ -102,5 +101,6 @@ private:
 		TableComponent& owner;
 		ToggleButton toggleButton;
 		int row, columnId;
+		LookAndFeel_V4 SelectionLookAndFeel;
 	};
 };

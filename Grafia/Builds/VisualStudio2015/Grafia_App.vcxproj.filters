@@ -3950,7 +3950,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\logo\coloured_logo.png">
+    <None Include="..\..\logo\coloured_logo_6.png">
       <Filter>Grafia\Source</Filter>
     </None>
     <None Include="..\..\logo\logo.png">

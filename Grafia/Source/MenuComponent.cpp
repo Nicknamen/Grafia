@@ -21,7 +21,8 @@ public:
 		New,
 		Open,
 		Export,
-		Settings
+		Settings,
+		About
 	};
 };
 
@@ -81,17 +82,10 @@ PopupMenu MenuComponent::getMenuForIndex(int menuIndex, const String& /*menuName
 	else if (menuIndex == 2)
 	{
 		menu.addCommandItem(commandManager, MainContentComponent::Export);
-		/*if (TabbedComponent* tabs = findParentComponentOfClass<TabbedComponent>())
-		{
-			menu.addItem(3000, "Tabs at Top", true, tabs->getOrientation() == TabbedButtonBar::TabsAtTop);
-			menu.addItem(3001, "Tabs at Bottom", true, tabs->getOrientation() == TabbedButtonBar::TabsAtBottom);
-			menu.addItem(3002, "Tabs on Left", true, tabs->getOrientation() == TabbedButtonBar::TabsAtLeft);
-			menu.addItem(3003, "Tabs on Right", true, tabs->getOrientation() == TabbedButtonBar::TabsAtRight);
-		}*/
 	}
 	else if (menuIndex == 3)
 	{
-//		return getDummyPopupMenu();
+		menu.addCommandItem(commandManager, MainContentComponent::About);
 	}
 
 	return menu;

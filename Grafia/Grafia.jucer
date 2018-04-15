@@ -6,8 +6,8 @@
               splashScreenColour="Dark" cppLanguageStandard="11">
   <MAINGROUP id="cdnleW" name="Grafia">
     <GROUP id="{3D9344D3-A3B7-AE35-480A-4CAD7625B879}" name="Source">
-      <FILE id="LjCYks" name="coloured_logo.png" compile="0" resource="1"
-            file="logo/coloured_logo.png"/>
+      <FILE id="cTME9X" name="coloured_logo_6.png" compile="0" resource="1"
+            file="logo/coloured_logo_6.png"/>
       <FILE id="G2GO1b" name="logo.png" compile="0" resource="1" file="logo/logo.png"/>
       <FILE id="z0tz2M" name="path.cpp" compile="1" resource="0" file="Source/path.cpp"/>
       <FILE id="fhDO7D" name="path.h" compile="0" resource="0" file="Source/path.h"/>
@@ -30,7 +30,7 @@
     <VS2015 targetFolder="Builds/VisualStudio2015" extraDefs="_CRT_SECURE_NO_WARNINGS"
             extraCompilerFlags="/FS" externalLibraries="CORE_DB_Magick++_.lib&#10;CORE_DB_MagickCore_.lib&#10;CORE_DB_MagickWand_.lib&#10;CORE_DB_bzlib_.lib&#10;CORE_DB_cairo_.lib&#10;CORE_DB_coders_.lib&#10;CORE_DB_croco_.lib&#10;CORE_DB_exr_.lib&#10;CORE_DB_ffi_.lib&#10;CORE_DB_filters_.lib&#10;CORE_DB_flif_.lib&#10;CORE_DB_glib_.lib&#10;CORE_DB_jp2_.lib&#10;CORE_DB_jpeg_.lib&#10;CORE_DB_lcms_.lib&#10;CORE_DB_librsvg_.lib&#10;CORE_DB_libxml_.lib&#10;CORE_DB_lqr_.lib&#10;CORE_DB_openjpeg_.lib&#10;CORE_DB_pango_.lib&#10;CORE_DB_pixman_.lib&#10;CORE_DB_png_.lib&#10;CORE_DB_tiff_.lib&#10;CORE_DB_ttf_.lib&#10;CORE_DB_webp_.lib&#10;CORE_DB_zlib_.lib&#10;ImageMagickObject.lib"
             extraLinkerFlags="/MANIFEST&#10;/NODEFAULTLIB:&quot;libcmt.lib&quot;&#10;/NODEFAULTLIB:&quot;msvcrt.lib&quot;"
-            bigIcon="LjCYks" smallIcon="G2GO1b" windowsTargetPlatformVersion="8.1">
+            bigIcon="cTME9X" smallIcon="G2GO1b" windowsTargetPlatformVersion="8.1">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="Win32"
                        isDebug="1" optimisation="4" targetName="Grafia" libraryPath="C:\C++_libraries\Magick++\mcvs_static_debug_x86\lib"

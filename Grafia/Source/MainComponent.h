@@ -9,6 +9,8 @@
 #ifndef MAINCOMPONENT_H_INCLUDED
 #define MAINCOMPONENT_H_INCLUDED
 
+#define SOFTWARE_VERSION "0.1.0"
+
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "texlib.h"
 #include "MenuComponent.h"
@@ -76,7 +78,8 @@ public:
 		New,
 		Open,
 		Export,
-		Settings
+		Settings,
+		About
 	};
 
 	//exceptions

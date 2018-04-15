@@ -1,73 +1,39 @@
-﻿Build started 14/04/2018 22:28:31.
+﻿Build started 15/04/2018 15:46:11.
 Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Grafia_App.vcxproj" on node 2 (Build target(s)).
 InitializeBuildStatus:
   Creating "Win32\Debug\App\Grafia_App.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
 ClCompile:
-  All outputs are up-to-date.
-  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I..\..\JuceLibraryCode /I"..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules" /IC:\C++_libraries\Magick++\include /Zi /nologo /W4 /WX- /MP /O2 /Oy- /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D _WINDOWS /D DEBUG /D _DEBUG /D JUCER_VS2015_78A5022=1 /D JUCE_APP_VERSION=1.0.0 /D JUCE_APP_VERSION_HEX=0x10000 /D JucePlugin_Build_VST=0 /D JucePlugin_Build_VST3=0 /D JucePlugin_Build_AU=0 /D JucePlugin_Build_AUv3=0 /D JucePlugin_Build_RTAS=0 /D JucePlugin_Build_AAX=0 /D JucePlugin_Build_Standalone=0 /Gm- /EHsc /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"Win32\Debug\App\\" /Fd"Win32\Debug\App\\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt /FS ..\..\Source\path.cpp ..\..\Source\TableComponent.cpp ..\..\Source\MenuComponent.cpp ..\..\Source\texlib.cpp ..\..\Source\MainComponent.cpp ..\..\Source\Main.cpp ..\..\JuceLibraryCode\BinaryData.cpp ..\..\JuceLibraryCode\include_juce_audio_basics.cpp ..\..\JuceLibraryCode\include_juce_audio_devices.cpp ..\..\JuceLibraryCode\include_juce_audio_formats.cpp ..\..\JuceLibraryCode\include_juce_audio_processors.cpp ..\..\JuceLibraryCode\include_juce_core.cpp ..\..\JuceLibraryCode\include_juce_cryptography.cpp ..\..\JuceLibraryCode\include_juce_data_structures.cpp ..\..\JuceLibraryCode\include_juce_events.cpp ..\..\JuceLibraryCode\include_juce_graphics.cpp ..\..\JuceLibraryCode\include_juce_gui_basics.cpp ..\..\JuceLibraryCode\include_juce_gui_extra.cpp ..\..\JuceLibraryCode\include_juce_opengl.cpp ..\..\JuceLibraryCode\include_juce_video.cpp
-  path.cpp
-  TableComponent.cpp
-  MenuComponent.cpp
-  texlib.cpp
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I..\..\JuceLibraryCode /I"..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules" /IC:\C++_libraries\Magick++\include /Zi /nologo /W4 /WX- /MP /O2 /Oy- /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D _WINDOWS /D DEBUG /D _DEBUG /D JUCER_VS2015_78A5022=1 /D JUCE_APP_VERSION=1.0.0 /D JUCE_APP_VERSION_HEX=0x10000 /D JucePlugin_Build_VST=0 /D JucePlugin_Build_VST3=0 /D JucePlugin_Build_AU=0 /D JucePlugin_Build_AUv3=0 /D JucePlugin_Build_RTAS=0 /D JucePlugin_Build_AAX=0 /D JucePlugin_Build_Standalone=0 /Gm- /EHsc /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"Win32\Debug\App\\" /Fd"Win32\Debug\App\\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt /FS ..\..\Source\MainComponent.cpp
   MainComponent.cpp
-  Main.cpp
-  BinaryData.cpp
-  include_juce_audio_basics.cpp
-  include_juce_audio_devices.cpp
-  include_juce_audio_formats.cpp
-..\..\Source\texlib.cpp(174): warning C4129: '.': unrecognized character escape sequence
-..\..\Source\MenuComponent.cpp(100): warning C4100: 'menuItemID': unreferenced formal parameter
-  include_juce_audio_processors.cpp
-  include_juce_core.cpp
-c:\users\nicoc_000\desktop\grafia\grafia\source\MainComponent.h(31): warning C4211: nonstandard extension used: redefined extern to static (compiling source file ..\..\Source\TableComponent.cpp)
-c:\users\nicoc_000\desktop\grafia\grafia\source\MainComponent.h(31): warning C4211: nonstandard extension used: redefined extern to static (compiling source file ..\..\Source\MainComponent.cpp)
-..\..\Source\TableComponent.cpp(61): warning C4800: 'const int': forcing value to bool 'true' or 'false' (performance warning)
-..\..\Source\TableComponent.cpp(75): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\TableComponent.cpp(75): note: A non-const reference may only be bound to an lvalue
-..\..\Source\TableComponent.cpp(76): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\TableComponent.cpp(76): note: A non-const reference may only be bound to an lvalue
-..\..\Source\TableComponent.cpp(69): warning C4100: 'columnId': unreferenced formal parameter
-..\..\Source\TableComponent.cpp(272): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-..\..\Source\TableComponent.cpp(282): warning C4100: 'mods': unreferenced formal parameter
-c:\users\nicoc_000\desktop\grafia\grafia\source\MainComponent.h(31): warning C4211: nonstandard extension used: redefined extern to static (compiling source file ..\..\Source\Main.cpp)
-..\..\Source\MainComponent.cpp(347): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(347): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(348): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(348): note: A non-const reference may only be bound to an lvalue
-..\..\Source\Main.cpp(28): warning C4100: 'commandLine': unreferenced formal parameter
-..\..\Source\Main.cpp(50): warning C4100: 'commandLine': unreferenced formal parameter
-..\..\Source\MainComponent.cpp(397): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(397): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(433): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(433): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(434): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(434): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(435): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(435): note: A non-const reference may only be bound to an lvalue
+c:\users\nicoc_000\desktop\grafia\grafia\source\MainComponent.h(33): warning C4211: nonstandard extension used: redefined extern to static
+..\..\Source\MainComponent.cpp(355): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(355): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(356): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(356): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(405): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(405): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(441): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(441): note: A non-const reference may only be bound to an lvalue
 ..\..\Source\MainComponent.cpp(442): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
   ..\..\Source\MainComponent.cpp(442): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(443): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+..\..\Source\MainComponent.cpp(443): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
   ..\..\Source\MainComponent.cpp(443): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(444): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(444): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(444): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(444): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(466): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(466): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(571): warning C4389: '!=': signed/unsigned mismatch
-..\..\Source\MainComponent.cpp(763): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-..\..\Source\MainComponent.cpp(765): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-..\..\Source\MainComponent.cpp(767): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-..\..\Source\MainComponent.cpp(794): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-..\..\Source\MainComponent.cpp(887): warning C4800: 'double': forcing value to bool 'true' or 'false' (performance warning)
-  include_juce_cryptography.cpp
-  include_juce_data_structures.cpp
-  include_juce_events.cpp
-  include_juce_graphics.cpp
-  include_juce_gui_basics.cpp
-  include_juce_gui_extra.cpp
-  include_juce_opengl.cpp
-  include_juce_video.cpp
+..\..\Source\MainComponent.cpp(450): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(450): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(451): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(451): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(452): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(452): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(452): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(452): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(474): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(474): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(579): warning C4389: '!=': signed/unsigned mismatch
+..\..\Source\MainComponent.cpp(786): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+..\..\Source\MainComponent.cpp(788): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+..\..\Source\MainComponent.cpp(790): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+..\..\Source\MainComponent.cpp(817): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+..\..\Source\MainComponent.cpp(910): warning C4800: 'double': forcing value to bool 'true' or 'false' (performance warning)
 ResourceCompile:
   All outputs are up-to-date.
 Link:
@@ -101,4 +67,4 @@ Done Building Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStu
 
 Build succeeded.
 
-Time Elapsed 00:00:37.38
+Time Elapsed 00:00:06.04

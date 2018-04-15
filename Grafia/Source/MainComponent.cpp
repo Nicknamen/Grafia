@@ -9,8 +9,6 @@
 #include "TableComponent.h"
 #include "MainComponent.h"
 
-extern 
-
 inline Colour getRandomColour(float brightness)
 {
 	return Colour::fromHSV(Random::getSystemRandom().nextFloat(), 0.5f, brightness, 1.0f);
@@ -48,6 +46,13 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 											   moveDown("armoveSymbolDown", DrawableButton::ImageOnButtonBackground),
 											   table_ptr(new TableComponent(this))
 {
+	getLookAndFeel().setColour(Label::textColourId, Colours::black);
+	getLookAndFeel().setColour(ToggleButton::ColourIds::textColourId, Colours::black);
+	getLookAndFeel().setColour(ToggleButton::ColourIds::tickColourId, Colours::black);
+	getLookAndFeel().setColour(ToggleButton::ColourIds::tickDisabledColourId, Colours::black);
+
+	getLookAndFeel().setUsingNativeAlertWindows(true);
+
 	ImageFileName = "tex_file";
 	texstream.open(ImageFileName + ".tex");
 
@@ -102,7 +107,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 //	sizeSlider.setTextBoxStyle(Slider::TextBoxLeft, false, 100, sizeSlider.getTextBoxHeight());
 
 	addAndMakeVisible(sizeLabel);
-	sizeLabel.setText("Size", dontSendNotification);
+	sizeLabel.setText("Size:", dontSendNotification);
 //	sizeLabel.setColour(100, findColour(0x1000200));
 	sizeLabel.attachToComponent(&sizeSlider, true);
 
@@ -113,7 +118,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	rotationSlider.setChangeNotificationOnlyOnRelease(true); // this might change when implementing with KaTex
 
 	addAndMakeVisible(rotationLabel);
-	rotationLabel.setText("Rotation", dontSendNotification);
+	rotationLabel.setText("Rotation:", dontSendNotification);
 	rotationLabel.attachToComponent(&rotationSlider, true);
 
 	symbolsList.push_back(LaTexSymbol("Freccia a destra", "\\longrightarrow"));
@@ -127,6 +132,9 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 
 	addAndMakeVisible(symbolNameEditor);
 	symbolNameEditor.addListener(this);
+	juce::Font symbolNameFont = symbolNameEditor.getFont();
+	symbolNameFont.setItalic(true);
+	symbolNameEditor.setFont(symbolNameFont);
 	symbolNameEditor.setText(newSymbolName, dontSendNotification);
 
 	addAndMakeVisible(symbolNameLabel);
@@ -138,7 +146,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	xTextBox.setJustification(Justification::centredRight);
 	xTextBox.setInputRestrictions(10, "0123456789+-,.");
 
-	xLabel.setText("x", dontSendNotification);
+	xLabel.setText("x:", dontSendNotification);
 	xLabel.attachToComponent(&xTextBox, true);
 
 	addAndMakeVisible(yTextBox);
@@ -146,7 +154,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	yTextBox.setJustification(Justification::centredRight);
 	yTextBox.setInputRestrictions(10, "0123456789+-,.");
 
-	yLabel.setText("y", dontSendNotification);
+	yLabel.setText("y:", dontSendNotification);
 	yLabel.attachToComponent(&yTextBox, true);
 
 	tex_search.setText("Search:", dontSendNotification);
@@ -159,7 +167,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 
 	setSize(800, 450);
 
-	setMessage("");
+	setMessage(""); //not working
 }
 
 void MainContentComponent::buttonClicked(Button* button)
@@ -645,7 +653,8 @@ void MainContentComponent::getAllCommands(Array<CommandID>& commands)
 								MainContentComponent::New,
 								MainContentComponent::Open,
 								MainContentComponent::Export,
-								MainContentComponent::Settings
+								MainContentComponent::Settings,
+								MainContentComponent::About
 							};
 
 	commands.addArray(ids, numElementsInArray(ids));
@@ -680,6 +689,11 @@ void MainContentComponent::getCommandInfo(CommandID commandID, ApplicationComman
 		case MainContentComponent::Settings:
 			result.setInfo("Settings", "Runs a settings window", filecommands, 0);
 			result.addDefaultKeypress('j', ModifierKeys::commandModifier);
+			break;
+
+		case MainContentComponent::About:
+			result.setInfo("About Grafia", "Shows informations about the program", filecommands, 0);
+			break;
 
 		default:
 			break;
@@ -714,6 +728,15 @@ bool MainContentComponent::perform(const InvocationInfo & info)
 
 		case Settings:
 			runSettings();
+			break;
+
+		case About:
+			AlertWindow::showMessageBoxAsync(AlertWindow::InfoIcon, "About Grafia",
+				String("Grafia " + string(SOFTWARE_VERSION) + "\n") +
+				String(CharPointer_UTF8("\xc2\xa9")) + String(" 2018\n"
+				"Written and designed by Nicol") + String(CharPointer_UTF8("\xc3\xb2")) + String(" Cavalleri\n"
+				"University of Milan\n"
+				"https://github.com/Nicknamen/Grafia"));
 			break;
 	
 		default:
