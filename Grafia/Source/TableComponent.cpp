@@ -12,11 +12,11 @@
 
 extern std::string eatRightZeros(std::string & input);
 
-MainContentComponent::TableComponent::TableComponent(MainContentComponent * owner_ptr) : header(*this)
+MainContentComponent::TableComponent::TableComponent(MainContentComponent * owner_ptr)
 {
 	MainComponentOwner = owner_ptr;
 
-	table.setHeader(&header);
+	table.setHeader(new TeXHeader(*this));
 
 	numRows = MainComponentOwner->symbolsList.size();
 
@@ -32,8 +32,6 @@ MainContentComponent::TableComponent::TableComponent(MainContentComponent * owne
 
 MainContentComponent::TableComponent::~TableComponent()
 {
-	TableHeaderComponent h;
-	table.setHeader(&h);
 }
 
 void MainContentComponent::TableComponent::resized()
@@ -137,14 +135,6 @@ TableHeaderComponent& MainContentComponent::TableComponent::getHeader()
 	return table.getHeader();
 }
 
-/*void MainContentComponent::TableComponent::sortOrderChanged(int newSortColumnId, bool isForwards)
-{
-	if (newSortColumnId != 0)
-	{
-		table.updateContent();
-	}
-}
-*/
 Component * MainContentComponent::TableComponent::refreshComponentForCell(int rowNumber, int columnId, bool, Component * existingComponentToUpdate)
 {
 	if (columnId == 1)
@@ -236,6 +226,11 @@ MainContentComponent::TableComponent::EditableTextCustomComponent::EditableTextC
 	setLookAndFeel(&TextLookAndFeel);
 }
 
+MainContentComponent::TableComponent::EditableTextCustomComponent::~EditableTextCustomComponent()
+{
+	setLookAndFeel(nullptr);
+}
+
 void MainContentComponent::TableComponent::EditableTextCustomComponent::mouseDown(const MouseEvent & event)
 {
 	owner.table.selectRowsBasedOnModifierKeys(row, event.mods, false);
@@ -269,6 +264,11 @@ MainContentComponent::TableComponent::SelectionColumnCustomComponent::SelectionC
 	toggleButton.addListener(td.MainComponentOwner);
 
 	toggleButton.onClick = [this] {owner.setSelection(row, (int)toggleButton.getToggleState()); };
+}
+
+MainContentComponent::TableComponent::SelectionColumnCustomComponent::~SelectionColumnCustomComponent()
+{
+	setLookAndFeel(nullptr);
 }
 
 void MainContentComponent::TableComponent::SelectionColumnCustomComponent::resized()

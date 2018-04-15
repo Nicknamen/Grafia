@@ -72,13 +72,14 @@ private:
 	public:
 		~TeXHeader() = default;
 		TeXHeader(TableComponent& owner);
-	} header;
+	};
 
 	class EditableTextCustomComponent : public Label
 	{
 	public:
 		EditableTextCustomComponent(TableComponent& td);
-
+		~EditableTextCustomComponent();
+		
 		void mouseDown(const MouseEvent& event) override;
 		void textWasEdited() override;
 		void setRowAndColumn(const int newRow, const int newColumn);
@@ -93,6 +94,7 @@ private:
 	{
 	public:
 		SelectionColumnCustomComponent(TableComponent& td);
+		~SelectionColumnCustomComponent();
 
 		void resized() override;
 		void setRowAndColumn(int newRow, int newColumn);

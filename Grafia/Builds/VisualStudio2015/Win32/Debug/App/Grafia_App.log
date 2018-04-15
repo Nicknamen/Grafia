@@ -1,11 +1,21 @@
-﻿Build started 15/04/2018 15:46:11.
+﻿Build started 15/04/2018 16:31:19.
 Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Grafia_App.vcxproj" on node 2 (Build target(s)).
 InitializeBuildStatus:
   Creating "Win32\Debug\App\Grafia_App.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
 ClCompile:
-  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I..\..\JuceLibraryCode /I"..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules" /IC:\C++_libraries\Magick++\include /Zi /nologo /W4 /WX- /MP /O2 /Oy- /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D _WINDOWS /D DEBUG /D _DEBUG /D JUCER_VS2015_78A5022=1 /D JUCE_APP_VERSION=1.0.0 /D JUCE_APP_VERSION_HEX=0x10000 /D JucePlugin_Build_VST=0 /D JucePlugin_Build_VST3=0 /D JucePlugin_Build_AU=0 /D JucePlugin_Build_AUv3=0 /D JucePlugin_Build_RTAS=0 /D JucePlugin_Build_AAX=0 /D JucePlugin_Build_Standalone=0 /Gm- /EHsc /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"Win32\Debug\App\\" /Fd"Win32\Debug\App\\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt /FS ..\..\Source\MainComponent.cpp
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I..\..\JuceLibraryCode /I"..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules" /IC:\C++_libraries\Magick++\include /Zi /nologo /W4 /WX- /MP /O2 /Oy- /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D _WINDOWS /D DEBUG /D _DEBUG /D JUCER_VS2015_78A5022=1 /D JUCE_APP_VERSION=1.0.0 /D JUCE_APP_VERSION_HEX=0x10000 /D JucePlugin_Build_VST=0 /D JucePlugin_Build_VST3=0 /D JucePlugin_Build_AU=0 /D JucePlugin_Build_AUv3=0 /D JucePlugin_Build_RTAS=0 /D JucePlugin_Build_AAX=0 /D JucePlugin_Build_Standalone=0 /Gm- /EHsc /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"Win32\Debug\App\\" /Fd"Win32\Debug\App\\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt /FS ..\..\Source\MainComponent.cpp ..\..\Source\TableComponent.cpp
   MainComponent.cpp
-c:\users\nicoc_000\desktop\grafia\grafia\source\MainComponent.h(33): warning C4211: nonstandard extension used: redefined extern to static
+  TableComponent.cpp
+c:\users\nicoc_000\desktop\grafia\grafia\source\MainComponent.h(33): warning C4211: nonstandard extension used: redefined extern to static (compiling source file ..\..\Source\TableComponent.cpp)
+c:\users\nicoc_000\desktop\grafia\grafia\source\MainComponent.h(33): warning C4211: nonstandard extension used: redefined extern to static (compiling source file ..\..\Source\MainComponent.cpp)
+..\..\Source\TableComponent.cpp(59): warning C4800: 'const int': forcing value to bool 'true' or 'false' (performance warning)
+..\..\Source\TableComponent.cpp(73): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\TableComponent.cpp(73): note: A non-const reference may only be bound to an lvalue
+..\..\Source\TableComponent.cpp(74): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\TableComponent.cpp(74): note: A non-const reference may only be bound to an lvalue
+..\..\Source\TableComponent.cpp(67): warning C4100: 'columnId': unreferenced formal parameter
+..\..\Source\TableComponent.cpp(283): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+..\..\Source\TableComponent.cpp(293): warning C4100: 'mods': unreferenced formal parameter
 ..\..\Source\MainComponent.cpp(355): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
   ..\..\Source\MainComponent.cpp(355): note: A non-const reference may only be bound to an lvalue
 ..\..\Source\MainComponent.cpp(356): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
@@ -67,4 +77,4 @@ Done Building Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStu
 
 Build succeeded.
 
-Time Elapsed 00:00:06.04
+Time Elapsed 00:00:06.50
