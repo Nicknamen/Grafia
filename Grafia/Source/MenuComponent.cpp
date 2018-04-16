@@ -28,16 +28,17 @@ public:
 
 MenuComponent::MenuComponent()
 {
-	menuBar = std::make_unique<MenuBarComponent>(this);
+//	menuBar = std::make_unique<MenuBarComponent>(this);
 
-	addAndMakeVisible(*menuBar);
+	menuBar.reset(new MenuBarComponent(this)); //what does change with respect to before?
+	addAndMakeVisible(menuBar.get());
 
 	setApplicationCommandManagerToWatch(&MainContentComponent::getApplicationCommandManager());
 }
 
 MenuComponent::~MenuComponent()
 {
-	menuBar.reset();
+//	menuBar.reset(nullptr);
 }
 
 void MenuComponent::resized()
@@ -47,13 +48,11 @@ void MenuComponent::resized()
 
 		area.removeFromTop(20);
 		area = area.removeFromTop(33);
-	}
+}
 
 StringArray MenuComponent::getMenuBarNames()
 {
-	const char* const names[] = { "File", "Edit", "LaTex", "Help", nullptr };
-
-	return StringArray(names);
+	return  {"File", "Edit", "LaTex", "Help" };
 }
 
 PopupMenu MenuComponent::getMenuForIndex(int menuIndex, const String& /*menuName*/)

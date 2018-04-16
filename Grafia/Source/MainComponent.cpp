@@ -22,6 +22,12 @@ std::string eatRightZeros(std::string & input)
 	for (int i = input.size() - 1; i != 0; --i) // apparently the string iterator is not deferentiable...
 		if (input[i] == '0')
 			input.erase(i);
+		else if (input[i] == '.')
+		{
+			input.erase(i);
+
+			break;
+		}
 		else
 			break;
 
@@ -104,7 +110,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	sizeSlider.addListener(this);
 	sizeSlider.setValue(1.0);
 	sizeSlider.setChangeNotificationOnlyOnRelease(true); // this might change when implementing with KaTex
-//	sizeSlider.setTextBoxStyle(Slider::TextBoxLeft, false, 100, sizeSlider.getTextBoxHeight());
+	sizeSlider.setNumDecimalPlacesToDisplay(3);
 
 	addAndMakeVisible(sizeLabel);
 	sizeLabel.setText("Size:", dontSendNotification);
@@ -113,9 +119,10 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 
 	addAndMakeVisible(rotationSlider);
 	rotationSlider.setRange(0.0, 360.0);
-	rotationSlider.setTextValueSuffix("d");
+	rotationSlider.setTextValueSuffix(CharPointer_UTF8("\xc2\xb0"));
 	rotationSlider.addListener(this);
 	rotationSlider.setChangeNotificationOnlyOnRelease(true); // this might change when implementing with KaTex
+	rotationSlider.setNumDecimalPlacesToDisplay(3);
 
 	addAndMakeVisible(rotationLabel);
 	rotationLabel.setText("Rotation:", dontSendNotification);
@@ -157,7 +164,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	yLabel.setText("y:", dontSendNotification);
 	yLabel.attachToComponent(&yTextBox, true);
 
-	tex_search.setText("Search:", dontSendNotification);
+	tex_search.setText("LaTex code:", dontSendNotification);
 	tex_search.attachToComponent(&tex_text, false);
 
 	addAndMakeVisible(compileAtEachCommand);
@@ -290,6 +297,9 @@ void MainContentComponent::textEditorTextChanged(TextEditor & textEditor)
 						symbol.setx((symbol.getx() - previous_value)
 							+ stod(xTextBox.getText().toStdString() == "" ? "0" : xTextBox.getText().toStdString()));
 
+				if (compileAtEachCommand.getToggleState())
+					compile();
+
 				message = "";
 			}
 		}
@@ -309,6 +319,9 @@ void MainContentComponent::textEditorTextChanged(TextEditor & textEditor)
 					if (symbol.is_selected())
 						symbol.sety((symbol.gety() - previous_value)
 							+ stod(yTextBox.getText().toStdString() == "" ? "0" : yTextBox.getText().toStdString()));
+
+				if (compileAtEachCommand.getToggleState())
+					compile();
 
 				message = "";
 			}
@@ -417,7 +430,8 @@ void MainContentComponent::runSettings()
 		AlertWindow::NoIcon);
 
 	w.addTextEditor("image_density", to_string(texstream.get_image_density()), "Image density:");
-	w.addComboBox("option", { "option 1", "option 2", "option 3", "option 4" }, "some options");
+	w.addComboBox("slidersDigits", { "1", "2", "3", "4", "5", "6", "7", "8", "9" }, "Sliders decimal digits number");
+	w.getComboBoxComponent("slidersDigits")->setSelectedItemIndex(mySlider::slidersDigitsNum - 1);
 	w.addButton("OK", 1, KeyPress(KeyPress::returnKey, 0, 0));
 	w.addButton("Cancel", 0, KeyPress(KeyPress::escapeKey, 0, 0));
 
@@ -426,8 +440,14 @@ void MainContentComponent::runSettings()
 	if (w.runModalLoop() != 0) // is they picked 'ok'
 	{
 		// this is the item they chose in the drop-down list..
-		auto optionIndexChosen = w.getComboBoxComponent("option")->getSelectedItemIndex();
-		ignoreUnused(optionIndexChosen);
+		int num = w.getComboBoxComponent("slidersDigits")->getSelectedItemIndex();
+		if (num != -1)
+		{
+			mySlider::slidersDigitsNum = num + 1;
+
+			sizeSlider.setNumDecimalPlacesToDisplay(mySlider::slidersDigitsNum);
+			rotationSlider.setNumDecimalPlacesToDisplay(mySlider::slidersDigitsNum);
+		}
 
 		// this is the text they entered..
 		texstream.set_image_density(stoi(w.getTextEditorContents("image_density").toStdString()));
@@ -482,7 +502,7 @@ void MainContentComponent::compile()
 
 		setMessage("Processing picture");
 
-		tex_preimage = PNGImageFormat::loadFrom(teximage);
+		Image tex_preimage = PNGImageFormat::loadFrom(teximage);
 
 		if (!tex_preimage.isValid())
 		{
@@ -525,6 +545,27 @@ void MainContentComponent::remove()
 			++it;
 
 	table_ptr->update();
+}
+
+void MainContentComponent::reset()
+{
+	zero_displayed();
+
+	symbolsList.clear();
+
+	table_ptr->update();
+
+	setNewSymbolName("newSymbol");
+
+	tex_text.setText("", dontSendNotification);
+
+	setMessage("");
+
+	message;
+
+	Image a;
+
+	tex_image.setImage(a);
 }
 
 void MainContentComponent::moveSymbolUp()
@@ -711,9 +752,7 @@ bool MainContentComponent::perform(const InvocationInfo & info)
 			break;
 
 		case New:
-			message = "New";
-
-			repaint();
+			reset();
 			break;
 
 		case Open:
@@ -751,6 +790,13 @@ void MainContentComponent::setMessage(std::string to_be_written)
 	message = to_be_written;
 
 	repaint();
+}
+
+void MainContentComponent::setNewSymbolName(std::string newName)
+{
+	newSymbolName = newName;
+
+	symbolNameEditor.setText(newName, dontSendNotification);
 }
 
 MainContentComponent::~MainContentComponent()
@@ -971,4 +1017,17 @@ double LaTexSymbol::getRotAngle() const
 void LaTexSymbol::setRotAngle(const double rotation_angle)
 {
 	_rotAngle = rotation_angle;
+}
+
+int MainContentComponent::mySlider::slidersDigitsNum = 3;
+
+String MainContentComponent::mySlider::getTextFromValue(double value)
+{
+	if (textFromValueFunction != nullptr)
+		return textFromValueFunction(value);
+
+	if (getNumDecimalPlacesToDisplay() > 0)
+		return eatRightZeros((String(value, getNumDecimalPlacesToDisplay())).toStdString()) + getTextValueSuffix();
+
+	return String(roundToInt(value)) + getTextValueSuffix();
 }

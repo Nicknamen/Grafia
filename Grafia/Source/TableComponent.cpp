@@ -187,7 +187,7 @@ String MainContentComponent::TableComponent::getAttributeNameForColumnId(const i
 	else if (columnId == LaTex_columndId)
 		return String("LaTex code");
 	else if (columnId == select_columnId)
-		return String("Selcect");
+		return String("Select");
 	else
 		return{};
 }

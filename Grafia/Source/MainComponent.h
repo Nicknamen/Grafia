@@ -57,6 +57,7 @@ public:
 	bool perform(const InvocationInfo& info) override;
 
 	void setMessage(std::string to_be_written);
+	void setNewSymbolName(std::string newName);
 
 	void buttonClicked(Button* button) override;
 	void sliderValueChanged(Slider* slider) override;
@@ -91,7 +92,7 @@ public:
 
 		virtual const char* what() const throw()
 		{
-			return error_what.c_str();
+			return error_what.c_str(); //string cannot be modified inside this function
 		}
 
 	private:
@@ -125,7 +126,7 @@ private:
 	std::unique_ptr<TableComponent> table_ptr;
 //	std::shared_ptr<LaTexSymbol> selected_symbol = nullptr; //unique  or shared pointer does not work... it looks it creates copies. I don't get why
 // but why should it ever work? there is no point in using a shared_ptr or unique ptr here.
-	LaTexSymbol * selected_symbol = nullptr;
+	LaTexSymbol * selected_symbol = nullptr; //should this be an iterator instead?
 
 	DrawableButton arrowUp;
 	DrawableButton arrowDown;
@@ -135,9 +136,16 @@ private:
 	DrawableButton moveUp;
 	DrawableButton moveDown;
 
-	Slider sizeSlider;
+	class mySlider final : public Slider
+	{
+	public:
+		String 	getTextFromValue(double value) override;
+
+		static int slidersDigitsNum;
+	
+	} sizeSlider, rotationSlider;
+
 	Label sizeLabel;
-	Slider rotationSlider;
 	Label rotationLabel;
 
 	MenuComponent menubar;
@@ -146,7 +154,6 @@ private:
 	PNGImageFormat PNGreader;
 	std::string message;
 
-	Image tex_preimage;
 	DrawableImage svg_image;
 	TeX texstream;
 	std::string ImageFileName;
@@ -155,6 +162,7 @@ private:
 	void compile();
 	void add(LaTexSymbol newObject);
 	void remove();
+	void reset();
 
 	void moveSymbolUp();
 	void moveSymbolDown();

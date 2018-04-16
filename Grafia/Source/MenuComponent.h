@@ -14,8 +14,10 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include <memory>
 
-class MenuComponent : public Component,
-					  public MenuBarModel
+//extern std::unique_ptr<ApplicationCommandManager> applicationCommandManager;
+
+class MenuComponent final : public Component,
+							public MenuBarModel
 {
 public:
 	MenuComponent();
@@ -33,7 +35,5 @@ private:
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MenuComponent)
 };
-
-extern std::unique_ptr<ApplicationCommandManager> applicationCommandManager;
 
 #endif  // MENUCOMPONENT_H_INCLUDED
