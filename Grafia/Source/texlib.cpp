@@ -143,6 +143,8 @@ inline bool fexists(string filename)
 		return true;
 	else
 		return false;
+
+	test.close();
 }
 
 inline bool TeX::exists()

@@ -19,17 +19,28 @@ inline Colour getRandomDarkColour() { return getRandomColour(0.3f); }
 
 std::string eatRightZeros(std::string & input)
 {
-	for (int i = input.size() - 1; i != 0; --i) // apparently the string iterator is not deferentiable...
-		if (input[i] == '0')
-			input.erase(i);
-		else if (input[i] == '.')
+	bool is_it_decimal = false;
+
+	for (auto it = input.begin(); it != input.end(); ++it)
+		if (*it == '.')
 		{
-			input.erase(i);
+			is_it_decimal = true;
 
 			break;
 		}
-		else
-			break;
+
+	if (is_it_decimal)
+		for (int i = input.size() - 1; i != 0; --i) // apparently the string iterator is not deferentiable...
+			if (input[i] == '0')
+				input.erase(i);
+			else if (input[i] == '.')
+			{
+				input.erase(i);
+
+				break;
+			}
+			else
+				break;
 
 /*
 	for (auto it = input.begin(); it != input.end();)
@@ -394,32 +405,75 @@ ApplicationCommandManager & MainContentComponent::getApplicationCommandManager()
 
 void MainContentComponent::exportSymbol()
 {
+	fc.reset(new FileChooser("Export as .tex file",
+		File::getCurrentWorkingDirectory().getChildFile(StringRef(newSymbolName)),
+		"*.tex"));
+
+	fc->launchAsync(FileBrowserComponent::saveMode | FileBrowserComponent::canSelectFiles,
+		[&](const FileChooser& chooser)
 	{
-		fc.reset(new FileChooser("Export as .tex file",
-			File::getCurrentWorkingDirectory().getChildFile(StringRef(newSymbolName)),
-			"*.tex"));
+		auto result = chooser.getURLResult();
+		string name = result.isEmpty() ? string()
+										: (result.isLocalFile() ? result.getLocalFile().getFullPathName().toStdString()
+																: result.toString(true).toStdString());
 
-		fc->launchAsync(FileBrowserComponent::saveMode | FileBrowserComponent::canSelectFiles,
-			[&](const FileChooser& chooser)
+		TeX saveSymbol(name);
+		saveSymbol << "\\documentclass{minimal}\n\n"
+			"\\usepackage{graphicx, amsmath, amssymb}\n";
+
+		writeSymbolTeXCode(saveSymbol);
+
+		saveSymbol << "\\begin{document}\n"
+			"$$\\" + newSymbolName + "$$\n"
+			"\\end{document}";
+
+		saveSymbol.do_not_cancel("tex", "log");
+	});
+}
+
+void MainContentComponent::saveAs()
+{
+	fc.reset(new FileChooser("Save symbol project",
+		File::getCurrentWorkingDirectory().getChildFile(StringRef(newSymbolName)),
+		"*.grproj"));
+
+	fc->launchAsync(FileBrowserComponent::saveMode | FileBrowserComponent::canSelectFiles,
+		[&](const FileChooser& chooser)
+	{
+		URL result = chooser.getURLResult();
+
+		string name = result.isEmpty() ? string()
+			: (result.isLocalFile() ? result.getLocalFile().getFullPathName().toStdString()
+				: result.toString(true).toStdString());
+
+		if (name != "" && overwriteExistingFile(name))
 		{
-			auto result = chooser.getURLResult();
-			string name = result.isEmpty() ? string()
-										   : (result.isLocalFile() ? result.getLocalFile().getFullPathName().toStdString()
-																   : result.toString(true).toStdString());
+			ofstream saveSymbolproj(name, ios::ate);
 
-			TeX saveSymbol(name);
-			saveSymbol << "\\documentclass{minimal}\n\n"
-				"\\usepackage{graphicx, amsmath, amssymb}\n";
+			if (!saveSymbolproj.good())
+				throw GrafiaException("Not able to properly create the project file.");
 
-			writeSymbolTeXCode(saveSymbol);
+			saveSymbolproj << newSymbolName + "\\&\/" + to_string(texstream.get_image_density()) + "\\&\/" 
+				+ to_string(mySlider::slidersDigitsNum) << endl;
 
-			saveSymbol << "\\begin{document}\n"
-				"$$\\" + newSymbolName + "$$\n"
-				"\\end{document}";
+			for (auto symbol : symbolsList)
+			{
+				for (int i = 1; i <= LaTexSymbol::sizeRatio_id; i++)
+					saveSymbolproj << symbol.getAttributeTextbyID(i) << "\\&\/";
+		
+				saveSymbolproj << endl;
+			}
 
-			saveSymbol.do_not_cancel("tex", "log");
-		});
-	}
+			if (!saveSymbolproj.good())
+				throw GrafiaException("Not able to properly save the project file.");
+
+			saveSymbolproj.close();
+
+			isProjectSaved = true;
+
+			setMessage("Project succesfully saved");
+		}
+	});
 }
 
 void MainContentComponent::runSettings()
@@ -566,6 +620,22 @@ void MainContentComponent::reset()
 	Image a;
 
 	tex_image.setImage(a);
+}
+
+bool MainContentComponent::overwriteExistingFile(std::string filename)
+{
+	if (filename != "" && fexists(filename))
+	{
+		bool ok;
+
+		AlertWindow::showOkCancelBox(AlertWindow::QuestionIcon, "File already exists",
+			"There is already another file with the name chosen. If ok is clicked the file will be overwritten.",
+			{}, {}, 0, ModalCallbackFunction::create([&](int result) { ok = result; }));
+
+		return ok;
+	}
+
+	return true;
 }
 
 void MainContentComponent::moveSymbolUp()
@@ -743,16 +813,18 @@ void MainContentComponent::getCommandInfo(CommandID commandID, ApplicationComman
 
 bool MainContentComponent::perform(const InvocationInfo & info)
 {
-	switch (info.commandID)
+	try
 	{
+		switch (info.commandID)
+		{
 		case Save:
-			message = "Save";
-
-			repaint();
+			saveAs();
 			break;
 
 		case New:
 			reset();
+
+			isProjectSaved = false;
 			break;
 
 		case Open:
@@ -773,13 +845,18 @@ bool MainContentComponent::perform(const InvocationInfo & info)
 			AlertWindow::showMessageBoxAsync(AlertWindow::InfoIcon, "About Grafia",
 				String("Grafia " + string(SOFTWARE_VERSION) + "\n") +
 				String(CharPointer_UTF8("\xc2\xa9")) + String(" 2018\n"
-				"Written and designed by Nicol") + String(CharPointer_UTF8("\xc3\xb2")) + String(" Cavalleri\n"
-				"University of Milan\n"
-				"https://github.com/Nicknamen/Grafia"));
+					"Written and designed by Nicol") + String(CharPointer_UTF8("\xc3\xb2")) + String(" Cavalleri\n"
+						"University of Milan\n"
+						"https://github.com/Nicknamen/Grafia"));
 			break;
-	
+
 		default:
 			return false;
+		}
+	}
+	catch (exception& exc)
+	{
+		errorAlert(exc);
 	}
 
 	return true;
@@ -904,8 +981,7 @@ LaTexSymbol::LaTexSymbol(const LaTexSymbol & other):
 	_rotAngle(other._rotAngle),
 	_sizeRatio(other._sizeRatio),
 	_selected(other._selected)
-{
-}
+{}
 
 bool LaTexSymbol::operator==(const LaTexSymbol & other) const
 {
@@ -936,6 +1012,14 @@ std::string LaTexSymbol::getAttributeTextbyID(int id) const
 		return _LaTex;
 	else if (id == selected_id)
 		return _selected ? "Y" : "N";
+	else if (id == x_id)
+		return eatRightZeros(to_string(_x));
+	else if (id == y_id)
+		return eatRightZeros(to_string(_y));
+	else if (id == rotAngle_id)
+		return eatRightZeros(to_string(_rotAngle));
+	else if (id == sizeRatio_id)
+		return eatRightZeros(to_string(_sizeRatio));
 	else
 		return{};
 }
@@ -962,6 +1046,11 @@ void LaTexSymbol::setAttributebyID(int id, double value)
 		_rotAngle = value;
 	else if (id == sizeRatio_id)
 		_sizeRatio = value;
+}
+
+const std::string LaTexSymbol::getName()
+{
+	return _name;
 }
 
 bool LaTexSymbol::is_selected() const

@@ -68,6 +68,7 @@ public:
 	void zero_displayed();
 
 	void exportSymbol();
+	void saveAs();
 
 	void runSettings();
 
@@ -100,6 +101,8 @@ public:
 	};
 
 private:
+	bool isProjectSaved = false;
+
 	std::vector<LaTexSymbol> symbolsList;
 
 	std::string newSymbolName = "newSymbol";
@@ -164,6 +167,8 @@ private:
 	void remove();
 	void reset();
 
+	bool overwriteExistingFile(std::string filename);
+
 	void moveSymbolUp();
 	void moveSymbolDown();
 
@@ -196,6 +201,8 @@ public:
 	std::string getAttributeTextbyID(int id) const;
 	void setAttributebyID(int id, std::string text);
 	void setAttributebyID(int id, double value);
+
+	const std::string getName();
 
 	bool is_selected() const;
 	void set_selected(const bool b);

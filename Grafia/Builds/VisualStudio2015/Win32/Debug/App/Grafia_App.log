@@ -1,40 +1,51 @@
-﻿Build started 16/04/2018 22:50:58.
+﻿Build started 17/04/2018 17:05:14.
 Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Grafia_App.vcxproj" on node 2 (Build target(s)).
 InitializeBuildStatus:
   Creating "Win32\Debug\App\Grafia_App.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
 ClCompile:
   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I..\..\JuceLibraryCode /I"..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules" /IC:\C++_libraries\Magick++\include /Zi /nologo /W4 /WX- /MP /O2 /Oy- /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D _WINDOWS /D DEBUG /D _DEBUG /D JUCER_VS2015_78A5022=1 /D JUCE_APP_VERSION=1.0.0 /D JUCE_APP_VERSION_HEX=0x10000 /D JucePlugin_Build_VST=0 /D JucePlugin_Build_VST3=0 /D JucePlugin_Build_AU=0 /D JucePlugin_Build_AUv3=0 /D JucePlugin_Build_RTAS=0 /D JucePlugin_Build_AAX=0 /D JucePlugin_Build_Standalone=0 /Gm- /EHsc /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"Win32\Debug\App\\" /Fd"Win32\Debug\App\\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt /FS ..\..\Source\MainComponent.cpp
   MainComponent.cpp
-..\..\Source\MainComponent.cpp(368): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(368): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(369): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(369): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(418): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(418): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(461): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(461): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(462): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(462): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(463): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(463): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(470): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(470): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(471): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(471): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(472): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(472): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(472): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(472): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(494): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(494): note: A non-const reference may only be bound to an lvalue
-..\..\Source\MainComponent.cpp(620): warning C4389: '!=': signed/unsigned mismatch
-..\..\Source\MainComponent.cpp(832): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-..\..\Source\MainComponent.cpp(834): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-..\..\Source\MainComponent.cpp(836): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-..\..\Source\MainComponent.cpp(863): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-..\..\Source\MainComponent.cpp(956): warning C4800: 'double': forcing value to bool 'true' or 'false' (performance warning)
-..\..\Source\MainComponent.cpp(1030): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
-  ..\..\Source\MainComponent.cpp(1030): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(379): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(379): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(380): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(380): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(428): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(428): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(456): warning C4129: '/': unrecognized character escape sequence
+..\..\Source\MainComponent.cpp(462): warning C4129: '/': unrecognized character escape sequence
+..\..\Source\MainComponent.cpp(515): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(515): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(516): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(516): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(517): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(517): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(524): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(524): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(525): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(525): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(526): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(526): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(526): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(526): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(548): warning C4239: nonstandard extension used: 'argument': conversion from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(548): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(633): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+..\..\Source\MainComponent.cpp(690): warning C4389: '!=': signed/unsigned mismatch
+..\..\Source\MainComponent.cpp(909): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+..\..\Source\MainComponent.cpp(911): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+..\..\Source\MainComponent.cpp(913): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+..\..\Source\MainComponent.cpp(940): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+..\..\Source\MainComponent.cpp(1016): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(1016): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(1018): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(1018): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(1020): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(1020): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(1022): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(1022): note: A non-const reference may only be bound to an lvalue
+..\..\Source\MainComponent.cpp(1040): warning C4800: 'double': forcing value to bool 'true' or 'false' (performance warning)
+..\..\Source\MainComponent.cpp(1119): warning C4239: nonstandard extension used: 'argument': conversion from 'std::string' to 'std::string &'
+  ..\..\Source\MainComponent.cpp(1119): note: A non-const reference may only be bound to an lvalue
 ResourceCompile:
   All outputs are up-to-date.
 Link:
@@ -68,4 +79,4 @@ Done Building Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStu
 
 Build succeeded.
 
-Time Elapsed 00:00:06.16
+Time Elapsed 00:00:06.74
