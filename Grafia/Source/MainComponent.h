@@ -15,9 +15,11 @@
 #include "texlib.h"
 #include "MenuComponent.h"
 
+#include <fstream>
 #include <vector>
 #include <list>
 #include <memory>
+#include <regex>
 
 using namespace std;
 
@@ -46,6 +48,7 @@ class MainContentComponent final  : public Component,
 public:
     //==============================================================================
     MainContentComponent();
+	MainContentComponent(const String & commandline);
     ~MainContentComponent();
 
     void paint (Graphics&) override;
@@ -64,11 +67,16 @@ public:
 	void textEditorTextChanged(TextEditor& textEditor) override;
 	void textEditorReturnKeyPressed(TextEditor& textEditor) override;
 
+	void update();
+
 	void update_displayed();
 	void zero_displayed();
 
 	void exportSymbol();
+	void save();
 	void saveAs();
+	void open();
+	void open(std::string filePath);
 
 	void runSettings();
 
@@ -101,7 +109,10 @@ public:
 	};
 
 private:
-	bool isProjectSaved = false;
+	std::string pickedFile;
+
+	bool saved = true; //the user will not be disturbed for not saving an empty project
+	string projectPath;
 
 	std::vector<LaTexSymbol> symbolsList;
 
@@ -166,7 +177,9 @@ private:
 	void add(LaTexSymbol newObject);
 	void remove();
 	void reset();
-
+	
+	//returns true if the project is saved or if the user wishes to continue without saving the project
+	bool projectIsSaved();
 	bool overwriteExistingFile(std::string filename);
 
 	void moveSymbolUp();
@@ -190,6 +203,7 @@ private:
 class LaTexSymbol
 {
 public:
+	LaTexSymbol();
 	LaTexSymbol( std::string name, std::string LaTex, double x = 0, double y = 0, double rotAngle = 0, double sizeRatio = 1, bool selected = false);
 
 	LaTexSymbol& operator=(const LaTexSymbol& other);

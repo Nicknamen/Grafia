@@ -30,7 +30,7 @@ std::string eatRightZeros(std::string & input)
 		}
 
 	if (is_it_decimal)
-		for (int i = input.size() - 1; i != 0; --i) // apparently the string iterator is not deferentiable...
+		for (int i = input.size() - 1; i != 0; --i)
 			if (input[i] == '0')
 				input.erase(i);
 			else if (input[i] == '.')
@@ -42,16 +42,36 @@ std::string eatRightZeros(std::string & input)
 			else
 				break;
 
-/*
-	for (auto it = input.begin(); it != input.end();)
-		if (*it == 0)
+
+/*	for (auto it = input.end() - 2; it != input.begin();)
+		if (*it == '0')
 		{
 			it = input.erase(it);
 		}
+		else if (*it == '.')
+		{
+			it = input.erase(it);
+
+			break;
+		}
 		else
-			--it;
-*/
+			--it;*/
+
 	return input;
+}
+
+string getNextData(string & dataString)
+{
+	auto it = dataString.begin();
+
+	while (it != dataString.end() && !(*it == '\\' && *(it + 1) == '&' && *(it + 2) == '\/'))
+		++it;
+
+	string data = string(dataString.begin(), it);
+
+	dataString.erase(dataString.begin(), it + 3);
+
+	return data;
 }
 
 //==============================================================================
@@ -119,7 +139,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	sizeSlider.setRange(0.0, 100.0);
 	sizeSlider.setSkewFactor(0.3);
 	sizeSlider.addListener(this);
-	sizeSlider.setValue(1.0);
+	sizeSlider.setValue(1.0, dontSendNotification);
 	sizeSlider.setChangeNotificationOnlyOnRelease(true); // this might change when implementing with KaTex
 	sizeSlider.setNumDecimalPlacesToDisplay(3);
 
@@ -138,9 +158,6 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	addAndMakeVisible(rotationLabel);
 	rotationLabel.setText("Rotation:", dontSendNotification);
 	rotationLabel.attachToComponent(&rotationSlider, true);
-
-	symbolsList.push_back(LaTexSymbol("Freccia a destra", "\\longrightarrow"));
-	symbolsList.push_back(LaTexSymbol("Integrale", "\\int", 1.5, -1.5, 60, 2));
 
 	addAndMakeVisible(*table_ptr);
 	table_ptr->update();
@@ -185,7 +202,14 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 
 	setSize(800, 450);
 
-	setMessage(""); //not working
+	setMessage("Ready");
+}
+
+MainContentComponent::MainContentComponent(const String & commandline) : MainContentComponent()
+{
+	projectPath = commandline.toStdString();
+
+	open(projectPath);
 }
 
 void MainContentComponent::buttonClicked(Button* button)
@@ -370,6 +394,21 @@ void MainContentComponent::textEditorReturnKeyPressed(TextEditor & textEditor)
 
 }
 
+void MainContentComponent::update()
+{
+	update_displayed();
+
+	table_ptr->update();
+
+	symbolNameEditor.setText(newSymbolName);
+
+	tex_text.setText("");
+
+	setMessage("");
+
+	repaint();
+}
+
 void MainContentComponent::update_displayed()
 {
 	if (selected_symbol != nullptr)
@@ -379,20 +418,16 @@ void MainContentComponent::update_displayed()
 		xTextBox.setText(eatRightZeros(to_string(selected_symbol->getx())));
 		yTextBox.setText(eatRightZeros(to_string(selected_symbol->gety())));
 	}
-
-	table_ptr->update();
-
-	repaint();
 }
 
 void MainContentComponent::zero_displayed()
 {
 	selected_symbol = nullptr;
 
-	rotationSlider.setValue(0);
-	sizeSlider.setValue(1);
-	xTextBox.setText("0");
-	yTextBox.setText("0");
+	rotationSlider.setValue(0, dontSendNotification);
+	sizeSlider.setValue(1, dontSendNotification);
+	xTextBox.setText("", dontSendNotification);
+	yTextBox.setText("", dontSendNotification);
 }
 
 ApplicationCommandManager & MainContentComponent::getApplicationCommandManager()
@@ -431,6 +466,34 @@ void MainContentComponent::exportSymbol()
 	});
 }
 
+void MainContentComponent::save()
+{
+	ofstream saveSymbolproj(projectPath, ios::trunc);
+
+	if (!saveSymbolproj.good())
+		throw GrafiaException("Not able to properly create the project file.");
+
+	saveSymbolproj << newSymbolName + "\\&\/" + to_string(texstream.get_image_density()) + "\\&\/"
+		+ to_string(mySlider::slidersDigitsNum) + "\\&\/" << endl;
+
+	for (auto symbol : symbolsList)
+	{
+		for (int i = 1; i <= LaTexSymbol::sizeRatio_id; i++)
+			saveSymbolproj << symbol.getAttributeTextbyID(i) << "\\&\/";
+
+		saveSymbolproj << endl;
+	}
+
+	if (!saveSymbolproj.good())
+		throw GrafiaException("Not able to properly save the project file.");
+
+	saveSymbolproj.close();
+
+	saved = true;
+
+	setMessage("Project succesfully saved");
+}
+
 void MainContentComponent::saveAs()
 {
 	fc.reset(new FileChooser("Save symbol project",
@@ -448,32 +511,90 @@ void MainContentComponent::saveAs()
 
 		if (name != "" && overwriteExistingFile(name))
 		{
-			ofstream saveSymbolproj(name, ios::ate);
+			projectPath = name;
 
-			if (!saveSymbolproj.good())
-				throw GrafiaException("Not able to properly create the project file.");
-
-			saveSymbolproj << newSymbolName + "\\&\/" + to_string(texstream.get_image_density()) + "\\&\/" 
-				+ to_string(mySlider::slidersDigitsNum) << endl;
-
-			for (auto symbol : symbolsList)
-			{
-				for (int i = 1; i <= LaTexSymbol::sizeRatio_id; i++)
-					saveSymbolproj << symbol.getAttributeTextbyID(i) << "\\&\/";
-		
-				saveSymbolproj << endl;
-			}
-
-			if (!saveSymbolproj.good())
-				throw GrafiaException("Not able to properly save the project file.");
-
-			saveSymbolproj.close();
-
-			isProjectSaved = true;
-
-			setMessage("Project succesfully saved");
+			save();
 		}
 	});
+}
+
+void MainContentComponent::open()
+{
+	if (projectIsSaved())
+	{
+		fc.reset(new FileChooser("Choose a file to open...", File::getCurrentWorkingDirectory(),
+			"*.grproj", true));
+
+		fc->launchAsync(/*FileBrowserComponent::canSelectMultipleItems |*/ FileBrowserComponent::openMode //canSelectMultipleItems to be implemented
+			| FileBrowserComponent::canSelectFiles, [&](const FileChooser& chooser)
+		{
+			String chosen;
+			auto results = chooser.getURLResults();
+
+			for (auto result : results)
+				chosen << (result.isLocalFile() ? result.getLocalFile().getFullPathName()
+					: result.toString(false));
+
+			try
+			{
+				open(chosen.toStdString());
+			}
+			catch (exception & exc)
+			{
+				errorAlert(exc);
+			}
+		});
+	}
+}
+
+void MainContentComponent::open(std::string filePath)
+{
+	if (fexists(filePath))
+	{
+		reset();
+
+		ifstream projReader(filePath, ios::in);
+
+		string result;
+
+		if (projReader.good())
+		{
+			try
+			{
+				char buffer[256];
+
+				projReader.getline(buffer, 256);
+
+				string s(buffer);
+
+				newSymbolName = getNextData(s);
+				texstream.set_image_density(stoi(getNextData(s)));
+				mySlider::slidersDigitsNum = stoi(getNextData(s));
+
+				while (projReader.getline(buffer, 256))
+				{
+					string d(buffer);
+
+					LaTexSymbol nextSymbol;
+
+					for (int i = 1; i <= LaTexSymbol::rotAngle_id; ++i)
+						nextSymbol.setAttributebyID(i, getNextData(d));
+
+					symbolsList.push_back(nextSymbol);
+				}
+
+				update();
+			}
+			catch (exception & exc)
+			{
+				errorAlert(exc);
+			}
+		}
+		else
+			throw GrafiaException("Unable to open this file");
+	}
+	else
+		throw GrafiaException("The selected file does not exist");
 }
 
 void MainContentComponent::runSettings()
@@ -531,53 +652,60 @@ void MainContentComponent::writeSymbolTeXCode(TeX & texStream)
 
 void MainContentComponent::compile()
 {
-	try
+	if (!symbolsList.empty())
 	{
-		setMessage("Writing file"); // non funziona
-
-		texstream.open_rewritemode();
-
-		texstream << "\\documentclass{minimal}\n\n"
-			"\\usepackage[paperwidth=6.4cm, paperheight=3.6cm]{geometry}\n"
-			"\\usepackage{graphicx, amsmath, amssymb}\n";
-
-		writeSymbolTeXCode(texstream);
-		
-		texstream << "\\begin{document}\n"
-			"$$\\" + newSymbolName + "$$\n"
-			"\\end{document}";
-
-		setMessage("Compiling...");
-		repaint();
-
-		texstream.to_png();
-
-		File teximage(File::getCurrentWorkingDirectory().getChildFile(String(ImageFileName + ".png")));
-
-		setMessage("Processing picture");
-
-		Image tex_preimage = PNGImageFormat::loadFrom(teximage);
-
-		if (!tex_preimage.isValid())
+		try
 		{
-			throw GrafiaException("Image is not valid");
+			setMessage("Writing file"); // non funziona
+
+			texstream.open_rewritemode();
+
+			texstream << "\\documentclass{minimal}\n\n"
+				"\\usepackage[paperwidth=6.4cm, paperheight=3.6cm]{geometry}\n"
+				"\\usepackage{graphicx, amsmath, amssymb}\n";
+
+			writeSymbolTeXCode(texstream);
+
+			texstream << "\\begin{document}\n"
+				"$$\\" + newSymbolName + "$$\n"
+				"\\end{document}";
+
+			setMessage("Compiling...");
+			repaint();
+
+			texstream.to_png();
+
+			File teximage(File::getCurrentWorkingDirectory().getChildFile(String(ImageFileName + ".png")));
+
+			setMessage("Processing picture");
+
+			Image tex_preimage = PNGImageFormat::loadFrom(teximage);
+
+			if (!tex_preimage.isValid())
+			{
+				throw GrafiaException("Image is not valid");
+			}
+
+			tex_image.setImage(tex_preimage);
+
+			update_displayed();
+
+			setMessage("Compiled succesfully");
 		}
-
-		tex_image.setImage(tex_preimage);
-
-		update_displayed();
-
-		setMessage("Compiled succesfully");
+		catch (exception& exc)
+		{
+			errorAlert(exc);
+		}
 	}
-	catch (exception& exc)
-	{
-		errorAlert(exc);
-	}
+	else
+		setMessage("No TeX added. Nothing to compile.");
 }
 
 void MainContentComponent::add(LaTexSymbol newObject)
 {
 	symbolsList.push_back(newObject);
+
+	saved = false;
 
 	tex_text.setText("");
 
@@ -620,6 +748,15 @@ void MainContentComponent::reset()
 	Image a;
 
 	tex_image.setImage(a);
+}
+
+bool MainContentComponent::projectIsSaved()
+{
+	if (!saved)
+		return AlertWindow::showOkCancelBox(AlertWindow::WarningIcon, "File not saved",
+			"The file is not saved. Are you sure you wish to continue?", {}, {}, 0, nullptr);
+	else
+		return true;
 }
 
 bool MainContentComponent::overwriteExistingFile(std::string filename)
@@ -668,6 +805,8 @@ void MainContentComponent::moveSymbolUp()
 		update_displayed();
 
 		setMessage("");
+
+		saved = false;
 	}
 }
 
@@ -699,6 +838,8 @@ void MainContentComponent::moveSymbolDown()
 		}
 
 		setMessage("");
+
+		saved = false;
 	}
 }
 
@@ -707,6 +848,8 @@ void MainContentComponent::raisex(const double x)
 	for (auto & symbol : symbolsList)
 		if (symbol.is_selected())
 			symbol.setx(symbol.getx() + x);
+
+	saved = false;
 }
 
 void MainContentComponent::raisey(const double y)
@@ -714,6 +857,8 @@ void MainContentComponent::raisey(const double y)
 	for (auto & symbol : symbolsList)
 		if (symbol.is_selected())
 			symbol.sety(symbol.gety() + y);
+
+	saved = false;
 }
 
 void MainContentComponent::scale(double factor)
@@ -721,6 +866,8 @@ void MainContentComponent::scale(double factor)
 	for (auto & symbol : symbolsList)
 		if (symbol.is_selected())
 			symbol.setSizeRatio(symbol.getSizeRatio()*factor);
+
+	saved = false;
 }
 
 void MainContentComponent::rotate(double angle)
@@ -822,15 +969,18 @@ bool MainContentComponent::perform(const InvocationInfo & info)
 			break;
 
 		case New:
-			reset();
+			if (projectIsSaved())
+			{
+				reset();
 
-			isProjectSaved = false;
+				setMessage("Ready");
+
+				saved = true;
+			}
 			break;
 
 		case Open:
-			message = "Open";
-
-			repaint();
+			open();
 			break;
 
 		case Export:
@@ -874,6 +1024,8 @@ void MainContentComponent::setNewSymbolName(std::string newName)
 	newSymbolName = newName;
 
 	symbolNameEditor.setText(newName, dontSendNotification);
+
+	saved = false;
 }
 
 MainContentComponent::~MainContentComponent()
@@ -947,6 +1099,16 @@ void LatexDisplay::paint(Graphics & g)
 }
 
 int LaTexSymbol::_symbolCount = 0;
+
+LaTexSymbol::LaTexSymbol() : _symbolID(_symbolCount++),
+							 _name(),
+  							 _LaTex(),
+ 							 _selected(),
+ 							 _x(),
+ 							 _y(),
+ 							 _rotAngle(),
+ 							 _sizeRatio()
+{}
 
 LaTexSymbol::LaTexSymbol(std::string name, std::string LaTex, double x, double y, double rotAngle, double sizeRatio, bool selected):
 	_symbolID(_symbolCount++)
@@ -1032,6 +1194,14 @@ void LaTexSymbol::setAttributebyID(int id, std::string text)
 		_LaTex = text;
 	else if (id == selected_id)
 		_selected = ((text == "Y") ? 1 : 0);
+	else if (id == x_id)
+		_x = stod(text);
+	else if (id == y_id)
+		_y = stod(text);
+	else if (id == rotAngle_id)
+		_rotAngle = stod(text);
+	else if (id == sizeRatio_id)
+		_sizeRatio = stod(text);
 }
 
 void LaTexSymbol::setAttributebyID(int id, double value)

@@ -103,7 +103,7 @@ void MainContentComponent::TableComponent::paintCell(Graphics & g, int rowNumber
 {
 	if (rowNumber < numRows)
 	{
-		g.setColour(rowIsSelected ? Colours::darkblue : getLookAndFeel().findColour(ListBox::textColourId));
+		g.setColour(rowIsSelected? Colours::darkblue : getLookAndFeel().findColour(ListBox::textColourId));
 		g.setFont(font);
 
 		if (LaTexSymbol* rowElement = &MainComponentOwner->symbolsList[rowNumber])
@@ -114,7 +114,6 @@ void MainContentComponent::TableComponent::paintCell(Graphics & g, int rowNumber
 
 		g.setColour(getLookAndFeel().findColour(ListBox::backgroundColourId));
 		g.fillRect(width - 1, 0, 1, height);
-
 	}
 }
 

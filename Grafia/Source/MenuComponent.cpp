@@ -36,11 +36,6 @@ MenuComponent::MenuComponent()
 	setApplicationCommandManagerToWatch(&MainContentComponent::getApplicationCommandManager());
 }
 
-MenuComponent::~MenuComponent()
-{
-//	menuBar.reset(nullptr);
-}
-
 void MenuComponent::resized()
 {
 		juce::Rectangle<int> area(getLocalBounds());

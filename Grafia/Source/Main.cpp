@@ -29,7 +29,7 @@ public:
     {
         // This method is where you should put your application's initialisation code..
 
-        mainWindow = new MainWindow (getApplicationName());
+        mainWindow = new MainWindow (getApplicationName(), commandLine);
     }
 
     void shutdown() override
@@ -72,6 +72,21 @@ public:
             centreWithSize (getWidth(), getHeight());
             setVisible (true);
         }
+
+		MainWindow(String name, const String & commandline) : DocumentWindow(name,
+			Colours::lightgrey,
+			DocumentWindow::allButtons)
+		{
+			setUsingNativeTitleBar(true);
+
+			if (commandline.isEmpty())
+				setContentOwned(new MainContentComponent(), true);
+			else
+				setContentOwned(new MainContentComponent(commandline), true);
+
+			centreWithSize(getWidth(), getHeight());
+			setVisible(true);
+		}
 
         void closeButtonPressed() override
         {

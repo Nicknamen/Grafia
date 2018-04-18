@@ -21,7 +21,7 @@ class MenuComponent final : public Component,
 {
 public:
 	MenuComponent();
-	~MenuComponent();
+	~MenuComponent() = default;
 	
 	void resized() override;
 
