@@ -908,6 +908,7 @@ void MainContentComponent::getAllCommands(Array<CommandID>& commands)
 {
 	const CommandID ids[] = {
 								MainContentComponent::Save,
+								MainContentComponent::SaveAs,
 								MainContentComponent::New,
 								MainContentComponent::Open,
 								MainContentComponent::Export,
@@ -927,6 +928,10 @@ void MainContentComponent::getCommandInfo(CommandID commandID, ApplicationComman
 		case MainContentComponent::Save:
 			result.setInfo("Save", "Saves the current project", filecommands, 0);
 			result.addDefaultKeypress('s', ModifierKeys::commandModifier);
+			break;
+
+		case MainContentComponent::SaveAs:
+			result.setInfo("Save as...", "Specifies where the current project should be saved", filecommands, 0);
 			break;
 
 		case MainContentComponent::New:
@@ -965,6 +970,13 @@ bool MainContentComponent::perform(const InvocationInfo & info)
 		switch (info.commandID)
 		{
 		case Save:
+			if (projectPath.empty())
+				saveAs();
+			else
+				save();
+			break;
+
+		case SaveAs:
 			saveAs();
 			break;
 

@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef TEXLIB_H_INCLUDED
-#define TEXLIB_H_INCLUDED
-
 #include <fstream>
 #include <string>
 #include <cstdlib>
@@ -109,6 +106,4 @@ inline bool fexists(std::string filename);
 
 #ifdef _WIN32
 path ExePath();
-#endif
-
 #endif

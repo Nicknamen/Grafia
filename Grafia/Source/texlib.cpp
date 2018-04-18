@@ -222,7 +222,7 @@ void TeX::to_svg()
 
 void TeX::to_png(string ext)
 {
-	InitializeMagick(ExePath().forward("magickbin").c_str()); // not able to properly initialize magick
+	InitializeMagick(ExePath().forward("bin").c_str()); // not able to properly initialize magick
 
 	Image image;
 

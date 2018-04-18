@@ -85,6 +85,7 @@ public:
 	enum CommandIDs
 	{
 		Save		= 1000,
+		SaveAs,
 		New,
 		Open,
 		Export,

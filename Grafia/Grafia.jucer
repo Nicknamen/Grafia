@@ -28,15 +28,17 @@
   </MAINGROUP>
   <EXPORTFORMATS>
     <VS2015 targetFolder="Builds/VisualStudio2015" extraDefs="_CRT_SECURE_NO_WARNINGS"
-            extraCompilerFlags="/FS" externalLibraries="CORE_DB_Magick++_.lib&#10;CORE_DB_MagickCore_.lib&#10;CORE_DB_MagickWand_.lib&#10;CORE_DB_bzlib_.lib&#10;CORE_DB_cairo_.lib&#10;CORE_DB_coders_.lib&#10;CORE_DB_croco_.lib&#10;CORE_DB_exr_.lib&#10;CORE_DB_ffi_.lib&#10;CORE_DB_filters_.lib&#10;CORE_DB_flif_.lib&#10;CORE_DB_glib_.lib&#10;CORE_DB_jp2_.lib&#10;CORE_DB_jpeg_.lib&#10;CORE_DB_lcms_.lib&#10;CORE_DB_librsvg_.lib&#10;CORE_DB_libxml_.lib&#10;CORE_DB_lqr_.lib&#10;CORE_DB_openjpeg_.lib&#10;CORE_DB_pango_.lib&#10;CORE_DB_pixman_.lib&#10;CORE_DB_png_.lib&#10;CORE_DB_tiff_.lib&#10;CORE_DB_ttf_.lib&#10;CORE_DB_webp_.lib&#10;CORE_DB_zlib_.lib&#10;ImageMagickObject.lib"
+            extraCompilerFlags="/FS" externalLibraries="CORE_Magick++_.lib&#10;CORE_MagickCore_.lib&#10;CORE_MagickWand_.lib&#10;CORE_bzlib_.lib&#10;CORE_cairo_.lib&#10;CORE_coders_.lib&#10;CORE_croco_.lib&#10;CORE_exr_.lib&#10;CORE_ffi_.lib&#10;CORE_filters_.lib&#10;CORE_flif_.lib&#10;CORE_glib_.lib&#10;CORE_jp2_.lib&#10;CORE_jpeg_.lib&#10;CORE_lcms_.lib&#10;CORE_librsvg_.lib&#10;CORE_libxml_.lib&#10;CORE_lqr_.lib&#10;CORE_openjpeg_.lib&#10;CORE_pango_.lib&#10;CORE_pixman_.lib&#10;CORE_png_.lib&#10;CORE_tiff_.lib&#10;CORE_ttf_.lib&#10;CORE_webp_.lib&#10;CORE_zlib_.lib&#10;ImageMagickObject.lib"
             extraLinkerFlags="/MANIFEST&#10;/NODEFAULTLIB:&quot;libcmt.lib&quot;&#10;/NODEFAULTLIB:&quot;msvcrt.lib&quot;"
             bigIcon="cTME9X" smallIcon="G2GO1b" windowsTargetPlatformVersion="8.1">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="Win32"
                        isDebug="1" optimisation="4" targetName="Grafia" libraryPath="C:\C++_libraries\Magick++\mcvs_static_debug_x86\lib"
                        headerPath="C:\C++_libraries\Magick++\include" useRuntimeLibDLL="0"/>
-        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="Grafia"/>
+        <CONFIGURATION name="Release" winWarningLevel="3" generateManifest="1" winArchitecture="Win32"
+                       isDebug="0" optimisation="4" targetName="Grafia" useRuntimeLibDLL="0"
+                       headerPath="C:\C++_libraries\Magick++\include" libraryPath="C:\C++_libraries\Magick++\mcvs_static_release_x86\lib"
+                       linkTimeOptimisation="0"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../../../../../../Program Files (x86)/JUCE/modules"/>
@@ -54,6 +56,27 @@
         <MODULEPATH id="juce_audio_processors" path="../../../../../../Program Files (x86)/JUCE/modules"/>
       </MODULEPATHS>
     </VS2015>
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" optimisation="3"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_video" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+      </MODULEPATHS>
+    </LINUX_MAKE>
   </EXPORTFORMATS>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0"/>
