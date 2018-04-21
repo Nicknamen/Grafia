@@ -480,17 +480,20 @@ void MainContentComponent::exportSymbol()
 										: (result.isLocalFile() ? result.getLocalFile().getFullPathName().toStdString()
 																: result.toString(true).toStdString());
 
-		TeX saveSymbol(name);
-		saveSymbol << "\\documentclass{minimal}\n\n"
-			"\\usepackage{graphicx, amsmath, amssymb}\n";
+		if (!name.empty())
+		{
+			TeX saveSymbol(name);
+			saveSymbol << "\\documentclass{minimal}\n\n"
+				"\\usepackage{graphicx, amsmath, amssymb}\n";
 
-		writeSymbolTeXCode(saveSymbol);
+			writeSymbolTeXCode(saveSymbol);
 
-		saveSymbol << "\\begin{document}\n"
-			"$$\\" + newSymbolName + "$$\n"
-			"\\end{document}";
+			saveSymbol << "\\begin{document}\n"
+				"$$\\" + newSymbolName + "$$\n"
+				"\\end{document}";
 
-		saveSymbol.do_not_cancel("tex", "log");
+			saveSymbol.do_not_cancel("tex", "log");
+		}
 	});
 }
 
