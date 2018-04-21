@@ -23,6 +23,9 @@
 
 using namespace std;
 
+std::string eatRightZeros(std::string & input);
+std::string eatRightZeros(std::string && input); //to make it work with to_string() output
+
 class LaTexSymbol;
 
 class LatexDisplay : public ImageComponent
@@ -233,7 +236,7 @@ public:
 	double getRotAngle() const;
 	void setRotAngle(const double rotation_angle);
 
-	const enum attributeIDs
+	enum attributeIDs //const compiles on windows but not on linux
 	{
 		symbolID_id = 0,
 		name_id,

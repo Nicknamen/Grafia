@@ -3,13 +3,22 @@
 
 #include <iostream>
 #include <string>
+#include <cstdio>
+#include <memory>
+#include <array>
+
+#ifdef __linux__
+#include <libgen.h>
+#include <unistd.h>
+#include <linux/limits.h>
+#endif
 
 #include "Magick++.h"
 
 using namespace Magick;
 using namespace std;
 
-template<class T, class Compare = std::less<Key>, class Allocator = std::allocator<Key>>
+template<class T, class Compare = std::less<T>, class Allocator = std::allocator<T>>
 std::set<T, Compare, Allocator> set_difference(const std::set<T, Compare, Allocator> & A, 
 											   const std::set<T, Compare, Allocator> & B) //returns A - B
 {
@@ -22,7 +31,7 @@ std::set<T, Compare, Allocator> set_difference(const std::set<T, Compare, Alloca
 	return C;
 }
 
-template<class T, class Compare = std::less<Key>, class Allocator = std::allocator<Key>>
+template<class T, class Compare = std::less<T>, class Allocator = std::allocator<T>>
 std::set<T, Compare, Allocator> operator-(const std::set<T, Compare, Allocator> & A,
 										  const std::set<T, Compare, Allocator> & B) //returns A - B
 {
@@ -121,7 +130,7 @@ TeX::~TeX()
 	execute(command.c_str());
 }
 
-ostream & TeX::operator<<(string & s)
+/*ostream & TeX::operator<<(string & s)
 {
 	_istexmodified = true;
 
@@ -133,7 +142,7 @@ ostream & TeX::operator<<(const char* s)
 	_istexmodified = true;
 
 	return _texfile << s;
-}
+}*/
 
 inline bool fexists(string filename)
 {
@@ -174,7 +183,7 @@ std::string TeX::get_fullpath_ext(string extension) const
 
 inline void TeX::name(string texname)
 {
-	regex texext("\.tex$");
+	regex texext(".tex$");
 	regex rgx_version("(Debug|Release)$");
 
 	_texname = texname;
@@ -285,9 +294,9 @@ int TeX::get_image_density() const
 
 set<string> TeX::extensions = {"pdf", "tex", "log", "aux", "png"};
 
-void TeX::execute(const char* comand)
+string TeX::execute(const char* comand)
 {
-#ifdef _WIN32
+#ifdef _WIN32 // doesn't return anything yet
 
 	if (_is_shell_hidden)
 	{
@@ -317,21 +326,47 @@ void TeX::execute(const char* comand)
 	else
 		system(comand);
 
+	return "";
+
 #elif defined __linux__
 
-	if (_is_shell_hidden)
-		fork(comand);
-	else
-		system(comand);
+	std::array<char, 128> buffer;
+    std::string result;
+    std::shared_ptr<FILE> pipe(popen(comand, "r"), pclose);
+
+    if (!pipe) throw std::runtime_error("popen() failed!");
+
+    while (!feof(pipe.get()))
+	{
+        if (fgets(buffer.data(), 128, pipe.get()) != nullptr)
+            result += buffer.data();
+    }
+
+	cout << result;
+
+    return result;
 
 #endif
 }
 
+
+path ExePath()
+{
 #ifdef _WIN32
-path ExePath() {
 	char buffer[MAX_PATH];
 	GetModuleFileName(NULL, buffer, MAX_PATH);
 	string::size_type pos = string(buffer).rfind("VisualStudio2015");
 	return path(string(buffer).substr(0, pos + 16));
-}
+#elif __linux__
+	char result[PATH_MAX];
+	ssize_t count = readlink( "/proc/self/exe", result, PATH_MAX );
+	if (count != -1)
+	{
+		char * result_path;
+		result_path = dirname(result);
+		return path(result_path);
+	}
+
 #endif
+}
+

@@ -21,8 +21,16 @@ public:
 
 	~TeX();
 
-	std::ostream & operator<<(std::string & s);
-	std::ostream & operator<<(const char* s);
+//	std::ostream & operator<<(std::string & s);
+//	std::ostream & operator<<(const char* s);
+
+	template<typename string_convertable>
+	std::ostream & operator<<(const string_convertable s) // template functions must be defined in header file
+	{
+		_istexmodified = true;
+
+		return _texfile << std::string(s);
+	}
 
 	//convert methods
 	void to_pdf();
@@ -33,7 +41,7 @@ public:
 	void set_image_density(const int density);
 	int get_image_density() const;
 
-	void execute(const char* comand);
+	std::string execute(const char* comand);
 
 	bool open();
 	bool open_rewritemode();
@@ -45,13 +53,13 @@ public:
 	template<typename T = std::string>
 	void do_not_cancel(T extenstion) //if these function are not defined here there is a linking error
 	{
-		extensions_not_to_cancel.insert((string)extenstion);
+		extensions_not_to_cancel.insert(std::string(extenstion));
 	}
 
 	template <typename T = std::string, typename... Types>
 	void do_not_cancel(T extenstion, Types... others)
 	{
-		extensions_not_to_cancel.insert((string)extenstion);
+		extensions_not_to_cancel.insert(std::string(extenstion));
 
 		do_not_cancel(others...);
 	}
@@ -90,8 +98,10 @@ private:
 
 	bool _is_shell_hidden;
 
+#ifdef _WIN32
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
+#endif
 
 	std::fstream _texfile;
 
@@ -104,6 +114,4 @@ private:
 
 inline bool fexists(std::string filename);
 
-#ifdef _WIN32
 path ExePath();
-#endif

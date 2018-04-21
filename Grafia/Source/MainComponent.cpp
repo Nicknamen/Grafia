@@ -60,6 +60,34 @@ std::string eatRightZeros(std::string & input)
 	return input;
 }
 
+std::string eatRightZeros(std::string && input) //to make it work with to_string() output
+{
+	bool is_it_decimal = false;
+
+	for (auto it = input.begin(); it != input.end(); ++it)
+		if (*it == '.')
+		{
+			is_it_decimal = true;
+
+			break;
+		}
+
+	if (is_it_decimal)
+		for (int i = input.size() - 1; i != 0; --i)
+			if (input[i] == '0')
+				input.erase(i);
+			else if (input[i] == '.')
+			{
+				input.erase(i);
+
+				break;
+			}
+			else
+				break;
+
+	return input;
+}
+
 string getNextData(string & dataString)
 {
 	auto it = dataString.begin();

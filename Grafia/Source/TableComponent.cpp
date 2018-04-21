@@ -11,6 +11,7 @@
 #include "TableComponent.h"
 
 extern std::string eatRightZeros(std::string & input);
+extern std::string eatRightZeros(std::string && input);
 
 MainContentComponent::TableComponent::TableComponent(MainContentComponent * owner_ptr)
 {
