@@ -64,7 +64,7 @@ public:
     public:
         MainWindow (String name)  : DocumentWindow (name,
                                                     Colours::lightgrey,
-                                                    DocumentWindow::allButtons)
+                                                    DocumentWindow::allButtons) //maximise button not dispayed on linux
         {
             setUsingNativeTitleBar (true);
             setContentOwned (new MainContentComponent(), true);

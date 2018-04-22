@@ -22,8 +22,9 @@ std::string eatRightZeros(std::string & input)
 	bool is_it_decimal = false;
 
 	for (auto it = input.begin(); it != input.end(); ++it)
-		if (*it == '.')
+		if (*it == '.' || *it == ',') //linux makes strange conversions
 		{
+			*it = '.';
 			is_it_decimal = true;
 
 			break;
@@ -65,8 +66,9 @@ std::string eatRightZeros(std::string && input) //to make it work with to_string
 	bool is_it_decimal = false;
 
 	for (auto it = input.begin(); it != input.end(); ++it)
-		if (*it == '.')
+		if (*it == '.' || *it == ',')
 		{
+			*it = '.';
 			is_it_decimal = true;
 
 			break;
@@ -92,7 +94,7 @@ string getNextData(string & dataString)
 {
 	auto it = dataString.begin();
 
-	while (it != dataString.end() && !(*it == '\\' && *(it + 1) == '&' && *(it + 2) == '\/'))
+	while (it != dataString.end() && !(*it == '\\' && *(it + 1) == '&' && *(it + 2) == '/'))
 		++it;
 
 	string data = string(dataString.begin(), it);
@@ -254,7 +256,9 @@ void MainContentComponent::buttonClicked(Button* button)
 	}
 	else if (button == &add_button)
 	{
-		add(LaTexSymbol(tex_text.getText().toStdString(), tex_text.getText().toStdString()));
+		string LaText = tex_text.getText().toStdString();
+		if (!LaText.empty())
+			add(LaTexSymbol(LaText, LaText));
 	}
 	else if (button == &remove_button)
 	{
@@ -469,7 +473,7 @@ ApplicationCommandManager & MainContentComponent::getApplicationCommandManager()
 void MainContentComponent::exportSymbol()
 {
 	fc.reset(new FileChooser("Export as .tex file",
-		File::getCurrentWorkingDirectory().getChildFile(StringRef(newSymbolName)),
+		File::getCurrentWorkingDirectory().getChildFile(StringRef(newSymbolName + ".tex")),
 		"*.tex"));
 
 	fc->launchAsync(FileBrowserComponent::saveMode | FileBrowserComponent::canSelectFiles,
@@ -504,13 +508,13 @@ void MainContentComponent::save()
 	if (!saveSymbolproj.good())
 		throw GrafiaException("Not able to properly create the project file.");
 
-	saveSymbolproj << newSymbolName + "\\&\/" + to_string(texstream.get_image_density()) + "\\&\/"
-		+ to_string(mySlider::slidersDigitsNum) + "\\&\/" << endl;
+	saveSymbolproj << newSymbolName + "\\&/" + to_string(texstream.get_image_density()) + "\\&/"
+		+ to_string(mySlider::slidersDigitsNum) + "\\&/" << endl;
 
 	for (auto symbol : symbolsList)
 	{
 		for (int i = 1; i <= LaTexSymbol::sizeRatio_id; i++)
-			saveSymbolproj << symbol.getAttributeTextbyID(i) << "\\&\/";
+			saveSymbolproj << symbol.getAttributeTextbyID(i) << "\\&/";
 
 		saveSymbolproj << endl;
 	}
@@ -528,7 +532,7 @@ void MainContentComponent::save()
 void MainContentComponent::saveAs()
 {
 	fc.reset(new FileChooser("Save symbol project",
-		File::getCurrentWorkingDirectory().getChildFile(StringRef(newSymbolName)),
+		File::getCurrentWorkingDirectory().getChildFile(StringRef(newSymbolName + ".grproj")),
 		"*.grproj"));
 
 	fc->launchAsync(FileBrowserComponent::saveMode | FileBrowserComponent::canSelectFiles,

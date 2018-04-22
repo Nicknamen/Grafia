@@ -112,6 +112,16 @@ private:
 	static std::set<std::string> extensions;
 };
 
-inline bool fexists(std::string filename);
+inline bool fexists(std::string filename) //inline functions must be defined in the header file!
+{
+	std::fstream test(filename);
+
+	if (test.good())
+		return true;
+	else
+		return false;
+
+	test.close();
+}
 
 path ExePath();

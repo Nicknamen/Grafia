@@ -122,38 +122,12 @@ TeX::~TeX()
 {
 	close();
 
-	string command;
+	string command = "rm";
 
 	for (auto ext : extensions - extensions_not_to_cancel)
-		command += "rm " + _emptyname + "." + ext + " ";
+		command += " " + _emptyname + "." + ext;
 
 	execute(command.c_str());
-}
-
-/*ostream & TeX::operator<<(string & s)
-{
-	_istexmodified = true;
-
-	return _texfile << s;
-}
-
-ostream & TeX::operator<<(const char* s)
-{
-	_istexmodified = true;
-
-	return _texfile << s;
-}*/
-
-inline bool fexists(string filename)
-{
-	fstream test(filename);
-
-	if (test.good())
-		return true;
-	else
-		return false;
-
-	test.close();
 }
 
 inline bool TeX::exists()
@@ -342,7 +316,7 @@ string TeX::execute(const char* comand)
             result += buffer.data();
     }
 
-	cout << result;
+//	cout << result;
 
     return result;
 
