@@ -15,7 +15,6 @@
 
 #include "Magick++.h"
 
-using namespace Magick;
 using namespace std;
 
 template<class T, class Compare = std::less<T>, class Allocator = std::allocator<T>>
@@ -205,9 +204,9 @@ void TeX::to_svg()
 
 void TeX::to_png(string ext)
 {
-	InitializeMagick(ExePath().forward("bin").c_str()); // not able to properly initialize magick
+	Magick::InitializeMagick(ExePath().forward("bin").c_str()); // not able to properly initialize magick
 
-	Image image;
+	Magick::Image image;
 
 	string fname = _emptyname + "." + ext;
 
@@ -223,9 +222,9 @@ void TeX::to_png(string ext)
 			// Write the image to a file 
 			image.write(_emptyname + ".png");
 		}
-		catch (Exception &error_)
+		catch (exception & exc)
 		{
-			throw TeXException("Magick exception: " + string(error_.what()) + " ");
+			throw TeXException("Magick exception: " + string(exc.what()) + " ");
 		}
 	}
 	else if (exists()) // to be compiled from tex
@@ -245,9 +244,9 @@ void TeX::to_png(string ext)
 			// Write the image to a file 
 			image.write(_emptyname + ".png");
 		}
-		catch (Exception &error_)
+		catch (exception &exc)
 		{
-			throw TeXException("Magick exception: " + string(error_.what()) + " ");
+			throw TeXException("Magick exception: " + string(exc.what()) + " ");
 		}
 	}
 	else
