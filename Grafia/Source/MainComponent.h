@@ -174,11 +174,9 @@ private:
 	LatexDisplay tex_image;
 	PNGImageFormat PNGreader;
 
-	class messageComponent : public Component,
-							 public AsyncUpdater
+	class messageComponent : public Component
 	{
 	public:
-		void handleAsyncUpdate() override;
 
 		void paint(Graphics & g) override;
 		void set(std::string to_be_written);

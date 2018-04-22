@@ -1,4 +1,4 @@
-﻿Build started 22/04/2018 17:00:17.
+﻿Build started 22/04/2018 17:29:03.
 Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Grafia_App.vcxproj" on node 2 (Build target(s)).
 InitializeBuildStatus:
   Creating "Win32\Debug\App\Grafia_App.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -12,13 +12,13 @@ ClCompile:
 ..\..\Source\TableComponent.cpp(68): warning C4100: 'columnId': unreferenced formal parameter
 ..\..\Source\TableComponent.cpp(283): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
 ..\..\Source\TableComponent.cpp(293): warning C4100: 'mods': unreferenced formal parameter
-..\..\Source\MainComponent.cpp(808): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-..\..\Source\MainComponent.cpp(867): warning C4389: '!=': signed/unsigned mismatch
-..\..\Source\MainComponent.cpp(1095): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-..\..\Source\MainComponent.cpp(1097): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-..\..\Source\MainComponent.cpp(1099): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-..\..\Source\MainComponent.cpp(1126): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-..\..\Source\MainComponent.cpp(1244): warning C4800: 'double': forcing value to bool 'true' or 'false' (performance warning)
+..\..\Source\MainComponent.cpp(807): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+..\..\Source\MainComponent.cpp(866): warning C4389: '!=': signed/unsigned mismatch
+..\..\Source\MainComponent.cpp(1094): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+..\..\Source\MainComponent.cpp(1096): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+..\..\Source\MainComponent.cpp(1098): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+..\..\Source\MainComponent.cpp(1125): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+..\..\Source\MainComponent.cpp(1243): warning C4800: 'double': forcing value to bool 'true' or 'false' (performance warning)
 c:\users\nicoc_000\desktop\grafia\grafia\source\texlib.h(124): warning C4702: unreachable code
 ResourceCompile:
   All outputs are up-to-date.
@@ -53,4 +53,4 @@ Done Building Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStu
 
 Build succeeded.
 
-Time Elapsed 00:00:12.84
+Time Elapsed 00:00:12.04

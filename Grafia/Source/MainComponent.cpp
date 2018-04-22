@@ -693,8 +693,7 @@ void MainContentComponent::compile()
 	{
 		try
 		{
-			message.set("Writing file...");
-			message.triggerAsyncUpdate();
+			message.set("Writing file..."); //need to implement multithreading for this
 
 			texstream.open_rewritemode();
 
@@ -1323,11 +1322,6 @@ String MainContentComponent::mySlider::getTextFromValue(double value)
 		return eatRightZeros((String(value, getNumDecimalPlacesToDisplay())).toStdString()) + getTextValueSuffix();
 
 	return String(roundToInt(value)) + getTextValueSuffix();
-}
-
-void MainContentComponent::messageComponent::handleAsyncUpdate()
-{
-	repaint();
 }
 
 void MainContentComponent::messageComponent::paint(Graphics & g)
