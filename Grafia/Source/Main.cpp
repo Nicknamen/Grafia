@@ -80,9 +80,9 @@ public:
 			setUsingNativeTitleBar(true);
 
 			if (commandline.isEmpty())
-				setContentOwned(new MainContentComponent(), true);
+				setContentOwned(move(mainComponent_ptr = new MainContentComponent()), true);
 			else
-				setContentOwned(new MainContentComponent(commandline), true);
+				setContentOwned(move(mainComponent_ptr = new MainContentComponent(commandline)), true);
 
 			centreWithSize(getWidth(), getHeight());
 			setVisible(true);
@@ -93,7 +93,9 @@ public:
             // This is called when the user tries to close this window. Here, we'll just
             // ask the app to quit when this happens, but you can change this to do
             // whatever you need.
-            JUCEApplication::getInstance()->systemRequestedQuit();
+			
+			if (mainComponent_ptr->projectIsSaved())
+				JUCEApplication::getInstance()->systemRequestedQuit();
         }
 
         /* Note: Be careful if you override any DocumentWindow methods - the base
@@ -109,7 +111,11 @@ public:
 
 private:
     ScopedPointer<MainWindow> mainWindow;
+
+	static MainContentComponent * mainComponent_ptr;
 };
+
+MainContentComponent * GrafiaApplication::mainComponent_ptr = nullptr;
 
 //==============================================================================
 // This macro generates the main() routine that launches the app.

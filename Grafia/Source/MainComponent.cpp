@@ -120,6 +120,8 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 
 	getLookAndFeel().setUsingNativeAlertWindows(true);
 
+	addAndMakeVisible(message);
+
 	ImageFileName = "tex_file";
 	texstream.open(ImageFileName + ".tex");
 
@@ -232,7 +234,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 
 	setSize(800, 450);
 
-	setMessage("Ready");
+	message.set("Ready");
 }
 
 MainContentComponent::MainContentComponent(const String & commandline) : MainContentComponent()
@@ -311,7 +313,7 @@ void MainContentComponent::sliderValueChanged(Slider * slider)
 	if (slider == &sizeSlider)
 	{
 		if (selected_symbol == nullptr)
-			setMessage("No symbol is being visualized: no size to be changed");
+			message.set("No symbol is being visualized: no size to be changed");
 		else
 		{
 			double previous_value = selected_symbol->getSizeRatio();
@@ -327,7 +329,7 @@ void MainContentComponent::sliderValueChanged(Slider * slider)
 	else if (slider == &rotationSlider)
 	{
 		if (selected_symbol == nullptr)
-			setMessage("No symbol is being visualized: no rotation to be changed");
+			message.set("No symbol is being visualized: no rotation to be changed");
 		else
 		{
 			double previous_value = selected_symbol->getRotAngle();
@@ -351,7 +353,7 @@ void MainContentComponent::textEditorTextChanged(TextEditor & textEditor)
 		{
 			if (selected_symbol == nullptr)
 			{
-				setMessage("No symbol is being displayed. No x value to be changed");
+				message.set("No symbol is being displayed. No x value to be changed");
 
 				xTextBox.setText("");
 			}
@@ -367,14 +369,14 @@ void MainContentComponent::textEditorTextChanged(TextEditor & textEditor)
 				if (compileAtEachCommand.getToggleState())
 					compile();
 
-				message = "";
+				message.set("");
 			}
 		}
 		else if (&textEditor == &yTextBox)
 		{
 			if (selected_symbol == nullptr)
 			{
-				message = "No symbol is being displayed. No y value to be changed";
+				message.set("No symbol is being displayed. No y value to be changed");
 
 				yTextBox.setText("");
 			}
@@ -390,7 +392,7 @@ void MainContentComponent::textEditorTextChanged(TextEditor & textEditor)
 				if (compileAtEachCommand.getToggleState())
 					compile();
 
-				message = "";
+				message.set("");
 			}
 		}
 		else if (&textEditor == &symbolNameEditor)
@@ -417,11 +419,9 @@ void MainContentComponent::textEditorReturnKeyPressed(TextEditor & textEditor)
 			tex_text.setText("");
 		}
 	}
-	catch (exception & error_)
+	catch (exception & exc)
 	{
-		message = error_.what();
-
-		repaint();
+		errorAlert(exc);
 	}
 
 }
@@ -436,7 +436,7 @@ void MainContentComponent::update()
 
 	tex_text.setText("");
 
-	setMessage("");
+	message.set("");
 
 	repaint();
 }
@@ -513,7 +513,7 @@ void MainContentComponent::save()
 
 	for (auto symbol : symbolsList)
 	{
-		for (int i = 1; i <= LaTexSymbol::sizeRatio_id; i++)
+		for (int i = 1; i < LaTexSymbol::stop; i++)
 			saveSymbolproj << symbol.getAttributeTextbyID(i) << "\\&/";
 
 		saveSymbolproj << endl;
@@ -526,7 +526,7 @@ void MainContentComponent::save()
 
 	saved = true;
 
-	setMessage("Project succesfully saved");
+	message.set("Project succesfully saved");
 }
 
 void MainContentComponent::saveAs()
@@ -612,7 +612,7 @@ void MainContentComponent::open(std::string filePath)
 
 					LaTexSymbol nextSymbol;
 
-					for (int i = 1; i <= LaTexSymbol::rotAngle_id; ++i)
+					for (int i = 1; i < LaTexSymbol::stop; i++)
 						nextSymbol.setAttributebyID(i, getNextData(d));
 
 					symbolsList.push_back(nextSymbol);
@@ -627,6 +627,8 @@ void MainContentComponent::open(std::string filePath)
 		}
 		else
 			throw GrafiaException("Unable to open this file");
+
+		compile();
 	}
 	else
 		throw GrafiaException("The selected file does not exist");
@@ -691,7 +693,8 @@ void MainContentComponent::compile()
 	{
 		try
 		{
-			setMessage("Writing file"); // non funziona
+			message.set("Writing file...");
+			message.triggerAsyncUpdate();
 
 			texstream.open_rewritemode();
 
@@ -705,14 +708,14 @@ void MainContentComponent::compile()
 				"$$\\" + newSymbolName + "$$\n"
 				"\\end{document}";
 
-			setMessage("Compiling...");
+			message.set("Compiling...");
 			repaint();
 
 			texstream.to_png();
 
 			File teximage(File::getCurrentWorkingDirectory().getChildFile(String(ImageFileName + ".png")));
 
-			setMessage("Processing picture");
+			message.set("Processing picture");
 
 			Image tex_preimage = PNGImageFormat::loadFrom(teximage);
 
@@ -725,7 +728,7 @@ void MainContentComponent::compile()
 
 			update_displayed();
 
-			setMessage("Compiled succesfully");
+			message.set("Compiled succesfully");
 		}
 		catch (exception& exc)
 		{
@@ -733,7 +736,7 @@ void MainContentComponent::compile()
 		}
 	}
 	else
-		setMessage("No TeX added. Nothing to compile.");
+		message.set("No TeX added. Nothing to compile.");
 }
 
 void MainContentComponent::add(LaTexSymbol newObject)
@@ -776,7 +779,7 @@ void MainContentComponent::reset()
 
 	tex_text.setText("", dontSendNotification);
 
-	setMessage("");
+	message.set("");
 
 	message;
 
@@ -813,7 +816,7 @@ bool MainContentComponent::overwriteExistingFile(std::string filename)
 void MainContentComponent::moveSymbolUp()
 {
 	if (selected_symbol == nullptr)
-		setMessage("No symbol selected");
+		message.set("No symbol selected");
 	else
 	{
 		int i = 0;
@@ -839,7 +842,7 @@ void MainContentComponent::moveSymbolUp()
 
 		update_displayed();
 
-		setMessage("");
+		message.set("");
 
 		saved = false;
 	}
@@ -848,7 +851,7 @@ void MainContentComponent::moveSymbolUp()
 void MainContentComponent::moveSymbolDown()
 {
 	if (selected_symbol == nullptr)
-		setMessage("No symbol selected");
+		message.set("No symbol selected");
 	else
 	{
 		int i = 0;
@@ -872,7 +875,7 @@ void MainContentComponent::moveSymbolDown()
 			table_ptr->forceRowSelected(i + 1);
 		}
 
-		setMessage("");
+		message.set("");
 
 		saved = false;
 	}
@@ -914,7 +917,7 @@ void MainContentComponent::rotate(double angle)
 
 void MainContentComponent::errorAlert(const std::exception & exc)
 {
-	setMessage("Error caught during compilation");
+	message.set("Error caught during compilation");
 
 	AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon, "Error", String(exc.what()));
 }
@@ -1020,7 +1023,7 @@ bool MainContentComponent::perform(const InvocationInfo & info)
 			{
 				reset();
 
-				setMessage("Ready");
+				message.set("Ready");
 
 				saved = true;
 			}
@@ -1059,13 +1062,6 @@ bool MainContentComponent::perform(const InvocationInfo & info)
 	return true;
 }
 
-void MainContentComponent::setMessage(std::string to_be_written)
-{
-	message = to_be_written;
-
-	repaint();
-}
-
 void MainContentComponent::setNewSymbolName(std::string newName)
 {
 	newSymbolName = newName;
@@ -1080,28 +1076,19 @@ MainContentComponent::~MainContentComponent()
 	applicationCommandManager.reset();
 }
 
-void MainContentComponent::paint (Graphics& g)
+void MainContentComponent::paint(Graphics& g)
 {
     g.fillAll (Colours::lightgrey);
 
     g.setFont (Font (16.0f));
     g.setColour (Colours::black);
-
-	juce::Rectangle<int> base(0, getHeight() - 20, getWidth(), getHeight());
-
-	g.setColour(Colours::dimgrey);
-
-	g.fillRect(base);
-
-	g.setFont(Font(16.0f));
-	g.setColour(Colours::white);
-
-	g.drawText(message, juce::Rectangle<int>(0, 0, getWidth() - 5, getHeight() - 2), Justification::bottomRight, true);
 }
 
 void MainContentComponent::resized()
 {
 	menubar.setBounds(0, 0, getWidth(), 20);
+
+	message.setBounds(0, getHeight() - 20, getWidth(), 20);
 
 	tex_image.setBounds(10, 30, getWidth() / 2 - 15, getHeight() / 2 - 15);
 	tex_text.setBounds(getWidth() / 2 + 5, 50, getWidth()/4 - 10, 25);
@@ -1336,4 +1323,24 @@ String MainContentComponent::mySlider::getTextFromValue(double value)
 		return eatRightZeros((String(value, getNumDecimalPlacesToDisplay())).toStdString()) + getTextValueSuffix();
 
 	return String(roundToInt(value)) + getTextValueSuffix();
+}
+
+void MainContentComponent::messageComponent::handleAsyncUpdate()
+{
+	repaint();
+}
+
+void MainContentComponent::messageComponent::paint(Graphics & g)
+{
+	g.setColour(Colours::dimgrey);
+	g.fillAll();
+
+	g.setFont(Font(16.0f));
+	g.setColour(Colours::white);
+	g.drawText(message, juce::Rectangle<int>(0, 0, getWidth() - 5, getHeight() - 2), Justification::bottomRight, true);
+}
+
+void MainContentComponent::messageComponent::set(std::string to_be_written)
+{
+	message = to_be_written;
 }

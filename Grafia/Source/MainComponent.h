@@ -54,6 +54,10 @@ public:
 	MainContentComponent(const String & commandline);
     ~MainContentComponent();
 
+	//returns true if the project is saved or if the user wishes to continue without saving the project
+	bool projectIsSaved();
+	bool overwriteExistingFile(std::string filename);
+
     void paint (Graphics&) override;
     void resized() override;
 
@@ -62,7 +66,6 @@ public:
 	void getCommandInfo(CommandID commandID, ApplicationCommandInfo& result) override;
 	bool perform(const InvocationInfo& info) override;
 
-	void setMessage(std::string to_be_written);
 	void setNewSymbolName(std::string newName);
 
 	void buttonClicked(Button* button) override;
@@ -170,7 +173,19 @@ private:
 
 	LatexDisplay tex_image;
 	PNGImageFormat PNGreader;
-	std::string message;
+
+	class messageComponent : public Component,
+							 public AsyncUpdater
+	{
+	public:
+		void handleAsyncUpdate() override;
+
+		void paint(Graphics & g) override;
+		void set(std::string to_be_written);
+
+	private:
+		std::string message;
+	} message;
 
 	DrawableImage svg_image;
 	TeX texstream;
@@ -181,10 +196,6 @@ private:
 	void add(LaTexSymbol newObject);
 	void remove();
 	void reset();
-	
-	//returns true if the project is saved or if the user wishes to continue without saving the project
-	bool projectIsSaved();
-	bool overwriteExistingFile(std::string filename);
 
 	void moveSymbolUp();
 	void moveSymbolDown();
@@ -245,7 +256,8 @@ public:
 		x_id,
 		y_id,
 		rotAngle_id,
-		sizeRatio_id
+		sizeRatio_id,
+		stop //handy in for loops. Musts always be the last
 	};
 
 private:
