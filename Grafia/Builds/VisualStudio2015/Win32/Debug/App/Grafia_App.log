@@ -1,10 +1,17 @@
-﻿Build started 23/04/2018 12:18:30.
+﻿Build started 23/04/2018 19:45:43.
 Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Grafia_App.vcxproj" on node 2 (Build target(s)).
 InitializeBuildStatus:
   Creating "Win32\Debug\App\Grafia_App.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
 ClCompile:
-  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I..\..\JuceLibraryCode /IC:\JUCE\modules /IC:\C++_libraries\Magick++\include /Zi /nologo /W4 /WX- /MP /O2 /Oy- /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D _WINDOWS /D DEBUG /D _DEBUG /D _LIB /D STATIC_MAGICK /D _VISUALC_ /D NOAUTOLINK_MAGICK /D JUCER_VS2015_78A5022=1 /D JUCE_APP_VERSION=1.0.0 /D JUCE_APP_VERSION_HEX=0x10000 /D JucePlugin_Build_VST=0 /D JucePlugin_Build_VST3=0 /D JucePlugin_Build_AU=0 /D JucePlugin_Build_AUv3=0 /D JucePlugin_Build_RTAS=0 /D JucePlugin_Build_AAX=0 /D JucePlugin_Build_Standalone=0 /Gm- /EHsc /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"Win32\Debug\App\\" /Fd"Win32\Debug\App\\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt /FS ..\..\Source\MainComponent.cpp
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I..\..\JuceLibraryCode /IC:\JUCE\modules /IC:\C++_libraries\Magick++\include /Zi /nologo /W4 /WX- /MP /O2 /Oy- /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D _WINDOWS /D DEBUG /D _DEBUG /D _LIB /D STATIC_MAGICK /D _VISUALC_ /D NOAUTOLINK_MAGICK /D JUCER_VS2015_78A5022=1 /D JUCE_APP_VERSION=1.0.0 /D JUCE_APP_VERSION_HEX=0x10000 /D JucePlugin_Build_VST=0 /D JucePlugin_Build_VST3=0 /D JucePlugin_Build_AU=0 /D JucePlugin_Build_AUv3=0 /D JucePlugin_Build_RTAS=0 /D JucePlugin_Build_AAX=0 /D JucePlugin_Build_Standalone=0 /Gm- /EHsc /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"Win32\Debug\App\\" /Fd"Win32\Debug\App\\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt /FS ..\..\Source\Main.cpp ..\..\Source\MainComponent.cpp ..\..\Source\TableComponent.cpp
+  Main.cpp
   MainComponent.cpp
+  TableComponent.cpp
+..\..\Source\Main.cpp(50): warning C4100: 'commandLine': unreferenced formal parameter
+..\..\Source\TableComponent.cpp(60): warning C4800: 'const int': forcing value to bool 'true' or 'false' (performance warning)
+..\..\Source\TableComponent.cpp(68): warning C4100: 'columnId': unreferenced formal parameter
+..\..\Source\TableComponent.cpp(283): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+..\..\Source\TableComponent.cpp(293): warning C4100: 'mods': unreferenced formal parameter
 ..\..\Source\MainComponent.cpp(807): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
 ..\..\Source\MainComponent.cpp(866): warning C4389: '!=': signed/unsigned mismatch
 ..\..\Source\MainComponent.cpp(1094): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
@@ -46,4 +53,4 @@ Done Building Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStu
 
 Build succeeded.
 
-Time Elapsed 00:00:10.58
+Time Elapsed 00:00:08.10
