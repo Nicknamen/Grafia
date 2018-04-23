@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=0.1
+Name=Grafia
+Exec=Grafia
+Icon=Grafia_512logo.png
+Comment=Create mathematical symbols in LaTex
+Categories=Utility;
+Terminal=false

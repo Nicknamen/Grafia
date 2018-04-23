@@ -1,0 +1,53 @@
+﻿Build started 24/03/2018 12:41:23.
+Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Grafia_App.vcxproj" on node 2 (Build target(s)).
+InitializeBuildStatus:
+  Creating "Win32\Debug\App\Grafia_App\Grafia_App.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
+ClCompile:
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:\C++_libraries\Magick++\include /I..\..\JuceLibraryCode /I"..\..\..\..\..\..\..\Program Files (x86)\JUCE\modules" /ZI /nologo /W4 /WX- /MP /O2 /Oy- /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D _WINDOWS /D DEBUG /D _DEBUG /D JUCER_VS2015_78A5022=1 /D JUCE_APP_VERSION=1.0.0 /D JUCE_APP_VERSION_HEX=0x10000 /D JucePlugin_Build_VST=0 /D JucePlugin_Build_VST3=0 /D JucePlugin_Build_AU=0 /D JucePlugin_Build_AUv3=0 /D JucePlugin_Build_RTAS=0 /D JucePlugin_Build_AAX=0 /D JucePlugin_Build_Standalone=0 /Gm- /EHsc /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"Win32\Debug\App\Grafia_App\\" /Fd"Win32\Debug\App\Grafia_App\\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt /FS ..\..\Source\Main.cpp ..\..\Source\MainComponent.cpp
+  Main.cpp
+  MainComponent.cpp
+c:\users\nicoc_000\desktop\grafia\grafia\source\maincomponent.h(29): warning C4211: nonstandard extension used: redefined extern to static (compiling source file ..\..\Source\MainComponent.cpp)
+c:\users\nicoc_000\desktop\grafia\grafia\source\maincomponent.h(29): warning C4211: nonstandard extension used: redefined extern to static (compiling source file ..\..\Source\Main.cpp)
+c:\users\nicoc_000\desktop\grafia\grafia\source\main.cpp(28): warning C4100: 'commandLine': unreferenced formal parameter
+c:\users\nicoc_000\desktop\grafia\grafia\source\main.cpp(50): warning C4100: 'commandLine': unreferenced formal parameter
+c:\users\nicoc_000\desktop\grafia\grafia\source\maincomponent.cpp(159): warning C4100: 'columnId': unreferenced formal parameter
+c:\users\nicoc_000\desktop\grafia\grafia\source\maincomponent.cpp(159): warning C4100: 'rowNumber': unreferenced formal parameter
+c:\users\nicoc_000\desktop\grafia\grafia\source\maincomponent.cpp(168): warning C4100: 'isForwards': unreferenced formal parameter
+c:\users\nicoc_000\desktop\grafia\grafia\source\maincomponent.cpp(176): warning C4100: 'rowNumber': unreferenced formal parameter
+c:\users\nicoc_000\desktop\grafia\grafia\source\maincomponent.cpp(396): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\nicoc_000\desktop\grafia\grafia\source\maincomponent.cpp(397): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\nicoc_000\desktop\grafia\grafia\source\maincomponent.cpp(426): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+ResourceCompile:
+  All outputs are up-to-date.
+Link:
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Win32\Debug\App\\Grafia.exe" /NOLOGO /LIBPATH:C:\C++_libraries\Magick++\mcvs_static_debug_x86\lib CORE_DB_Magick++_.lib CORE_DB_MagickCore_.lib CORE_DB_MagickWand_.lib CORE_DB_bzlib_.lib CORE_DB_cairo_.lib CORE_DB_coders_.lib CORE_DB_croco_.lib CORE_DB_exr_.lib CORE_DB_ffi_.lib CORE_DB_filters_.lib CORE_DB_flif_.lib CORE_DB_glib_.lib CORE_DB_jp2_.lib CORE_DB_jpeg_.lib CORE_DB_lcms_.lib CORE_DB_librsvg_.lib CORE_DB_libxml_.lib CORE_DB_lqr_.lib CORE_DB_openjpeg_.lib CORE_DB_pango_.lib CORE_DB_pixman_.lib CORE_DB_png_.lib CORE_DB_tiff_.lib CORE_DB_ttf_.lib CORE_DB_webp_.lib CORE_DB_zlib_.lib ImageMagickObject.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /NODEFAULTLIB:libcmt.lib /NODEFAULTLIB:msvcrt.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"Win32\Debug\App\Grafia_App\\Grafia.pdb" /SUBSYSTEM:WINDOWS /LARGEADDRESSAWARE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Win32\Debug\App\Grafia.lib" /MACHINE:X86 /SAFESEH:NO /MANIFEST /NODEFAULTLIB:"libcmt.lib" /NODEFAULTLIB:"msvcrt.lib" /FS Win32\Debug\App\Grafia_App\resources.res
+  Win32\Debug\App\Grafia_App\\MenuComponent.obj
+  Win32\Debug\App\Grafia_App\\texlib.obj
+  Win32\Debug\App\Grafia_App\\MainComponent.obj
+  Win32\Debug\App\Grafia_App\\Main.obj
+  Win32\Debug\App\Grafia_App\\include_juce_audio_basics.obj
+  Win32\Debug\App\Grafia_App\\include_juce_audio_devices.obj
+  Win32\Debug\App\Grafia_App\\include_juce_audio_formats.obj
+  Win32\Debug\App\Grafia_App\\include_juce_audio_processors.obj
+  Win32\Debug\App\Grafia_App\\include_juce_core.obj
+  Win32\Debug\App\Grafia_App\\include_juce_cryptography.obj
+  Win32\Debug\App\Grafia_App\\include_juce_data_structures.obj
+  Win32\Debug\App\Grafia_App\\include_juce_events.obj
+  Win32\Debug\App\Grafia_App\\include_juce_graphics.obj
+  Win32\Debug\App\Grafia_App\\include_juce_gui_basics.obj
+  Win32\Debug\App\Grafia_App\\include_juce_gui_extra.obj
+  Win32\Debug\App\Grafia_App\\include_juce_opengl.obj
+  Win32\Debug\App\Grafia_App\\include_juce_video.obj
+LINK : warning LNK4044: unrecognized option '/FS'; ignored
+  Grafia_App.vcxproj -> C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Win32\Debug\App\Grafia.exe
+  Grafia_App.vcxproj -> Win32\Debug\App\Grafia_App\\Grafia.pdb (Full PDB)
+CopyFilesToOutputDirectory:
+  Copying file from "Win32\Debug\App\Grafia_App\Grafia.pdb" to "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Win32\Debug\App\Grafia.pdb".
+FinalizeBuildStatus:
+  Deleting file "Win32\Debug\App\Grafia_App\Grafia_App.tlog\unsuccessfulbuild".
+  Touching "Win32\Debug\App\Grafia_App\Grafia_App.tlog\Grafia_App.lastbuildstate".
+Done Building Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Grafia_App.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:08.77

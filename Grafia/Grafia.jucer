@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="Qr0nDZ" name="Grafia" projectType="guiapp" version="1.0.0"
+              bundleIdentifier="com.yourcompany.Grafia" includeBinaryInAppConfig="1"
+              jucerVersion="5.3.1" displaySplashScreen="1" reportAppUsage="1"
+              splashScreenColour="Dark">
+  <MAINGROUP id="cdnleW" name="Grafia">
+    <GROUP id="{3D9344D3-A3B7-AE35-480A-4CAD7625B879}" name="Source">
+      <FILE id="cTME9X" name="coloured_logo_6.png" compile="0" resource="1"
+            file="logo/coloured_logo_6.png"/>
+      <FILE id="G2GO1b" name="logo.png" compile="0" resource="1" file="logo/logo.png"/>
+      <FILE id="z0tz2M" name="path.cpp" compile="1" resource="0" file="Source/path.cpp"/>
+      <FILE id="fhDO7D" name="path.h" compile="0" resource="0" file="Source/path.h"/>
+      <FILE id="Tj0qKU" name="TableComponent.cpp" compile="1" resource="0"
+            file="Source/TableComponent.cpp"/>
+      <FILE id="ATbOcD" name="TableComponent.h" compile="0" resource="0"
+            file="Source/TableComponent.h"/>
+      <FILE id="wbXg91" name="MenuComponent.cpp" compile="1" resource="0"
+            file="Source/MenuComponent.cpp"/>
+      <FILE id="helM8B" name="MenuComponent.h" compile="0" resource="0" file="Source/MenuComponent.h"/>
+      <FILE id="MPj7CD" name="texlib.cpp" compile="1" resource="0" file="Source/texlib.cpp"/>
+      <FILE id="fh6y3x" name="texlib.h" compile="0" resource="0" file="Source/texlib.h"/>
+      <FILE id="H5M9qE" name="MainComponent.cpp" compile="1" resource="0"
+            file="Source/MainComponent.cpp"/>
+      <FILE id="dpw3Hf" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
+      <FILE id="sTIryZ" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <VS2015 targetFolder="Builds/VisualStudio2015" extraDefs="_CRT_SECURE_NO_WARNINGS&#10;_LIB&#10;STATIC_MAGICK&#10;_VISUALC_&#10;NOAUTOLINK_MAGICK"
+            extraCompilerFlags="/FS" externalLibraries="CORE_Magick++_.lib&#10;CORE_MagickCore_.lib&#10;CORE_MagickWand_.lib&#10;CORE_bzlib_.lib&#10;CORE_cairo_.lib&#10;CORE_coders_.lib&#10;CORE_croco_.lib&#10;CORE_exr_.lib&#10;CORE_ffi_.lib&#10;CORE_filters_.lib&#10;CORE_flif_.lib&#10;CORE_glib_.lib&#10;CORE_jp2_.lib&#10;CORE_jpeg_.lib&#10;CORE_lcms_.lib&#10;CORE_libde265_.lib&#10;CORE_libraw_.lib&#10;CORE_librsvg_.lib&#10;CORE_libxml_.lib&#10;CORE_lqr_.lib&#10;CORE_openjpeg_.lib&#10;CORE_pango_.lib&#10;CORE_pixman_.lib&#10;CORE_png_.lib&#10;CORE_tiff_.lib&#10;CORE_ttf_.lib&#10;CORE_webp_.lib&#10;CORE_zlib_.lib"
+            bigIcon="cTME9X" smallIcon="G2GO1b" windowsTargetPlatformVersion="8.1">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="Win32"
+                       isDebug="1" optimisation="4" targetName="Grafia" libraryPath="C:\C++_libraries\Magick++\mcvs_static_debug_x86\lib"
+                       headerPath="C:\C++_libraries\Magick++\include" useRuntimeLibDLL="0"/>
+        <CONFIGURATION name="Release" winWarningLevel="3" generateManifest="1" winArchitecture="Win32"
+                       isDebug="0" optimisation="4" targetName="Grafia" useRuntimeLibDLL="0"
+                       headerPath="C:\C++_libraries\Magick++\include" libraryPath="C:\C++_libraries\Magick++\mcvs_static_release_x86\lib"
+                       linkTimeOptimisation="0"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_video" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../../../../../Program Files (x86)/JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2015>
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" extraCompilerFlags="-DMAGICKCORE_QUANTUM_DEPTH=16&#10;-DMAGICKCORE_HDRI_ENABLE=0"
+                externalLibraries="Magick++-6.Q16&#10;MagickCore-6.Q16&#10;MagickWand-6.Q16"
+                smallIcon="G2GO1b" bigIcon="cTME9X">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" headerPath="/usr/include/ImageMagick-6/&#10;/usr/include/x86_64-linux-gnu/ImageMagick-6/"
+                       libraryPath="/usr/lib/x86_64-linux-gnu"/>
+        <CONFIGURATION isDebug="0" name="Release" headerPath="/usr/include/ImageMagick-6/&#10;/usr/include/x86_64-linux-gnu/ImageMagick-6/"
+                       libraryPath="/usr/lib/x86_64-linux-gnu"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_video" path="../../juce"/>
+        <MODULEPATH id="juce_opengl" path="../../juce"/>
+        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
+        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
+        <MODULEPATH id="juce_graphics" path="../../juce"/>
+        <MODULEPATH id="juce_events" path="../../juce"/>
+        <MODULEPATH id="juce_data_structures" path="../../juce"/>
+        <MODULEPATH id="juce_cryptography" path="../../juce"/>
+        <MODULEPATH id="juce_core" path="../../juce"/>
+        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
+        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
+        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
+        <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+      </MODULEPATHS>
+    </LINUX_MAKE>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_video" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <JUCEOPTIONS/>
+</JUCERPROJECT>
