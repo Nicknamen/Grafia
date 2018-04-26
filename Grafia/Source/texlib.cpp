@@ -19,7 +19,7 @@ using namespace std;
 
 template<class T, class Compare = std::less<T>, class Allocator = std::allocator<T>>
 std::set<T, Compare, Allocator> set_difference(const std::set<T, Compare, Allocator> & A, 
-											   const std::set<T, Compare, Allocator> & B) //returns A - B
+											   const std::set<T, Compare, Allocator> & B) //returns A - B, as in mathematics
 {
 	std::set<T, Compare, Allocator> C;
 
@@ -32,7 +32,7 @@ std::set<T, Compare, Allocator> set_difference(const std::set<T, Compare, Alloca
 
 template<class T, class Compare = std::less<T>, class Allocator = std::allocator<T>>
 std::set<T, Compare, Allocator> operator-(const std::set<T, Compare, Allocator> & A,
-										  const std::set<T, Compare, Allocator> & B) //returns A - B
+										  const std::set<T, Compare, Allocator> & B) //returns A - B, as in mathematics
 {
 	return set_difference(A, B);
 }
@@ -56,6 +56,9 @@ bool TeX::open()
 {
 	close();
 
+	if (_texname.empty())
+		return false;
+
 	if (exists())
 		_texfile.open(_texname);
 	else
@@ -76,7 +79,10 @@ bool TeX::open_rewritemode()
 {
 	close();
 
-	_texfile.open(_texname, ios::out);
+	if (_texname.empty())
+		return false;
+
+	_texfile.open(_texname, ios::out | ios::trunc);
 
 	if (_texfile.bad())
 		return false;
@@ -89,24 +95,16 @@ bool TeX::open_rewritemode()
 	}
 }
 
-bool TeX::open(string filename)
+void TeX::open(string filename)
 {
 	close();
 
 	name(filename);
 
 	if (open())
-	{
 		_istexcreated = true;
-
-		return true;
-	}
 	else
-	{
-		throw "Error opening file " + filename;
-
-		return false;
-	}
+		throw TeXException("Error opening file " + filename);
 }
 
 inline void TeX::close()
@@ -121,12 +119,7 @@ TeX::~TeX()
 {
 	close();
 
-	string command = "rm";
-
-	for (auto ext : extensions - extensions_not_to_cancel)
-		command += " " + _emptyname + "." + ext;
-
-	execute(command.c_str());
+	rmfiles();
 }
 
 inline bool TeX::exists()
@@ -139,12 +132,22 @@ inline bool TeX::exists()
 		return false;
 }
 
+void TeX::rmfiles()
+{
+	string command = "rm";
+
+	for (auto ext : extensions - extensions_not_to_cancel)
+		command += " " + _emptyname + "." + ext;
+
+	execute(command.c_str(), _is_shell_hidden);
+}
+
 std::string TeX::get_name() const
 {
 	return _emptyname;
 }
 
-std::string TeX::get_path() const
+path TeX::get_path() const
 {
 	return _texpath;
 }
@@ -157,11 +160,20 @@ std::string TeX::get_fullpath_ext(string extension) const
 inline void TeX::name(string texname)
 {
 	regex texext(".tex$");
-	regex rgx_version("(Debug|Release)$");
 
 	_texname = texname;
-	_emptyname = regex_replace(texname, texext, "");
-	_texpath = regex_replace(ExePath(), rgx_version, "");
+	_emptyname = regex_replace(texname, texext, ""); // removes .tex from the end of the file
+
+#ifdef _WIN32
+	regex rgx_version("(Debug|Release)$");
+
+	_texpath = regex_replace(ExePath(), rgx_version, ""); // in windows the folder where all files are created is
+														  // one level back than Debug or Release. I'm using regular
+														  // expressions because I want to be sure not to bo back one level
+														  // unnecessarely.
+#elif _linux_
+	_texpath = ExePath();
+#endif
 }
 
 void TeX::to_pdf()
@@ -169,7 +181,7 @@ void TeX::to_pdf()
 	close();
 
 	if (exists())
-		execute(("pdflatex " + _texname).c_str());
+		execute(("pdflatex " + _texname).c_str(), _is_shell_hidden);
 	else
 		throw "File " + _texname + " not found";
 }
@@ -179,36 +191,18 @@ void TeX::to_dvi()
 	close();
 
 	if (exists())
-		execute(("latex " + _texname).c_str());
+		execute(("latex " + _texname).c_str(), _is_shell_hidden);
 	else
 		throw "File " + _texname + " not found";
 }
 
-void TeX::to_svg()
-{
-	if (fexists(_emptyname + ".dvi") && !_istexmodified) // to be compiled directly from dvi
-	{
-		execute(("dvisvgm " + _emptyname + ".dvi").c_str());
-	}
-	else if (exists()) // to be compiled from tex
-	{
-		to_dvi();
-
-		execute(("dvisvgm " + _emptyname + ".dvi").c_str());
-	}
-	else
-	{
-		throw "Unable to produce dvi or svg";
-	}
-}
-
-void TeX::to_png(string ext)
+void TeX::to(std::string ext, std::string middle_ext)
 {
 	Magick::InitializeMagick(ExePath().forward("bin").c_str()); // not able to properly initialize magick
 
 	Magick::Image image;
 
-	string fname = _emptyname + "." + ext;
+	string fname = _emptyname + "." + middle_ext;
 
 	image.density(to_string(get_image_density()));
 
@@ -220,7 +214,7 @@ void TeX::to_png(string ext)
 			image.read(fname);
 
 			// Write the image to a file 
-			image.write(_emptyname + ".png");
+			image.write(_emptyname + "." + ext);
 		}
 		catch (exception & exc)
 		{
@@ -229,12 +223,12 @@ void TeX::to_png(string ext)
 	}
 	else if (exists()) // to be compiled from tex
 	{
-		if (ext == "pdf")
+		if (middle_ext == "pdf")
 			to_pdf();
-		else if (ext == "dvi")
+		else if (middle_ext == "dvi")
 			to_dvi();
 		else
-			throw TeXException("Extension " + ext + " not recognized");
+			throw TeXException("Extension " + middle_ext + " not recognized");
 
 		try
 		{
@@ -242,17 +236,19 @@ void TeX::to_png(string ext)
 			image.read(fname);
 
 			// Write the image to a file 
-			image.write(_emptyname + ".png");
+			image.write(_emptyname + "." + ext);
 		}
 		catch (exception &exc)
 		{
-			throw TeXException("Magick exception: " + string(exc.what()) + " ");
+			throw TeXException("Magick exception: " + string(exc.what()));
 		}
 	}
 	else
 	{
-		throw TeXException("Unable to produce pdf or png");
+		throw TeXException("Unable to produce pdf or " + ext);
 	}
+
+	extensions.insert(ext);
 }
 
 void TeX::set_image_density(const int density)
@@ -267,13 +263,33 @@ int TeX::get_image_density() const
 
 set<string> TeX::extensions = {"pdf", "tex", "log", "aux", "png"};
 
-string TeX::execute(const char* comand)
+path ExePath()
+{
+#ifdef _WIN32
+	char buffer[MAX_PATH];
+	GetModuleFileName(NULL, buffer, MAX_PATH);
+	string::size_type pos = string(buffer).rfind("VisualStudio2015");
+	return path(string(buffer).substr(0, pos + 16));
+#elif __linux__
+	char result[PATH_MAX];
+	ssize_t count = readlink( "/proc/self/exe", result, PATH_MAX );
+	if (count != -1)
+	{
+		char * result_path;
+		result_path = dirname(result);
+		return path(result_path);
+	}
+
+#endif
+}
+
+std::string execute(const char * command, bool is_shell_hidden)
 {
 #ifdef _WIN32 // doesn't return anything yet
 
-	if (_is_shell_hidden)
+	if (is_shell_hidden)
 	{
-		LPSTR lpcomand = const_cast<char *>(comand);
+		LPSTR lpcomand = const_cast<char *>(command);
 
 		ZeroMemory(&si, sizeof(si));
 		si.cb = sizeof(si);
@@ -297,48 +313,27 @@ string TeX::execute(const char* comand)
 		CloseHandle(pi.hThread);
 	}
 	else
-		system(comand);
+		system(command);
 
 	return "";
 
 #elif defined __linux__
 
 	std::array<char, 128> buffer;
-    std::string result;
-    std::shared_ptr<FILE> pipe(popen(comand, "r"), pclose);
+	std::string result;
+	std::shared_ptr<FILE> pipe(popen(command, "r"), pclose);
 
-    if (!pipe) throw std::runtime_error("popen() failed!");
+	if (!pipe) throw std::runtime_error("popen() failed!");
 
-    while (!feof(pipe.get()))
+	while (!feof(pipe.get()))
 	{
-        if (fgets(buffer.data(), 128, pipe.get()) != nullptr)
-            result += buffer.data();
-    }
-
-//	cout << result;
-
-    return result;
-
-#endif
-}
-
-
-path ExePath()
-{
-#ifdef _WIN32
-	char buffer[MAX_PATH];
-	GetModuleFileName(NULL, buffer, MAX_PATH);
-	string::size_type pos = string(buffer).rfind("VisualStudio2015");
-	return path(string(buffer).substr(0, pos + 16));
-#elif __linux__
-	char result[PATH_MAX];
-	ssize_t count = readlink( "/proc/self/exe", result, PATH_MAX );
-	if (count != -1)
-	{
-		char * result_path;
-		result_path = dirname(result);
-		return path(result_path);
+		if (fgets(buffer.data(), 128, pipe.get()) != nullptr)
+			result += buffer.data();
 	}
+
+	//	cout << result;
+
+	return result;
 
 #endif
 }

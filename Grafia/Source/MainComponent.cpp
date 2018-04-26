@@ -707,14 +707,13 @@ void MainContentComponent::compile()
 				"$$\\" + newSymbolName + "$$\n"
 				"\\end{document}";
 
-			message.set("Compiling...");
-			repaint();
+			message.set("Compiling..."); //need to implement multithreading for this
 
-			texstream.to_png();
+			texstream.to("png");
 
 			File teximage(File::getCurrentWorkingDirectory().getChildFile(String(ImageFileName + ".png")));
 
-			message.set("Processing picture");
+			message.set("Processing picture"); //need to implement multithreading for this
 
 			Image tex_preimage = PNGImageFormat::loadFrom(teximage);
 
@@ -853,7 +852,7 @@ void MainContentComponent::moveSymbolDown()
 		message.set("No symbol selected");
 	else
 	{
-		int i = 0;
+		unsigned int i = 0; // just to avoid a windows warning
 
 		for (auto symbol : symbolsList)
 		{
