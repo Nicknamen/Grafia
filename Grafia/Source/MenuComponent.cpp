@@ -61,6 +61,7 @@ PopupMenu MenuComponent::getMenuForIndex(int menuIndex, const String& /*menuName
 	{
 		menu.addCommandItem(commandManager, MainContentComponent::New);
 		menu.addCommandItem(commandManager, MainContentComponent::Save);
+		menu.addCommandItem(commandManager, MainContentComponent::SaveAs);
 		menu.addCommandItem(commandManager, MainContentComponent::Open);
 		menu.addSeparator();
 		menu.addCommandItem(commandManager, StandardApplicationCommandIDs::quit);
@@ -86,7 +87,7 @@ PopupMenu MenuComponent::getMenuForIndex(int menuIndex, const String& /*menuName
 	return menu;
 }
 
-void MenuComponent::menuItemSelected(int menuItemID, int)
+void MenuComponent::menuItemSelected(int /*menuItemID*/, int)
 {
 	// most of our menu items are invoked automatically as commands, but we can handle the
 	// other special cases here..

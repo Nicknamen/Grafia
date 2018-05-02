@@ -15,6 +15,7 @@ Author: Nicolo' Cavalleri
 #include <regex>
 #include <exception>
 #include <set>
+#include <experimental\filesystem>
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -199,22 +200,9 @@ private:
 };
 
 /** Tests if a given file exists */
-inline bool fexists(std::string filename) //inline functions must be defined in the header file!
+inline bool fexists(const std::string & filename) //inline functions must be defined in the header file!
 {
-	std::fstream test(filename);
-
-	if (test.good())
-	{
-		test.close();
-
-		return true;
-	}
-	else
-	{
-		test.close();
-
-		return false;
-	}
+	return std::experimental::filesystem::exists(filename);
 }
 
 /**

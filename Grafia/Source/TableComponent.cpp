@@ -10,6 +10,8 @@
 
 #include "TableComponent.h"
 
+using namespace std;
+
 extern std::string eatRightZeros(std::string & input);
 extern std::string eatRightZeros(std::string && input);
 
@@ -65,8 +67,8 @@ int MainContentComponent::TableComponent::getNumRows()
 	return numRows = MainComponentOwner->symbolsList.size();
 }
 
-void MainContentComponent::TableComponent::cellDoubleClicked(int rowNumber, int columnId, const MouseEvent &)
-{
+void MainContentComponent::TableComponent::cellClicked(int rowNumber, int /*columnId*/, const MouseEvent &)
+{ //need to implement the selection better
 		auto & symbolsListRef = MainComponentOwner->symbolsList;
 
 		MainComponentOwner->rotationSlider.setValue(symbolsListRef[rowNumber].getRotAngle());
@@ -280,7 +282,7 @@ void MainContentComponent::TableComponent::SelectionColumnCustomComponent::setRo
 {
 	row = newRow;
 	columnId = newColumn;
-	toggleButton.setToggleState((bool)owner.getSelection(row), dontSendNotification);
+	toggleButton.setToggleState(static_cast<bool>(owner.getSelection(row)), dontSendNotification);
 }
 
 MainContentComponent::TableComponent::TeXHeader::TeXHeader(TableComponent& owner) : tableOwner(owner)
@@ -290,7 +292,7 @@ MainContentComponent::TableComponent::TeXHeader::TeXHeader(TableComponent& owner
 	addColumn(tableOwner.getAttributeNameForColumnId(select_columnId), 3, 60, 40, 400, TableHeaderComponent::defaultFlags);
 }
 
-void MainContentComponent::TableComponent::TeXHeader::columnClicked(int columnId, const ModifierKeys & mods)
+void MainContentComponent::TableComponent::TeXHeader::columnClicked(int columnId, const ModifierKeys & /*mods*/)
 {
 	if (columnId == 3)
 	{

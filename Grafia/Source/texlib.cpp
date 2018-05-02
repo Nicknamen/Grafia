@@ -162,9 +162,9 @@ inline void TeX::name(string texname)
 	regex texext(".tex$");
 
 	_texname = texname;
-	_emptyname = regex_replace(texname, texext, ""); // removes .tex from the end of the file
+	_emptyname = regex_replace(texname, texext, "");	// removes .tex from the end of the file
 
-#ifdef _WIN32
+#ifdef _WINDOWS
 	regex rgx_version("(Debug|Release)$");
 
 	_texpath = regex_replace(ExePath(), rgx_version, ""); // in windows the folder where all files are created is
@@ -181,7 +181,11 @@ void TeX::to_pdf()
 	close();
 
 	if (exists())
+	{
 		execute(("pdflatex " + _texname).c_str(), _is_shell_hidden);
+	
+		extensions.insert("pdf");
+	}
 	else
 		throw "File " + _texname + " not found";
 }
@@ -191,7 +195,11 @@ void TeX::to_dvi()
 	close();
 
 	if (exists())
+	{
 		execute(("latex " + _texname).c_str(), _is_shell_hidden);
+	
+		extensions.insert("dvi");
+	}
 	else
 		throw "File " + _texname + " not found";
 }
@@ -199,15 +207,16 @@ void TeX::to_dvi()
 void TeX::to(std::string ext, std::string middle_ext)
 {
 	Magick::InitializeMagick(ExePath().forward("bin").c_str()); // not able to properly initialize magick
+																// this method shoud tell it wher to find xmls
 
 	Magick::Image image;
 
-	string fname = _emptyname + "." + middle_ext;
+	string fname = _emptyname + "." + middle_ext;				// the middle file
 
 	image.density(to_string(get_image_density()));
 
-	if (fexists(fname) && !_istexmodified) // to be compiled directly from dvi or pdf
-	{
+	if (fexists(fname) && !_istexmodified)						// if the middle file has already been created it converts
+	{															// the image directly from there
 		try
 		{
 			// Read a file into image object 
@@ -218,10 +227,10 @@ void TeX::to(std::string ext, std::string middle_ext)
 		}
 		catch (exception & exc)
 		{
-			throw TeXException("Magick exception: " + string(exc.what()) + " ");
+			throw TeXException("Magick exception: " + string(exc.what())); // Magick also throws a lot of exceptions
 		}
 	}
-	else if (exists()) // to be compiled from tex
+	else if (exists()) // to be compiled from tex, if pdf or dvi is not found
 	{
 		if (middle_ext == "pdf")
 			to_pdf();
@@ -248,7 +257,7 @@ void TeX::to(std::string ext, std::string middle_ext)
 		throw TeXException("Unable to produce pdf or " + ext);
 	}
 
-	extensions.insert(ext);
+	extensions.insert(ext);							// so that it is also automatically remove at the end
 }
 
 void TeX::set_image_density(const int density)
@@ -261,9 +270,9 @@ int TeX::get_image_density() const
 	return _density;
 }
 
-set<string> TeX::extensions = {"pdf", "tex", "log", "aux", "png"};
+set<string> TeX::extensions = {"tex", "log", "aux"}; // extension that are always produced during compilation
 
-path ExePath()
+path ExePath()	// I really did not go into the details of this function: I just found it online
 {
 #ifdef _WIN32
 	char buffer[MAX_PATH];
@@ -283,9 +292,9 @@ path ExePath()
 #endif
 }
 
-std::string execute(const char * command, bool is_shell_hidden)
-{
-#ifdef _WIN32 // doesn't return anything yet
+std::string execute(const char * command, bool is_shell_hidden) // same as before: no idea how this works.
+{																// I just found it online
+#ifdef _WIN32 // doesn't return anything yet. I need to work on this
 
 	if (is_shell_hidden)
 	{

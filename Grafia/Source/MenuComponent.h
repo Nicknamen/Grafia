@@ -28,7 +28,7 @@ public:
 	//==============================================================================
 	StringArray getMenuBarNames() override;
 	PopupMenu getMenuForIndex(int menuIndex, const String &) override;
-	void menuItemSelected(int menuItemID, int /*topLevelMenuIndex*/) override;
+	void menuItemSelected(int /*menuItemID*/, int /*topLevelMenuIndex*/) override;
 
 private:
 	std::unique_ptr<MenuBarComponent> menuBar;

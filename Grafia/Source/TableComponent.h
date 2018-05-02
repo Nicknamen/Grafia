@@ -30,7 +30,7 @@ public:
 
 	int getNumRows() override;
 
-	void cellDoubleClicked(int rowNumber, int columnId, const MouseEvent&) override;
+	void cellClicked(int rowNumber, int columnId, const MouseEvent&) override;
 	void backgroundClicked(const MouseEvent&) override;
 
 	void paintRowBackground(Graphics& g, int rowNumber, int /*width*/, int /*height*/, bool rowIsSelected) override;

@@ -9,6 +9,8 @@
 #include "TableComponent.h"
 #include "MainComponent.h"
 
+using namespace std;
+
 inline Colour getRandomColour(float brightness)
 {
 	return Colour::fromHSV(Random::getSystemRandom().nextFloat(), 0.5f, brightness, 1.0f);
@@ -17,15 +19,22 @@ inline Colour getRandomColour(float brightness)
 inline Colour getRandomBrightColour() { return getRandomColour(0.8f); }
 inline Colour getRandomDarkColour() { return getRandomColour(0.3f); }
 
-std::string eatRightZeros(std::string & input)
-{
+std::string cleanstring(std::string input)	//cleans a path string. It looks paths passed to the command line when doubleclicking 
+{											//the file contain some invisible characters which do not allow opening it.
+	regex goodchar("[^A-Za-z0-9/\.\\\\\$:_-]");	//insert here any char that is allowed in a path
+
+	return regex_replace(input, goodchar, "");
+}
+
+std::string eatRightZeros(std::string & input)	//juce fills everything with useless zeros. I use this function anywhere
+{												//to clean number strings
 	bool is_it_decimal = false;
 
 	for (auto it = input.begin(); it != input.end(); ++it)
-		if (*it == '.' || *it == ',') //linux makes strange conversions
+		if (*it == '.' || *it == ',')			//linux makes strange conversions of '.' to ','
 		{
 			*it = '.';
-			is_it_decimal = true;
+			is_it_decimal = true;				//don't want to eat zeros in 1000
 
 			break;
 		}
@@ -33,10 +42,10 @@ std::string eatRightZeros(std::string & input)
 	if (is_it_decimal)
 		for (int i = input.size() - 1; i != 0; --i)
 			if (input[i] == '0')
-				input.erase(i);
+				input.erase(i);		//erases 0
 			else if (input[i] == '.')
 			{
-				input.erase(i);
+				input.erase(i);		//erases the .
 
 				break;
 			}
@@ -61,7 +70,8 @@ std::string eatRightZeros(std::string & input)
 	return input;
 }
 
-std::string eatRightZeros(std::string && input) //to make it work with to_string() output
+//need it to work with temporaries
+std::string eatRightZeros(std::string && input)	//to make it work with to_string() output
 {
 	bool is_it_decimal = false;
 
@@ -90,8 +100,8 @@ std::string eatRightZeros(std::string && input) //to make it work with to_string
 	return input;
 }
 
-string getNextData(string & dataString)
-{
+string getNextData(string & dataString)	//this function parses lines of .grproj files by knowing the way I invented it
+{										//I assume the user does not insert anything like \&/
 	auto it = dataString.begin();
 
 	while (it != dataString.end() && !(*it == '\\' && *(it + 1) == '&' && *(it + 2) == '/'))
@@ -111,7 +121,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 											   arrowRight("arrowRight", DrawableButton::ImageOnButtonBackground),
 											   moveUp("moveSymbolUp", DrawableButton::ImageOnButtonBackground),
 											   moveDown("armoveSymbolDown", DrawableButton::ImageOnButtonBackground),
-											   table_ptr(new TableComponent(this))
+											   table_ptr(new TableComponent(this))	//need to initialize it here!!
 {
 	getLookAndFeel().setColour(Label::textColourId, Colours::black);
 	getLookAndFeel().setColour(ToggleButton::ColourIds::textColourId, Colours::black);
@@ -129,7 +139,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	applicationCommandManager->registerAllCommandsForTarget(JUCEApplication::getInstance()); //registers the standard commands, such as quit.
 	addAndMakeVisible(&menubar);
 
-	addKeyListener(applicationCommandManager->getKeyMappings());
+	addKeyListener(applicationCommandManager->getKeyMappings()); //not working yet, need to look closer the demo on this
 
 	addAndMakeVisible(compile_button);
 	compile_button.setButtonText("Compile");
@@ -148,6 +158,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	addAndMakeVisible(arrowLeft);
 	addAndMakeVisible(arrowRight);
 
+	//I'm creating the arrows images with create_triangle function
 	arrowUp.setImages(create_triangle(Point<float>(10, 0), Point<float>(20, 20), Point<float>(0, 20)), 0, 0);
 	arrowDown.setImages(create_triangle(Point<float>(), Point<float>(20, 0), Point<float>(10, 20)), 0, 0);
 	arrowLeft.setImages(create_triangle(Point<float>(0, 10), Point<float>(20, 0), Point<float>(20, 20)), 0, 0);
@@ -168,23 +179,23 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	moveDown.addListener(this);
 
 	addAndMakeVisible(sizeSlider);
-	sizeSlider.setRange(0.0, 100.0);
-	sizeSlider.setSkewFactor(0.3);
+	sizeSlider.setRange(0.01, 10.0);
+	sizeSlider.setSkewFactor(0.3); //not really handy but it's cool
 	sizeSlider.addListener(this);
-	sizeSlider.setValue(1.0, dontSendNotification);
-	sizeSlider.setChangeNotificationOnlyOnRelease(true); // this might change when implementing with KaTex
-	sizeSlider.setNumDecimalPlacesToDisplay(3);
+	sizeSlider.setValue(1.0, dontSendNotification); //as 1 is the identity of (R,*) group
+	sizeSlider.setChangeNotificationOnlyOnRelease(true);	//to avoid obvious problems with compileAtEachCommand
+															//this might change when implementing with KaTex
+	sizeSlider.setNumDecimalPlacesToDisplay(3); //this can be modified with settings
 
 	addAndMakeVisible(sizeLabel);
 	sizeLabel.setText("Size:", dontSendNotification);
-//	sizeLabel.setColour(100, findColour(0x1000200));
 	sizeLabel.attachToComponent(&sizeSlider, true);
 
 	addAndMakeVisible(rotationSlider);
 	rotationSlider.setRange(0.0, 360.0);
-	rotationSlider.setTextValueSuffix(CharPointer_UTF8("\xc2\xb0"));
+	rotationSlider.setTextValueSuffix(CharPointer_UTF8("\xc2\xb0")); //adds ° at the end of number
 	rotationSlider.addListener(this);
-	rotationSlider.setChangeNotificationOnlyOnRelease(true); // this might change when implementing with KaTex
+	rotationSlider.setChangeNotificationOnlyOnRelease(true); //same as sizeSlider. this might change when implementing with KaTex
 	rotationSlider.setNumDecimalPlacesToDisplay(3);
 
 	addAndMakeVisible(rotationLabel);
@@ -211,7 +222,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	addAndMakeVisible(xTextBox);
 	xTextBox.addListener(this);
 	xTextBox.setJustification(Justification::centredRight);
-	xTextBox.setInputRestrictions(10, "0123456789+-,.");
+	xTextBox.setInputRestrictions(10, "0123456789+-,.");	//I allow only numeric values in this textboxes
 
 	xLabel.setText("x:", dontSendNotification);
 	xLabel.attachToComponent(&xTextBox, true);
@@ -239,14 +250,19 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 
 MainContentComponent::MainContentComponent(const String & commandline) : MainContentComponent()
 {
-	projectPath = commandline.toStdString();
-
-	open(projectPath);
+	try
+	{
+		open(cleanstring(commandline.toStdString()));	//I'm assuming to receive only one argument.
+	}													//the open() will generate an error otherwise
+	catch (exception & exc)
+	{
+		errorAlert(exc);
+	}
 }
 
 void MainContentComponent::buttonClicked(Button* button)
 {
-	const double raiseValue = 1;
+	const double raiseValue = 1; //how much the arrows displace the object
 
 	if (button == &compile_button)
 	{
@@ -259,8 +275,9 @@ void MainContentComponent::buttonClicked(Button* button)
 	else if (button == &add_button)
 	{
 		string LaText = tex_text.getText().toStdString();
-		if (!LaText.empty())
-			add(LaTexSymbol(LaText, LaText));
+		if (!LaText.empty()) //these lines eliminate an eventual \ at the beginning for the name
+			add(LaTexSymbol(LaText[0] == '\\' ? string(LaText.begin() + 1, LaText.end())
+				: LaText, LaText));
 	}
 	else if (button == &remove_button)
 	{
@@ -312,14 +329,14 @@ void MainContentComponent::sliderValueChanged(Slider * slider)
 {
 	if (slider == &sizeSlider)
 	{
-		if (selected_symbol == nullptr)
+		if (selected_symbol == nullptr)	//if nothing has been yet selected
 			message.set("No symbol is being visualized: no size to be changed");
 		else
 		{
 			double previous_value = selected_symbol->getSizeRatio();
 
-			for (auto & symbol : symbolsList)
-				if (symbol.is_selected())
+			for (auto & symbol : symbolsList)	//this is very important. It increases the size of every selected symbol
+				if (symbol.is_selected())		//proportionally, respecting the * size group operation
 					symbol.setSizeRatio((symbol.getSizeRatio() / previous_value) * sizeSlider.getValue());
 
 			if (compileAtEachCommand.getToggleState())
@@ -334,7 +351,7 @@ void MainContentComponent::sliderValueChanged(Slider * slider)
 		{
 			double previous_value = selected_symbol->getRotAngle();
 
-			for (auto & symbol : symbolsList)
+			for (auto & symbol : symbolsList)	//same as sizeSlider but with sum instead of product
 				if (symbol.is_selected())
 					symbol.setRotAngle((symbol.getRotAngle() - previous_value) + rotationSlider.getValue());
 
@@ -351,7 +368,7 @@ void MainContentComponent::textEditorTextChanged(TextEditor & textEditor)
 	{
 		if (&textEditor == &xTextBox)
 		{
-			if (selected_symbol == nullptr)
+			if (selected_symbol == nullptr)	//to avoid that the user believes to change something which does not
 			{
 				message.set("No symbol is being displayed. No x value to be changed");
 
@@ -361,9 +378,9 @@ void MainContentComponent::textEditorTextChanged(TextEditor & textEditor)
 			{
 				double previous_value = selected_symbol->getx();
 
-				for (auto & symbol : symbolsList)
+				for (auto & symbol : symbolsList) //always the same paradigm: traslates everything by the same amount
 					if (symbol.is_selected())
-						symbol.setx((symbol.getx() - previous_value)
+						symbol.setx((symbol.getx() - previous_value) //treats as 0 the empty box
 							+ stod(xTextBox.getText().toStdString() == "" ? "0" : xTextBox.getText().toStdString()));
 
 				if (compileAtEachCommand.getToggleState())
@@ -385,7 +402,7 @@ void MainContentComponent::textEditorTextChanged(TextEditor & textEditor)
 				double previous_value = selected_symbol->gety();
 
 				for (auto & symbol : symbolsList)
-					if (symbol.is_selected())
+					if (symbol.is_selected()) //everything as in xTextBox
 						symbol.sety((symbol.gety() - previous_value)
 							+ stod(yTextBox.getText().toStdString() == "" ? "0" : yTextBox.getText().toStdString()));
 
@@ -395,7 +412,7 @@ void MainContentComponent::textEditorTextChanged(TextEditor & textEditor)
 				message.set("");
 			}
 		}
-		else if (&textEditor == &symbolNameEditor)
+		else if (&textEditor == &symbolNameEditor) //sets the name of the command
 		{
 			newSymbolName = symbolNameEditor.getText().toStdString();
 		}
@@ -412,11 +429,12 @@ void MainContentComponent::textEditorReturnKeyPressed(TextEditor & textEditor)
 {
 	try
 	{
-		if (&textEditor == &tex_text)
+		if (&textEditor == &tex_text) // basically the same as for the add button
 		{
-			add(LaTexSymbol(tex_text.getText().toStdString(), tex_text.getText().toStdString()));
-
-			tex_text.setText("");
+			string LaText = tex_text.getText().toStdString();
+			if (!LaText.empty())
+				add(LaTexSymbol(LaText[0] == '\\' ? string(LaText.begin() + 1, LaText.end())
+													: LaText, LaText));
 		}
 	}
 	catch (exception & exc)
@@ -443,7 +461,7 @@ void MainContentComponent::update()
 
 void MainContentComponent::update_displayed()
 {
-	if (selected_symbol != nullptr)
+	if (selected_symbol != nullptr) //only make sense if something is being displayed
 	{
 		rotationSlider.setValue(selected_symbol->getRotAngle());
 		sizeSlider.setValue(selected_symbol->getSizeRatio());
@@ -480,12 +498,13 @@ void MainContentComponent::exportSymbol()
 		[&](const FileChooser& chooser)
 	{
 		auto result = chooser.getURLResult();
-		string name = result.isEmpty() ? string()
+		string name = result.isEmpty() ? string() //don't exactly know what's happening. Copied from demo
 										: (result.isLocalFile() ? result.getLocalFile().getFullPathName().toStdString()
 																: result.toString(true).toStdString());
 
 		if (!name.empty())
 		{
+			//I'm exporting just the very necessary to compile the new command in tex
 			TeX saveSymbol(name);
 			saveSymbol << "\\documentclass{minimal}\n\n"
 				"\\usepackage{graphicx, amsmath, amssymb}\n";
@@ -496,14 +515,15 @@ void MainContentComponent::exportSymbol()
 				"$$\\" + newSymbolName + "$$\n"
 				"\\end{document}";
 
-			saveSymbol.do_not_cancel("tex", "log");
+			saveSymbol.do_not_cancel("tex");	//to avoid it being cancel if the user saves it in the exe path.
+												//line to be removed when installing Grafia as a proper program
 		}
 	});
 }
 
 void MainContentComponent::save()
 {
-	ofstream saveSymbolproj(projectPath, ios::trunc);
+	ofstream saveSymbolproj(projectPath, ios::trunc); //gonna overwrite everything
 
 	if (!saveSymbolproj.good())
 		throw GrafiaException("Not able to properly create the project file.");
@@ -532,7 +552,8 @@ void MainContentComponent::save()
 void MainContentComponent::saveAs()
 {
 	fc.reset(new FileChooser("Save symbol project",
-		File::getCurrentWorkingDirectory().getChildFile(StringRef(newSymbolName + ".grproj")),
+		projectPath.empty() ? File::getCurrentWorkingDirectory().getChildFile(StringRef(newSymbolName + ".grproj"))
+							: File(projectPath),
 		"*.grproj"));
 
 	fc->launchAsync(FileBrowserComponent::saveMode | FileBrowserComponent::canSelectFiles,
@@ -572,7 +593,8 @@ void MainContentComponent::open()
 
 			try
 			{
-				open(chosen.toStdString());
+				if (chosen.isNotEmpty())
+					open(chosen.toStdString());
 			}
 			catch (exception & exc)
 			{
@@ -629,9 +651,13 @@ void MainContentComponent::open(std::string filePath)
 			throw GrafiaException("Unable to open this file");
 
 		compile();
+
+		saved = true;
+
+		projectPath = filePath;
 	}
 	else
-		throw GrafiaException("The selected file does not exist");
+		throw GrafiaException("The selected file does not exist.\nFile: " + filePath);
 }
 
 void MainContentComponent::runSettings()
@@ -698,13 +724,13 @@ void MainContentComponent::compile()
 			texstream.open_rewritemode();
 
 			texstream << "\\documentclass{minimal}\n\n"
-				"\\usepackage[paperwidth=6.4cm, paperheight=3.6cm]{geometry}\n"
+				"\\usepackage[paperwidth=3cm, paperheight=1.7cm, margin=-0.269cm]{geometry}\n"
 				"\\usepackage{graphicx, amsmath, amssymb}\n";
 
 			writeSymbolTeXCode(texstream);
 
 			texstream << "\\begin{document}\n"
-				"$$\\" + newSymbolName + "$$\n"
+				"$$ a \\" + newSymbolName + " b $$\n"
 				"\\end{document}";
 
 			message.set("Compiling..."); //need to implement multithreading for this
