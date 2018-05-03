@@ -2,8 +2,10 @@
   ==============================================================================
 
     MenuComponent.h
-    Created: 17 Aug 2017 5:10:56pm
-    Author:  nicoc_000
+	Project:	Grafia
+    Created:	17 Aug 2017 5:10pm
+    Author:		Nicolo' Cavalleri
+	Github:		Nicknamen
 
   ==============================================================================
 */
@@ -13,8 +15,6 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include <memory>
-
-//extern std::unique_ptr<ApplicationCommandManager> applicationCommandManager;
 
 class MenuComponent final : public Component,
 							public MenuBarModel

@@ -3,6 +3,12 @@
 
     This file was auto-generated!
 
+	MainComponent.h
+	Project:	Grafia
+	Created:	17 Apr 2017
+	Author:		Nicolo' Cavalleri
+	Github:		Nicknamen
+
   ==============================================================================
 */
 
@@ -19,7 +25,6 @@
 #include <vector>
 #include <list>
 #include <memory>
-#include <regex>
 
 std::string eatRightZeros(std::string & input);
 std::string eatRightZeros(std::string && input); // to make it work with to_string() output
@@ -166,9 +171,13 @@ private:
 
 	ToggleButton compileAtEachCommand; // if true everything gets compiled at each modification
 
+	std::unique_ptr<MenuComponent> menubar; // the menu shown on the top. I need to control it's creation and destruction
+											// if I do not delete this as the first thing a bug sometimes pops up
+
 	class TableComponent; // the table that displays all the symbols and their information
 
-	std::unique_ptr<TableComponent> table_ptr; // points to the table component
+	std::unique_ptr<TableComponent> table_ptr;	// points to the table component. Pointer because, again, I need to control
+												// creation and destruction.
 //	std::shared_ptr<LaTexSymbol> selected_symbol = nullptr; //unique  or shared pointer does not work... it looks it creates copies. I don't get why
 //  but why should it ever work? there is no point in using a shared_ptr or unique ptr here.
 	LaTexSymbol * selected_symbol = nullptr;	// points to the last clicked symbol, the one being displayed.
@@ -196,8 +205,6 @@ private:
 
 	Label sizeLabel;
 	Label rotationLabel;
-
-	MenuComponent menubar; // the menu shown on the top
 
 	LatexDisplay tex_image;
 	PNGImageFormat PNGreader; // necessary to display the image

@@ -2,8 +2,10 @@
   ==============================================================================
 
     TableComponent.cpp
-    Created: 24 Mar 2018 12:52:39pm
-    Author:  nicoc_000
+	Project:	Grafia
+	Created:	24 Mar 2018 12:52pm
+	Author:		Nicolo' Cavalleri
+	Github:		Nicknamen
 
   ==============================================================================
 */
@@ -15,26 +17,21 @@ using namespace std;
 extern std::string eatRightZeros(std::string & input);
 extern std::string eatRightZeros(std::string && input);
 
-MainContentComponent::TableComponent::TableComponent(MainContentComponent * owner_ptr)
+MainContentComponent::TableComponent::TableComponent(MainContentComponent * owner_ptr) :
+	MainComponentOwner(owner_ptr)
 {
-	MainComponentOwner = owner_ptr;
-
 	table.setHeader(new TeXHeader(*this));
 
 	numRows = MainComponentOwner->symbolsList.size();
 
 	addAndMakeVisible(table);
 
-	numColumns = 3;
+	numColumns = select_columnId; // supposing select_columnId is always the last one
 
 	table.setColour(ListBox::outlineColourId, Colours::grey);
 	table.setOutlineThickness(1);
 
-	table.setMultipleSelectionEnabled(true);
-}
-
-MainContentComponent::TableComponent::~TableComponent()
-{
+	table.setMultipleSelectionEnabled(false);	// no reasons for it to be true
 }
 
 void MainContentComponent::TableComponent::resized()
@@ -52,49 +49,46 @@ void MainContentComponent::TableComponent::setText(const int columnNumber, const
 	MainComponentOwner->symbolsList[rowNumber].setAttributebyID(columnNumber, newText.toStdString());
 }
 
-int MainContentComponent::TableComponent::getSelection(const int rowNumber) const
-{
-	return MainComponentOwner->symbolsList[rowNumber].is_selected();
-}
-
-void MainContentComponent::TableComponent::setSelection(const int rowNumber, const int newSelection)
-{
-	MainComponentOwner->symbolsList[rowNumber].set_selected(newSelection);
-}
-
 int MainContentComponent::TableComponent::getNumRows()
 {
 	return numRows = MainComponentOwner->symbolsList.size();
 }
 
 void MainContentComponent::TableComponent::cellClicked(int rowNumber, int /*columnId*/, const MouseEvent &)
-{ //need to implement the selection better
-		auto & symbolsListRef = MainComponentOwner->symbolsList;
+{
+	//the displayed object is also selected, but when it is deselected its selection value is restored to its previous value
+	if (MainComponentOwner->selected_symbol != nullptr)
+		MainComponentOwner->selected_symbol->set_selected(wasSelectedPriorToBeClicked);
 
-		MainComponentOwner->rotationSlider.setValue(symbolsListRef[rowNumber].getRotAngle());
-		MainComponentOwner->sizeSlider.setValue(symbolsListRef[rowNumber].getSizeRatio());
-		MainComponentOwner->xTextBox.setText(eatRightZeros(to_string(symbolsListRef[rowNumber].getx())));
-		MainComponentOwner->yTextBox.setText(eatRightZeros(to_string(symbolsListRef[rowNumber].gety())));
+	//to keep track of the previous selection value
+	wasSelectedPriorToBeClicked = MainComponentOwner->symbolsList[rowNumber].is_selected();
 
-		symbolsListRef[rowNumber].set_selected(true);
+	//displays the clicked symbol
+	MainComponentOwner->symbolsList[rowNumber].set_selected(true);
+	MainComponentOwner->selected_symbol = &(MainComponentOwner->symbolsList[rowNumber]);
+	MainComponentOwner->update_displayed();	//sets the clicked symbol as selected
 
-		update();
-
-//		MainComponentOwner->selected_symbol = make_shared<LaTexSymbol>(MainComponentOwner->symbolsList[rowNumber]); //questo non funziona non so perché
-		MainComponentOwner->selected_symbol = &(MainComponentOwner->symbolsList[rowNumber]);
+	update();
 }
 
 void MainContentComponent::TableComponent::backgroundClicked(const MouseEvent &)
 {
-	MainComponentOwner->selected_symbol = nullptr;
+	//the displayed object is also selected, but when it is deselected its selection value is restored to its previous value
+	if (MainComponentOwner->selected_symbol != nullptr)
+		MainComponentOwner->selected_symbol->set_selected(wasSelectedPriorToBeClicked);
 
+	//otherwise the line stays hilighted
+	forceRowSelected(-1);
+
+	//hides the displayed information
 	MainComponentOwner->zero_displayed();
 }
 
 void MainContentComponent::TableComponent::paintRowBackground(Graphics & g, int rowNumber, int, int, bool rowIsSelected)
 {
 	auto alternateColour = getLookAndFeel().findColour(ListBox::backgroundColourId)
-		.interpolatedWith(getLookAndFeel().findColour(ListBox::textColourId), 0.03f);
+		.interpolatedWith(getLookAndFeel().findColour(ListBox::textColourId), 0.03f);	//copied from the demo
+																						//don't know what exactly is going on
 
 	if (rowIsSelected)
 		g.fillAll(Colours::lightblue);
@@ -102,16 +96,18 @@ void MainContentComponent::TableComponent::paintRowBackground(Graphics & g, int 
 		g.fillAll(alternateColour);
 }
 
-void MainContentComponent::TableComponent::paintCell(Graphics & g, int rowNumber, int columnId, int width, int height, bool rowIsSelected)
+void MainContentComponent::TableComponent::paintCell
+(Graphics & g, int rowNumber, int columnId, int width, int height, bool rowIsSelected)
 {
-	if (rowNumber < numRows)
+	if (rowNumber < numRows) //obscure things happen without this statement
 	{
+		//standard juce table code
 		g.setColour(rowIsSelected? Colours::darkblue : getLookAndFeel().findColour(ListBox::textColourId));
 		g.setFont(font);
 
 		if (LaTexSymbol* rowElement = &MainComponentOwner->symbolsList[rowNumber])
 		{
-			auto text = rowElement->getAttributeTextbyID(attributeIDfromColumnID(columnId));
+			string text = rowElement->getAttributeTextbyID(attributeIDfromColumnID[columnId]);
 			g.drawText(text, 2, 0, width - 4, height, Justification::centredLeft, true);
 		}
 
@@ -139,7 +135,8 @@ TableHeaderComponent& MainContentComponent::TableComponent::getHeader()
 
 Component * MainContentComponent::TableComponent::refreshComponentForCell(int rowNumber, int columnId, bool, Component * existingComponentToUpdate)
 {
-	if (columnId == 1)
+	//this code handles the components to be shown in the cells. I copied it from the demo
+	if (columnId == object_columnId)
 	{
 		auto* textLabel = static_cast<EditableTextCustomComponent*> (existingComponentToUpdate);
 
@@ -150,7 +147,7 @@ Component * MainContentComponent::TableComponent::refreshComponentForCell(int ro
 
 		return textLabel;
 	}
-	if (columnId == 3)
+	if (columnId == select_columnId)
 	{
 		auto* selectionBox = static_cast<SelectionColumnCustomComponent*> (existingComponentToUpdate);
 
@@ -168,6 +165,7 @@ Component * MainContentComponent::TableComponent::refreshComponentForCell(int ro
 
 int MainContentComponent::TableComponent::getColumnAutoSizeWidth(int columnId)
 {
+	//Again, I copied this code from the demo. It sets the width of columns at the beginning based on the content
 	if (columnId == 2)
 		return 50;
 	int widest = 32;
@@ -175,48 +173,33 @@ int MainContentComponent::TableComponent::getColumnAutoSizeWidth(int columnId)
 	{
 		if (auto* rowElement = &MainComponentOwner->symbolsList[i])
 		{
-		auto text = rowElement->getAttributeTextbyID(attributeIDfromColumnID(columnId));
+		auto text = rowElement->getAttributeTextbyID(attributeIDfromColumnID[columnId]);
 		widest = jmax(widest, font.getStringWidth(text));
 		}
 	}
 	return widest + 8;
 }
 
-String MainContentComponent::TableComponent::getAttributeNameForColumnId(const int columnId) const
+std::map<int, String> MainContentComponent::TableComponent::attributeNamefromColumnId =
 {
-	if (columnId == object_columnId)
-		return String("Object name");
-	else if (columnId == LaTex_columndId)
-		return String("LaTex code");
-	else if (columnId == select_columnId)
-		return String("Select");
-	else
-		return{};
-}
+	pair<int, String>(object_columnId, "Object name"),
+	pair<int, String>(LaTex_columndId, "LaTex code"),
+	pair<int, String>(select_columnId, "Select")
+};
 
-int MainContentComponent::TableComponent::attributeIDfromColumnID(int columnId)
+std::map<int, int> MainContentComponent::TableComponent::attributeIDfromColumnID =
 {
-	if (columnId == 1)
-		return LaTexSymbol::name_id;
-	else if (columnId == 2)
-		return LaTexSymbol::LaTex_id;
-	else if (columnId == 3)
-		return LaTexSymbol::selected_id;
-	else
-		return -1;
-}
+	pair<int, int>(object_columnId, LaTexSymbol::name_id),
+	pair<int, int>(LaTex_columndId, LaTexSymbol::LaTex_id),
+	pair<int, int>(select_columnId, LaTexSymbol::selected_id)
+};
 
-int MainContentComponent::TableComponent::columnIDfromAttributeID(int attributeId)
+std::map<int, int> MainContentComponent::TableComponent::columnIDfromAttributeID =
 {
-	if (attributeId == LaTexSymbol::name_id)
-		return 1;
-	else if (attributeId == LaTexSymbol::LaTex_id)
-		return 2;
-	else if (attributeId == LaTexSymbol::selected_id)
-		return 3;
-	else
-		return -1;
-}
+	pair<int, int>(LaTexSymbol::name_id, object_columnId),
+	pair<int, int>(LaTexSymbol::LaTex_id, LaTex_columndId),
+	pair<int, int>(LaTexSymbol::selected_id, select_columnId)
+};
 
 MainContentComponent::TableComponent::EditableTextCustomComponent::EditableTextCustomComponent(TableComponent & td) : owner(td)
 {
@@ -255,8 +238,8 @@ void MainContentComponent::TableComponent::EditableTextCustomComponent::setRowAn
 MainContentComponent::TableComponent::SelectionColumnCustomComponent::SelectionColumnCustomComponent(TableComponent & td)
 	: owner(td)
 {
-	SelectionLookAndFeel.setColour(ToggleButton::ColourIds::textColourId, Colours::white);
-	SelectionLookAndFeel.setColour(ToggleButton::ColourIds::tickColourId, Colours::white);
+	SelectionLookAndFeel.setColour(ToggleButton::ColourIds::textColourId, Colours::white);	//needs to be white
+	SelectionLookAndFeel.setColour(ToggleButton::ColourIds::tickColourId, Colours::white);	//otherwise invisible
 	SelectionLookAndFeel.setColour(ToggleButton::ColourIds::tickDisabledColourId, Colours::white);
 
 	setLookAndFeel(&SelectionLookAndFeel);
@@ -265,7 +248,8 @@ MainContentComponent::TableComponent::SelectionColumnCustomComponent::SelectionC
 
 	toggleButton.addListener(td.MainComponentOwner);
 
-	toggleButton.onClick = [this] {owner.setSelection(row, (int)toggleButton.getToggleState()); };
+	//no need to create a listener for this. A lambda function is fine.
+	toggleButton.onClick = [&] { owner.MainComponentOwner->symbolsList[row].set_selected(toggleButton.getToggleState()); };
 }
 
 MainContentComponent::TableComponent::SelectionColumnCustomComponent::~SelectionColumnCustomComponent()
@@ -282,32 +266,33 @@ void MainContentComponent::TableComponent::SelectionColumnCustomComponent::setRo
 {
 	row = newRow;
 	columnId = newColumn;
-	toggleButton.setToggleState(static_cast<bool>(owner.getSelection(row)), dontSendNotification);
+	toggleButton.setToggleState(owner.MainComponentOwner->symbolsList[row].is_selected(), dontSendNotification);
 }
 
 MainContentComponent::TableComponent::TeXHeader::TeXHeader(TableComponent& owner) : tableOwner(owner)
 {
-	addColumn(tableOwner.getAttributeNameForColumnId(object_columnId), 1, 120, 50, 400, TableHeaderComponent::defaultFlags);
-	addColumn(tableOwner.getAttributeNameForColumnId(LaTex_columndId), 2, 120, 50, 400, TableHeaderComponent::defaultFlags);
-	addColumn(tableOwner.getAttributeNameForColumnId(select_columnId), 3, 60, 40, 400, TableHeaderComponent::defaultFlags);
+	addColumn(tableOwner.attributeNamefromColumnId[object_columnId], 1, 120, 50, 400, TableHeaderComponent::defaultFlags);
+	addColumn(tableOwner.attributeNamefromColumnId[LaTex_columndId], 2, 120, 50, 400, TableHeaderComponent::defaultFlags);
+	addColumn(tableOwner.attributeNamefromColumnId[select_columnId], 3, 60, 40, 400, TableHeaderComponent::defaultFlags);
 }
 
 void MainContentComponent::TableComponent::TeXHeader::columnClicked(int columnId, const ModifierKeys & /*mods*/)
 {
-	if (columnId == 3)
+	//if the header of the Select column is clicked all the symbols are selected
+	if (columnId == select_columnId)
 	{
 		for (auto symbol : tableOwner.MainComponentOwner->symbolsList)
-			if (!symbol.is_selected())
+			if (!symbol.is_selected())					//as soon as it finds an unselected symbol...
 			{
 				for (auto & write_symbol : tableOwner.MainComponentOwner->symbolsList)
-					write_symbol.set_selected(true);
+					write_symbol.set_selected(true);	//...it selects everything...
 
 				tableOwner.update();
-				return;
+				return;									//...and exits the function
 			}
 
-		for (auto & write_symbol : tableOwner.MainComponentOwner->symbolsList)
-			write_symbol.set_selected(false);
+		for (auto & write_symbol : tableOwner.MainComponentOwner->symbolsList)	//if all the symbols are selceted
+			write_symbol.set_selected(false);									//it deselects everything
 
 		tableOwner.update();
 	}

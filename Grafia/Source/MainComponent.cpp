@@ -3,11 +3,21 @@
 
     This file was auto-generated!
 
+	MainComponent.cpp
+	Project:	Grafia
+	Created:	17 Apr 2017
+	Author:		Nicolo' Cavalleri
+	Github:		Nicknamen
+
   ==============================================================================
 */
 
 #include "TableComponent.h"
 #include "MainComponent.h"
+
+//includes necessary only for the implementation
+#include <regex>
+#include <algorithm>
 
 using namespace std;
 
@@ -20,10 +30,10 @@ inline Colour getRandomBrightColour() { return getRandomColour(0.8f); }
 inline Colour getRandomDarkColour() { return getRandomColour(0.3f); }
 
 std::string cleanstring(std::string input)	//cleans a path string. It looks paths passed to the command line when doubleclicking 
-{											//the file contain some invisible characters which do not allow opening it.
-	regex goodchar("[^A-Za-z0-9/\.\\\\\$:_-]");	//insert here any char that is allowed in a path
+{											//the file contain some characters which do not allow opening it.
+	regex badchar("[^!#-~]");	//insert here any char that is allowed in a path
 
-	return regex_replace(input, goodchar, "");
+	return regex_replace(input, badchar, "");
 }
 
 std::string eatRightZeros(std::string & input)	//juce fills everything with useless zeros. I use this function anywhere
@@ -121,7 +131,8 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 											   arrowRight("arrowRight", DrawableButton::ImageOnButtonBackground),
 											   moveUp("moveSymbolUp", DrawableButton::ImageOnButtonBackground),
 											   moveDown("armoveSymbolDown", DrawableButton::ImageOnButtonBackground),
-											   table_ptr(new TableComponent(this))	//need to initialize it here!!
+											   table_ptr(new TableComponent(this)),	//need to initialize it here!!
+											   menubar(new MenuComponent)
 {
 	getLookAndFeel().setColour(Label::textColourId, Colours::black);
 	getLookAndFeel().setColour(ToggleButton::ColourIds::textColourId, Colours::black);
@@ -137,7 +148,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 
 	applicationCommandManager->registerAllCommandsForTarget(this); //registers the commands created by the user
 	applicationCommandManager->registerAllCommandsForTarget(JUCEApplication::getInstance()); //registers the standard commands, such as quit.
-	addAndMakeVisible(&menubar);
+	addAndMakeVisible(*menubar);
 
 	addKeyListener(applicationCommandManager->getKeyMappings()); //not working yet, need to look closer the demo on this
 
@@ -264,65 +275,72 @@ void MainContentComponent::buttonClicked(Button* button)
 {
 	const double raiseValue = 1; //how much the arrows displace the object
 
-	if (button == &compile_button)
+	try
 	{
-		compile();
-
-		tex_image.repaint();
-
-		repaint();
-	}
-	else if (button == &add_button)
-	{
-		string LaText = tex_text.getText().toStdString();
-		if (!LaText.empty()) //these lines eliminate an eventual \ at the beginning for the name
-			add(LaTexSymbol(LaText[0] == '\\' ? string(LaText.begin() + 1, LaText.end())
-				: LaText, LaText));
-	}
-	else if (button == &remove_button)
-	{
-		remove();
-	}
-	else if (button == &arrowUp)
-	{
-		raisey(raiseValue);
-
-		update_displayed();
-		if (compileAtEachCommand.getToggleState())
+		if (button == &compile_button)
+		{
 			compile();
-	}
-	else if (button == &arrowDown)
-	{
-		raisey(-raiseValue);
 
-		update_displayed();
-		if (compileAtEachCommand.getToggleState())
-			compile();
-	}
-	else if (button == &arrowLeft)
-	{
-		raisex(-raiseValue);
+			tex_image.repaint();
 
-		update_displayed();
-		if (compileAtEachCommand.getToggleState())
-			compile();
-	}
-	else if (button == &arrowRight)
-	{
-		raisex(raiseValue);
+			repaint();
+		}
+		else if (button == &add_button)
+		{
+			string LaText = tex_text.getText().toStdString();
+			if (!LaText.empty()) //these lines eliminate an eventual \ at the beginning for the name
+				add(LaTexSymbol(LaText[0] == '\\' ? string(LaText.begin() + 1, LaText.end())
+					: LaText, LaText));
+		}
+		else if (button == &remove_button)
+		{
+			remove();
+		}
+		else if (button == &arrowUp)
+		{
+			raisey(raiseValue);
 
-		update_displayed();
-		if (compileAtEachCommand.getToggleState())
-			compile();
+			update_displayed();
+			if (compileAtEachCommand.getToggleState())
+				compile();
+		}
+		else if (button == &arrowDown)
+		{
+			raisey(-raiseValue);
+
+			update_displayed();
+			if (compileAtEachCommand.getToggleState())
+				compile();
+		}
+		else if (button == &arrowLeft)
+		{
+			raisex(-raiseValue);
+
+			update_displayed();
+			if (compileAtEachCommand.getToggleState())
+				compile();
+		}
+		else if (button == &arrowRight)
+		{
+			raisex(raiseValue);
+
+			update_displayed();
+			if (compileAtEachCommand.getToggleState())
+				compile();
+		}
+		else if (button == &moveUp)
+		{
+			moveSymbolUp();
+		}
+		else if (button == &moveDown)
+		{
+			moveSymbolDown();
+		}
 	}
-	else if (button == &moveUp)
+	catch (const std::exception& exc)
 	{
-		moveSymbolUp();
-	}
-	else if (button == &moveDown)
-	{
-		moveSymbolDown();
-	}
+		errorAlert(exc);
+	}	
 }
 
 void MainContentComponent::sliderValueChanged(Slider * slider)
@@ -359,7 +377,6 @@ void MainContentComponent::sliderValueChanged(Slider * slider)
 				compile();
 		}
 	}
-	
 }
 
 void MainContentComponent::textEditorTextChanged(TextEditor & textEditor)
@@ -529,8 +546,8 @@ void MainContentComponent::save()
 		throw GrafiaException("Not able to properly create the project file.");
 
 	saveSymbolproj << newSymbolName + "\\&/" + to_string(texstream.get_image_density()) + "\\&/"
-		+ to_string(mySlider::slidersDigitsNum) + "\\&/" << endl;
-
+		+ to_string(mySlider::slidersDigitsNum) + "\\&/" << endl;	//writing the particular format that the function
+																	//getNextData can read.
 	for (auto symbol : symbolsList)
 	{
 		for (int i = 1; i < LaTexSymbol::stop; i++)
@@ -539,7 +556,7 @@ void MainContentComponent::save()
 		saveSymbolproj << endl;
 	}
 
-	if (!saveSymbolproj.good())
+	if (!saveSymbolproj.good())										//checks for error in the written file
 		throw GrafiaException("Not able to properly save the project file.");
 
 	saveSymbolproj.close();
@@ -565,10 +582,10 @@ void MainContentComponent::saveAs()
 			: (result.isLocalFile() ? result.getLocalFile().getFullPathName().toStdString()
 				: result.toString(true).toStdString());
 
-		if (name != "" && overwriteExistingFile(name))
-		{
-			projectPath = name;
-
+		if (name != "" && overwriteExistingFile(name))	//if the file already exists the user is prompted to choose wether to
+		{												//overwrite it
+			projectPath = name;							//Now, until the user saves it on another file, the project is linked
+														//to projectPath
 			save();
 		}
 	});
@@ -576,8 +593,8 @@ void MainContentComponent::saveAs()
 
 void MainContentComponent::open()
 {
-	if (projectIsSaved())
-	{
+	if (projectIsSaved())	//if the current project is non-empty and dot saved the user is prompted to choose wether to
+	{						//loose it
 		fc.reset(new FileChooser("Choose a file to open...", File::getCurrentWorkingDirectory(),
 			"*.grproj", true));
 
@@ -594,11 +611,11 @@ void MainContentComponent::open()
 			try
 			{
 				if (chosen.isNotEmpty())
-					open(chosen.toStdString());
+					open(chosen.toStdString());	//from now on the linked project will be "chosen"
 			}
 			catch (exception & exc)
 			{
-				errorAlert(exc);
+				errorAlert(exc);	//exception must be handled inside the lambda!!! Can't find a way to do it otherwise
 			}
 		});
 	}
@@ -624,9 +641,9 @@ void MainContentComponent::open(std::string filePath)
 
 				string s(buffer);
 
-				newSymbolName = getNextData(s);
-				texstream.set_image_density(stoi(getNextData(s)));
-				mySlider::slidersDigitsNum = stoi(getNextData(s));
+				newSymbolName = getNextData(s);	//uses the function getNextData do read the file and save all the symbols in
+				texstream.set_image_density(stoi(getNextData(s)));	//symbolsList. It also restores the settings and the symbol
+				mySlider::slidersDigitsNum = stoi(getNextData(s)); //name
 
 				while (projReader.getline(buffer, 256))
 				{
@@ -644,7 +661,7 @@ void MainContentComponent::open(std::string filePath)
 			}
 			catch (exception & exc)
 			{
-				errorAlert(exc);
+				throw exc; //exceptions are not handled in this function.
 			}
 		}
 		else
@@ -662,7 +679,7 @@ void MainContentComponent::open(std::string filePath)
 
 void MainContentComponent::runSettings()
 {
-#if JUCE_MODAL_LOOPS_PERMITTED
+#if JUCE_MODAL_LOOPS_PERMITTED //should always be true in recent operative systems. Otherwise... no settings :(
 	AlertWindow w("Settings",
 		"The following parameters control the functionalities of this application.",
 		AlertWindow::NoIcon);
@@ -673,15 +690,15 @@ void MainContentComponent::runSettings()
 	w.addButton("OK", 1, KeyPress(KeyPress::returnKey, 0, 0));
 	w.addButton("Cancel", 0, KeyPress(KeyPress::escapeKey, 0, 0));
 
-	w.getTextEditor("image_density")->setInputRestrictions(5, "0123456789+-,.");
+	w.getTextEditor("image_density")->setInputRestrictions(5, "0123456789"); //only unsigned int for image_density!
 
-	if (w.runModalLoop() != 0) // is they picked 'ok'
+	if (w.runModalLoop() != 0) // if they picked 'ok'
 	{
 		// this is the item they chose in the drop-down list..
 		int num = w.getComboBoxComponent("slidersDigits")->getSelectedItemIndex();
 		if (num != -1)
 		{
-			mySlider::slidersDigitsNum = num + 1;
+			mySlider::slidersDigitsNum = num + 1;	//how many digits are displayed by sliders
 
 			sizeSlider.setNumDecimalPlacesToDisplay(mySlider::slidersDigitsNum);
 			rotationSlider.setNumDecimalPlacesToDisplay(mySlider::slidersDigitsNum);
@@ -698,30 +715,26 @@ void MainContentComponent::writeSymbolTeXCode(TeX & texStream)
 	texStream << "\\newcommand{\\" + newSymbolName + "}{\\mathbin{\\ooalign{\n"
 		"	\\rotatebox[origin=c]{" + eatRightZeros(to_string(symbolsList[0].getRotAngle()))
 		+ "}{\\scalebox{" + eatRightZeros(to_string(symbolsList[0].getSizeRatio()))
-		+ "}{$" + symbolsList[0].getLaTex() + "$}}\\cr\n"; //The first symbol is dominant
-
+		+ "}{$" + symbolsList[0].getLaTex() + "$}}\\cr\n";	//The first symbol is dominant: the others are positioned with respect
+															//to this one. Indeed it is not translated.
 	for (auto it = symbolsList.begin() + 1; it != symbolsList.end(); ++it)
-	{
-		double x = it->getx();
-		double y = it->gety();
-
-		texStream << "	\\hidewidth\\kern" + eatRightZeros(to_string(x)) + "pt\\raise" + eatRightZeros(to_string(y))
-			+ "pt\\hbox{\\rotatebox[origin=c]{" + eatRightZeros((to_string(it->getRotAngle()))) + "}{\\scalebox{"
-			+ eatRightZeros(to_string(it->getSizeRatio())) + "}{$" + it->getLaTex() + "$}}}\\hidewidth\\cr\n";
-	}
-
+		texStream << "	\\hidewidth\\kern" + eatRightZeros(to_string(it->getx())) + "pt\\raise" +
+			eatRightZeros(to_string(it->gety())) + "pt\\hbox{\\rotatebox[origin=c]{" +
+			eatRightZeros((to_string(it->getRotAngle()))) + "}{\\scalebox{"	+ eatRightZeros(to_string(it->getSizeRatio())) +
+			"}{$" + it->getLaTex() + "$}}}\\hidewidth\\cr\n";	//the other symbols are writtend down with everything,
+																//translations included
 	texStream << "}}}\n\n";
 }
 
-void MainContentComponent::compile()
+void MainContentComponent::compile()	//most important function!
 {
 	if (!symbolsList.empty())
 	{
 		try
 		{
-			message.set("Writing file..."); //need to implement multithreading for this
+			message.set("Writing file..."); //need to implement multithreading for this. It will work in a future release
 
-			texstream.open_rewritemode();
+			texstream.open_rewritemode(); //better to rewrite everything each time
 
 			texstream << "\\documentclass{minimal}\n\n"
 				"\\usepackage[paperwidth=3cm, paperheight=1.7cm, margin=-0.269cm]{geometry}\n"
@@ -730,18 +743,18 @@ void MainContentComponent::compile()
 			writeSymbolTeXCode(texstream);
 
 			texstream << "\\begin{document}\n"
-				"$$ a \\" + newSymbolName + " b $$\n"
+				"$$ a \\" + newSymbolName + " b $$\n"	//the a and b are there to offer something to confront the symbol with
 				"\\end{document}";
 
 			message.set("Compiling..."); //need to implement multithreading for this
 
-			texstream.to("png");
+			texstream.to("png");	//is this the best way? I'll switch to svg when juce will give a better support for it
 
 			File teximage(File::getCurrentWorkingDirectory().getChildFile(String(ImageFileName + ".png")));
 
 			message.set("Processing picture"); //need to implement multithreading for this
 
-			Image tex_preimage = PNGImageFormat::loadFrom(teximage);
+			Image tex_preimage = PNGImageFormat::loadFrom(teximage);	//I'm leaving juce do all the work
 
 			if (!tex_preimage.isValid())
 			{
@@ -756,11 +769,11 @@ void MainContentComponent::compile()
 		}
 		catch (exception& exc)
 		{
-			errorAlert(exc);
+			throw exc; //exceptions are not handled in this function
 		}
 	}
 	else
-		message.set("No TeX added. Nothing to compile.");
+		message.set("No TeX symbols added. Nothing to compile.");	//no need to throw exceptions for this kind of things
 }
 
 void MainContentComponent::add(LaTexSymbol newObject)
@@ -780,8 +793,8 @@ void MainContentComponent::remove()
 		if (it->is_selected())
 		{
 			if (selected_symbol != nullptr)
-				if (*it == *selected_symbol)
-					zero_displayed();
+				if (*it == *selected_symbol)	//if the current displayed symbol is removed, the displayed
+					zero_displayed();			//informations are removed
 
 			it = symbolsList.erase(it);
 		}
@@ -805,11 +818,9 @@ void MainContentComponent::reset()
 
 	message.set("");
 
-	message;
+	Image a; //it just creates a blank image
 
-	Image a;
-
-	tex_image.setImage(a);
+	tex_image.setImage(a); //to hide any symbol being currently displayed
 }
 
 bool MainContentComponent::projectIsSaved()
@@ -850,16 +861,14 @@ void MainContentComponent::moveSymbolUp()
 			if (symbol == *selected_symbol)
 				break;
 
-			++i;
+			++i;	//I need the position of the symbol in the vector to force the selected row
 		}
 
-		if (i != 0)
+		if (i != 0)	//If the element is the first aìof the list it cannot be moved up
 		{
-			LaTexSymbol temp = symbolsList[i - 1];
-			symbolsList[i - 1] = symbolsList[i];
-			symbolsList[i] = temp;
+			swap(symbolsList[i - 1], symbolsList[i]); //from algorithm.h
 
-			selected_symbol = &symbolsList[i - 1];
+			selected_symbol = &symbolsList[i - 1];			
 
 			table_ptr->forceRowSelected(i - 1);
 		}
@@ -890,9 +899,7 @@ void MainContentComponent::moveSymbolDown()
 
 		if (i != symbolsList.size() - 1)
 		{
-			LaTexSymbol temp = symbolsList[i + 1];
-			symbolsList[i + 1] = symbolsList[i];
-			symbolsList[i] = temp;
+			swap(symbolsList[i + 1], symbolsList[i]);
 
 			selected_symbol = &symbolsList[i + 1];
 
@@ -953,7 +960,7 @@ DrawablePath * MainContentComponent::create_triangle(Point<float> a, Point<float
 	Path p;
 	p.addTriangle(a, b, c);
 	triangle.setPath(p);
-	triangle.setFill(findColour(0x1000202)); //Using standard IDs of Juce
+	triangle.setFill(findColour(0x1000202)); //Using standard IDs of Juce found online
 	triangle.setStrokeFill(findColour(0x1000205));
 
 	return &triangle;
@@ -1070,8 +1077,8 @@ bool MainContentComponent::perform(const InvocationInfo & info)
 				String("Grafia " + string(SOFTWARE_VERSION) + "\n") +
 				String(CharPointer_UTF8("\xc2\xa9")) + String(" 2018\n"
 					"Written and designed by Nicol") + String(CharPointer_UTF8("\xc3\xb2")) + String(" Cavalleri\n"
-						"University of Milan\n"
-						"https://github.com/Nicknamen/Grafia"));
+						"University of Milan\n"						//in a future release this window will be more cool
+						"https://github.com/Nicknamen/Grafia"));	//I'll start by adding the Grafia symbol
 			break;
 
 		default:
@@ -1097,10 +1104,12 @@ void MainContentComponent::setNewSymbolName(std::string newName)
 
 MainContentComponent::~MainContentComponent()
 {
+	menubar.reset();
+
 	applicationCommandManager.reset();
 }
 
-void MainContentComponent::paint(Graphics& g)
+void MainContentComponent::paint(Graphics& g) //standard juce function
 {
     g.fillAll (Colours::lightgrey);
 
@@ -1110,17 +1119,17 @@ void MainContentComponent::paint(Graphics& g)
 
 void MainContentComponent::resized()
 {
-	menubar.setBounds(0, 0, getWidth(), 20);
+	menubar->setBounds(0, 0, getWidth(), 20);
 
 	message.setBounds(0, getHeight() - 20, getWidth(), 20);
 
 	tex_image.setBounds(10, 30, getWidth() / 2 - 15, getHeight() / 2 - 15);
 	tex_text.setBounds(getWidth() / 2 + 5, 50, getWidth()/4 - 10, 25);
-	compile_button.setBounds(getWidth()*0.75 + 5, 80, getWidth() / 4 - 10, 25);
+	compile_button.setBounds(static_cast<int>(getWidth()*0.75 + 5), 80, static_cast<int>(getWidth() / 4 - 10), 25);
 
-	symbolNameEditor.setBounds(getWidth()*0.75 + 5, 110, getWidth() / 4 - 10, 25);
+	symbolNameEditor.setBounds(static_cast<int>(getWidth()*0.75 + 5), 110, static_cast<int>(getWidth() / 4 - 10), 25);
 
-	add_button.setBounds(getWidth()*0.75 + 5, 50, getWidth() / 4 - 10, 25);
+	add_button.setBounds(static_cast<int>(getWidth()*0.75 + 5), 50, static_cast<int>(getWidth() / 4 - 10), 25);
 	remove_button.setBounds(getWidth() * 5 / 6 + 5, getHeight() / 2 + - 25, getWidth() / 6 - 10, 25);
 
 	xTextBox.setBounds(getWidth() * 3 / 8 - 10, getHeight() - 90, getWidth() / 8 - 10, 25);
@@ -1149,11 +1158,39 @@ void LatexDisplay::paint(Graphics & g)
 
 	juce::Rectangle<float> bounds(0, 0, getWidth(), getHeight());
 
-	g.drawImage(getImage(), bounds);
+	g.drawImage(getImage(), bounds);	//draws the png image
 
 	g.setColour(Colours::darkgrey);
 
 	g.drawRect(bounds);
+}
+
+int MainContentComponent::mySlider::slidersDigitsNum = 3;
+
+String MainContentComponent::mySlider::getTextFromValue(double value)	//this function is reimplemented to elimenate
+{																		//unnecessary zeros on the right
+	if (textFromValueFunction != nullptr)
+		return textFromValueFunction(value);
+
+	if (getNumDecimalPlacesToDisplay() > 0)
+		return eatRightZeros((String(value, getNumDecimalPlacesToDisplay())).toStdString()) + getTextValueSuffix();
+
+	return String(roundToInt(value)) + getTextValueSuffix();
+}
+
+void MainContentComponent::messageComponent::paint(Graphics & g)
+{
+	g.setColour(Colours::dimgrey);
+	g.fillAll();
+
+	g.setFont(Font(16.0f));
+	g.setColour(Colours::white);
+	g.drawText(message, juce::Rectangle<int>(0, 0, getWidth() - 5, getHeight() - 2), Justification::bottomRight, true);
+}
+
+void MainContentComponent::messageComponent::set(std::string to_be_written)
+{
+	message = to_be_written;
 }
 
 int LaTexSymbol::_symbolCount = 0;
@@ -1168,7 +1205,8 @@ LaTexSymbol::LaTexSymbol() : _symbolID(_symbolCount++),
  							 _sizeRatio()
 {}
 
-LaTexSymbol::LaTexSymbol(std::string name, std::string LaTex, double x, double y, double rotAngle, double sizeRatio, bool selected):
+LaTexSymbol::LaTexSymbol(std::string name, std::string LaTex, double x,
+	double y, double rotAngle, double sizeRatio, bool selected):
 	_symbolID(_symbolCount++)
 {
 	_name = name;
@@ -1180,8 +1218,8 @@ LaTexSymbol::LaTexSymbol(std::string name, std::string LaTex, double x, double y
 	_sizeRatio = sizeRatio;
 }
 
-LaTexSymbol & LaTexSymbol::operator=(const LaTexSymbol & other)
-{
+LaTexSymbol & LaTexSymbol::operator=(const LaTexSymbol & other) //this operator intentionally does not copy the _symbolID
+{																//as that is associated to the history of the element
 	_name = other._name;
 	_LaTex = other._LaTex;
 	_x = other._x;
@@ -1265,7 +1303,7 @@ void LaTexSymbol::setAttributebyID(int id, std::string text)
 void LaTexSymbol::setAttributebyID(int id, double value)
 {
 	if (id == selected_id)
-		_selected = value;
+		_selected = static_cast<bool>(value);
 	else if (id == x_id)
 		_x = value;
 	else if (id == y_id)
@@ -1334,32 +1372,4 @@ double LaTexSymbol::getRotAngle() const
 void LaTexSymbol::setRotAngle(const double rotation_angle)
 {
 	_rotAngle = rotation_angle;
-}
-
-int MainContentComponent::mySlider::slidersDigitsNum = 3;
-
-String MainContentComponent::mySlider::getTextFromValue(double value)
-{
-	if (textFromValueFunction != nullptr)
-		return textFromValueFunction(value);
-
-	if (getNumDecimalPlacesToDisplay() > 0)
-		return eatRightZeros((String(value, getNumDecimalPlacesToDisplay())).toStdString()) + getTextValueSuffix();
-
-	return String(roundToInt(value)) + getTextValueSuffix();
-}
-
-void MainContentComponent::messageComponent::paint(Graphics & g)
-{
-	g.setColour(Colours::dimgrey);
-	g.fillAll();
-
-	g.setFont(Font(16.0f));
-	g.setColour(Colours::white);
-	g.drawText(message, juce::Rectangle<int>(0, 0, getWidth() - 5, getHeight() - 2), Justification::bottomRight, true);
-}
-
-void MainContentComponent::messageComponent::set(std::string to_be_written)
-{
-	message = to_be_written;
 }

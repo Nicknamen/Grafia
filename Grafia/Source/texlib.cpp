@@ -1,3 +1,13 @@
+/*
+==============================================================================
+
+	texlib.h
+	Author:		Nicolo' Cavalleri
+	Github:		Nicknamen
+	Created:	16 Aug 2017
+
+==============================================================================
+*/
 
 #include "texlib.h"
 
@@ -207,7 +217,7 @@ void TeX::to_dvi()
 void TeX::to(std::string ext, std::string middle_ext)
 {
 	Magick::InitializeMagick(ExePath().forward("bin").c_str()); // not able to properly initialize magick
-																// this method shoud tell it wher to find xmls
+																// this method shoud tell it where to find xmls
 
 	Magick::Image image;
 
