@@ -42,7 +42,7 @@ class TeX
 {
 public:
 	/** Default creator
-		@param	show_shell		if true shows shell information when executing shell commands (LaTex compilation)
+		@param	show_shell		if true shows shell information when executing shell commands (LaTeX compilation)
 	*/
 	TeX(bool show_shell = false);
 

@@ -16,16 +16,17 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include <memory>
 
+// This class implements the menu bar displayed on top of the application
 class MenuComponent final : public Component,
 							public MenuBarModel
 {
 public:
 	MenuComponent();
-	~MenuComponent() = default;
+	~MenuComponent() = default;	//I wish this might destroy a bug that sometimes appears
 	
 	void resized() override;
 
-	//==============================================================================
+	//Juce menu abstract functions. Copied them from the demo.
 	StringArray getMenuBarNames() override;
 	PopupMenu getMenuForIndex(int menuIndex, const String &) override;
 	void menuItemSelected(int /*menuItemID*/, int /*topLevelMenuIndex*/) override;
