@@ -105,7 +105,7 @@ void MainContentComponent::TableComponent::paintCell
 		g.setColour(rowIsSelected? Colours::darkblue : getLookAndFeel().findColour(ListBox::textColourId));
 		g.setFont(font);
 
-		if (LaTexSymbol* rowElement = &MainComponentOwner->symbolsList[rowNumber])
+		if (LaTeXSymbol* rowElement = &MainComponentOwner->symbolsList[rowNumber])
 		{
 			string text = rowElement->getAttributeTextbyID(attributeIDfromColumnID[columnId]);
 			g.drawText(text, 2, 0, width - 4, height, Justification::centredLeft, true);
@@ -183,22 +183,22 @@ int MainContentComponent::TableComponent::getColumnAutoSizeWidth(int columnId)
 std::map<int, String> MainContentComponent::TableComponent::attributeNamefromColumnId =
 {
 	pair<int, String>(object_columnId, "Object name"),
-	pair<int, String>(LaTex_columndId, "LaTex code"),
+	pair<int, String>(LaTeX_columndId, "LaTeX code"),
 	pair<int, String>(select_columnId, "Select")
 };
 
 std::map<int, int> MainContentComponent::TableComponent::attributeIDfromColumnID =
 {
-	pair<int, int>(object_columnId, LaTexSymbol::name_id),
-	pair<int, int>(LaTex_columndId, LaTexSymbol::LaTex_id),
-	pair<int, int>(select_columnId, LaTexSymbol::selected_id)
+	pair<int, int>(object_columnId, LaTeXSymbol::name_id),
+	pair<int, int>(LaTeX_columndId, LaTeXSymbol::LaTeX_id),
+	pair<int, int>(select_columnId, LaTeXSymbol::selected_id)
 };
 
 std::map<int, int> MainContentComponent::TableComponent::columnIDfromAttributeID =
 {
-	pair<int, int>(LaTexSymbol::name_id, object_columnId),
-	pair<int, int>(LaTexSymbol::LaTex_id, LaTex_columndId),
-	pair<int, int>(LaTexSymbol::selected_id, select_columnId)
+	pair<int, int>(LaTeXSymbol::name_id, object_columnId),
+	pair<int, int>(LaTeXSymbol::LaTeX_id, LaTeX_columndId),
+	pair<int, int>(LaTeXSymbol::selected_id, select_columnId)
 };
 
 MainContentComponent::TableComponent::EditableTextCustomComponent::EditableTextCustomComponent(TableComponent & td) : owner(td)
@@ -272,7 +272,7 @@ void MainContentComponent::TableComponent::SelectionColumnCustomComponent::setRo
 MainContentComponent::TableComponent::TeXHeader::TeXHeader(TableComponent& owner) : tableOwner(owner)
 {
 	addColumn(tableOwner.attributeNamefromColumnId[object_columnId], 1, 120, 50, 400, TableHeaderComponent::defaultFlags);
-	addColumn(tableOwner.attributeNamefromColumnId[LaTex_columndId], 2, 120, 50, 400, TableHeaderComponent::defaultFlags);
+	addColumn(tableOwner.attributeNamefromColumnId[LaTeX_columndId], 2, 120, 50, 400, TableHeaderComponent::defaultFlags);
 	addColumn(tableOwner.attributeNamefromColumnId[select_columnId], 3, 60, 40, 400, TableHeaderComponent::defaultFlags);
 }
 

@@ -75,14 +75,14 @@ public:
         }
 
 		MainWindow(String name, const String & commandline) : DocumentWindow(name,
-			Colours::lightgrey,
-			DocumentWindow::allButtons)
+																			 Colours::lightgrey,
+																			 DocumentWindow::allButtons)
 		{
 			setUsingNativeTitleBar(true);
 
 			if (commandline.isEmpty())
 				setContentOwned(move(mainComponent_ptr = new MainContentComponent()), true);
-			else
+			else	//this is useful for calling grafia from terminal (linux) or double clicking on a file (windows)
 				setContentOwned(move(mainComponent_ptr = new MainContentComponent(commandline)), true);
 
 			centreWithSize(getWidth(), getHeight());
@@ -95,7 +95,7 @@ public:
             // ask the app to quit when this happens, but you can change this to do
             // whatever you need.
 			
-			if (mainComponent_ptr->projectIsSaved())
+			if (mainComponent_ptr->projectIsSaved()) // if the project is not saved the user is asked wether he's sure to quit
 				JUCEApplication::getInstance()->systemRequestedQuit();
         }
 

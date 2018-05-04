@@ -246,7 +246,7 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 	yLabel.setText("y:", dontSendNotification);
 	yLabel.attachToComponent(&yTextBox, true);
 
-	tex_search.setText("LaTex code:", dontSendNotification);
+	tex_search.setText("LaTeX code:", dontSendNotification);
 	tex_search.attachToComponent(&tex_text, false);
 
 	addAndMakeVisible(compileAtEachCommand);
@@ -287,10 +287,10 @@ void MainContentComponent::buttonClicked(Button* button)
 		}
 		else if (button == &add_button)
 		{
-			string LaText = tex_text.getText().toStdString();
-			if (!LaText.empty()) //these lines eliminate an eventual \ at the beginning for the name
-				add(LaTexSymbol(LaText[0] == '\\' ? string(LaText.begin() + 1, LaText.end())
-					: LaText, LaText));
+			string LaTeXt = tex_text.getText().toStdString();
+			if (!LaTeXt.empty()) //these lines eliminate an eventual \ at the beginning for the name
+				add(LaTeXSymbol(LaTeXt[0] == '\\' ? string(LaTeXt.begin() + 1, LaTeXt.end())
+					: LaTeXt, LaTeXt));
 		}
 		else if (button == &remove_button)
 		{
@@ -448,10 +448,10 @@ void MainContentComponent::textEditorReturnKeyPressed(TextEditor & textEditor)
 	{
 		if (&textEditor == &tex_text) // basically the same as for the add button
 		{
-			string LaText = tex_text.getText().toStdString();
-			if (!LaText.empty())
-				add(LaTexSymbol(LaText[0] == '\\' ? string(LaText.begin() + 1, LaText.end())
-													: LaText, LaText));
+			string LaTeXt = tex_text.getText().toStdString();
+			if (!LaTeXt.empty())
+				add(LaTeXSymbol(LaTeXt[0] == '\\' ? string(LaTeXt.begin() + 1, LaTeXt.end())
+													: LaTeXt, LaTeXt));
 		}
 	}
 	catch (exception & exc)
@@ -519,12 +519,15 @@ void MainContentComponent::exportSymbol()
 										: (result.isLocalFile() ? result.getLocalFile().getFullPathName().toStdString()
 																: result.toString(true).toStdString());
 
-		if (!name.empty())
+		if (!name.empty() && overwriteExistingFile(name))
 		{
 			//I'm exporting just the very necessary to compile the new command in tex
 			TeX saveSymbol(name);
 			saveSymbol << "\\documentclass{minimal}\n\n"
-				"\\usepackage{graphicx, amsmath, amssymb}\n";
+				"\\usepackage{graphicx, amsmath, amssymb}\n\n";
+
+			saveSymbol << "%The following code is the one defining the symbol " + newSymbolName + "\n"
+				"%You can copy and paste it in your own TeX articles and use the symbol as shown in this file.\n";
 
 			writeSymbolTeXCode(saveSymbol);
 
@@ -550,7 +553,7 @@ void MainContentComponent::save()
 																	//getNextData can read.
 	for (auto symbol : symbolsList)
 	{
-		for (int i = 1; i < LaTexSymbol::stop; i++)
+		for (int i = 1; i < LaTeXSymbol::stop; i++)
 			saveSymbolproj << symbol.getAttributeTextbyID(i) << "\\&/";
 
 		saveSymbolproj << endl;
@@ -649,9 +652,9 @@ void MainContentComponent::open(std::string filePath)
 				{
 					string d(buffer);
 
-					LaTexSymbol nextSymbol;
+					LaTeXSymbol nextSymbol;
 
-					for (int i = 1; i < LaTexSymbol::stop; i++)
+					for (int i = 1; i < LaTeXSymbol::stop; i++)
 						nextSymbol.setAttributebyID(i, getNextData(d));
 
 					symbolsList.push_back(nextSymbol);
@@ -715,13 +718,13 @@ void MainContentComponent::writeSymbolTeXCode(TeX & texStream)
 	texStream << "\\newcommand{\\" + newSymbolName + "}{\\mathbin{\\ooalign{\n"
 		"	\\rotatebox[origin=c]{" + eatRightZeros(to_string(symbolsList[0].getRotAngle()))
 		+ "}{\\scalebox{" + eatRightZeros(to_string(symbolsList[0].getSizeRatio()))
-		+ "}{$" + symbolsList[0].getLaTex() + "$}}\\cr\n";	//The first symbol is dominant: the others are positioned with respect
+		+ "}{$" + symbolsList[0].getLaTeX() + "$}}\\cr\n";	//The first symbol is dominant: the others are positioned with respect
 															//to this one. Indeed it is not translated.
 	for (auto it = symbolsList.begin() + 1; it != symbolsList.end(); ++it)
 		texStream << "	\\hidewidth\\kern" + eatRightZeros(to_string(it->getx())) + "pt\\raise" +
 			eatRightZeros(to_string(it->gety())) + "pt\\hbox{\\rotatebox[origin=c]{" +
 			eatRightZeros((to_string(it->getRotAngle()))) + "}{\\scalebox{"	+ eatRightZeros(to_string(it->getSizeRatio())) +
-			"}{$" + it->getLaTex() + "$}}}\\hidewidth\\cr\n";	//the other symbols are writtend down with everything,
+			"}{$" + it->getLaTeX() + "$}}}\\hidewidth\\cr\n";	//the other symbols are writtend down with everything,
 																//translations included
 	texStream << "}}}\n\n";
 }
@@ -776,7 +779,7 @@ void MainContentComponent::compile()	//most important function!
 		message.set("No TeX symbols added. Nothing to compile.");	//no need to throw exceptions for this kind of things
 }
 
-void MainContentComponent::add(LaTexSymbol newObject)
+void MainContentComponent::add(LaTeXSymbol newObject)
 {
 	symbolsList.push_back(newObject);
 
@@ -1193,11 +1196,11 @@ void MainContentComponent::messageComponent::set(std::string to_be_written)
 	message = to_be_written;
 }
 
-int LaTexSymbol::_symbolCount = 0;
+int LaTeXSymbol::_symbolCount = 0;
 
-LaTexSymbol::LaTexSymbol() : _symbolID(_symbolCount++),
+LaTeXSymbol::LaTeXSymbol() : _symbolID(_symbolCount++),
 							 _name(),
-  							 _LaTex(),
+  							 _LaTeX(),
  							 _selected(),
  							 _x(),
  							 _y(),
@@ -1205,12 +1208,12 @@ LaTexSymbol::LaTexSymbol() : _symbolID(_symbolCount++),
  							 _sizeRatio()
 {}
 
-LaTexSymbol::LaTexSymbol(std::string name, std::string LaTex, double x,
+LaTeXSymbol::LaTeXSymbol(std::string name, std::string LaTeX, double x,
 	double y, double rotAngle, double sizeRatio, bool selected):
 	_symbolID(_symbolCount++)
 {
 	_name = name;
-	_LaTex = LaTex;
+	_LaTeX = LaTeX;
 	_selected = selected;
 	_x = x;
 	_y = y;
@@ -1218,10 +1221,10 @@ LaTexSymbol::LaTexSymbol(std::string name, std::string LaTex, double x,
 	_sizeRatio = sizeRatio;
 }
 
-LaTexSymbol & LaTexSymbol::operator=(const LaTexSymbol & other) //this operator intentionally does not copy the _symbolID
+LaTeXSymbol & LaTeXSymbol::operator=(const LaTeXSymbol & other) //this operator intentionally does not copy the _symbolID
 {																//as that is associated to the history of the element
 	_name = other._name;
-	_LaTex = other._LaTex;
+	_LaTeX = other._LaTeX;
 	_x = other._x;
 	_y = other._y;
 	_rotAngle = other._rotAngle;
@@ -1230,10 +1233,10 @@ LaTexSymbol & LaTexSymbol::operator=(const LaTexSymbol & other) //this operator 
 	return *this;
 }
 
-LaTexSymbol::LaTexSymbol(const LaTexSymbol & other):
+LaTeXSymbol::LaTeXSymbol(const LaTeXSymbol & other):
 	_symbolID(other._symbolID),
 	_name(other._name),
-	_LaTex(other._LaTex),
+	_LaTeX(other._LaTeX),
 	_x(other._x),
 	_y(other._y),
 	_rotAngle(other._rotAngle),
@@ -1241,11 +1244,11 @@ LaTexSymbol::LaTexSymbol(const LaTexSymbol & other):
 	_selected(other._selected)
 {}
 
-bool LaTexSymbol::operator==(const LaTexSymbol & other) const
+bool LaTeXSymbol::operator==(const LaTeXSymbol & other) const
 {
 	if (_symbolID == other._symbolID &&
 		_name == other._name &&
-		_LaTex == other._LaTex &&
+		_LaTeX == other._LaTeX &&
 		_x == other._x &&
 		_y == other._y &&
 		_rotAngle == other._rotAngle &&
@@ -1255,19 +1258,19 @@ bool LaTexSymbol::operator==(const LaTexSymbol & other) const
 		return false;
 }
 
-bool LaTexSymbol::operator!=(const LaTexSymbol & other) const
+bool LaTeXSymbol::operator!=(const LaTeXSymbol & other) const
 {
 	return !operator==(other);
 }
 
-std::string LaTexSymbol::getAttributeTextbyID(int id) const
+std::string LaTeXSymbol::getAttributeTextbyID(int id) const
 {
 	if (id == symbolID_id)
 		return to_string(_symbolID);
 	else if (id == name_id)
 		return _name;
-	else if (id == LaTex_id)
-		return _LaTex;
+	else if (id == LaTeX_id)
+		return _LaTeX;
 	else if (id == selected_id)
 		return _selected ? "Y" : "N";
 	else if (id == x_id)
@@ -1282,12 +1285,12 @@ std::string LaTexSymbol::getAttributeTextbyID(int id) const
 		return{};
 }
 
-void LaTexSymbol::setAttributebyID(int id, std::string text)
+void LaTeXSymbol::setAttributebyID(int id, std::string text)
 {
 	if (id == name_id)
 		_name = text;
-	else if (id == LaTex_id)
-		_LaTex = text;
+	else if (id == LaTeX_id)
+		_LaTeX = text;
 	else if (id == selected_id)
 		_selected = ((text == "Y") ? 1 : 0);
 	else if (id == x_id)
@@ -1300,7 +1303,7 @@ void LaTexSymbol::setAttributebyID(int id, std::string text)
 		_sizeRatio = stod(text);
 }
 
-void LaTexSymbol::setAttributebyID(int id, double value)
+void LaTeXSymbol::setAttributebyID(int id, double value)
 {
 	if (id == selected_id)
 		_selected = static_cast<bool>(value);
@@ -1314,62 +1317,62 @@ void LaTexSymbol::setAttributebyID(int id, double value)
 		_sizeRatio = value;
 }
 
-const std::string LaTexSymbol::getName()
+const std::string LaTeXSymbol::getName()
 {
 	return _name;
 }
 
-bool LaTexSymbol::is_selected() const
+bool LaTeXSymbol::is_selected() const
 {
 	return _selected;
 }
 
-void LaTexSymbol::set_selected(const bool b)
+void LaTeXSymbol::set_selected(const bool b)
 {
 	_selected = b;
 }
 
-std::string LaTexSymbol::getLaTex() const
+std::string LaTeXSymbol::getLaTeX() const
 {
-	return _LaTex;
+	return _LaTeX;
 }
 
-double LaTexSymbol::getx() const
+double LaTeXSymbol::getx() const
 {
 	return _x;
 }
 
-void LaTexSymbol::setx(const double x)
+void LaTeXSymbol::setx(const double x)
 {
 	_x = x;
 }
 
-double LaTexSymbol::gety() const
+double LaTeXSymbol::gety() const
 {
 	return _y;
 }
 
-void LaTexSymbol::sety(const double y)
+void LaTeXSymbol::sety(const double y)
 {
 	_y = y;
 }
 
-double LaTexSymbol::getSizeRatio() const
+double LaTeXSymbol::getSizeRatio() const
 {
 	return _sizeRatio;
 }
 
-void LaTexSymbol::setSizeRatio(const double size_ratio)
+void LaTeXSymbol::setSizeRatio(const double size_ratio)
 {
 	_sizeRatio = size_ratio;
 }
 
-double LaTexSymbol::getRotAngle() const
+double LaTeXSymbol::getRotAngle() const
 {
 	return _rotAngle;
 }
 
-void LaTexSymbol::setRotAngle(const double rotation_angle)
+void LaTeXSymbol::setRotAngle(const double rotation_angle)
 {
 	_rotAngle = rotation_angle;
 }

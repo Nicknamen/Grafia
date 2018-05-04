@@ -57,7 +57,7 @@ public:
 	enum // to work abstractly with columns
 	{
 		object_columnId = 1,
-		LaTex_columndId,
+		LaTeX_columndId,
 		select_columnId
 	};
 

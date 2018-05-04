@@ -29,7 +29,7 @@
 std::string eatRightZeros(std::string & input);
 std::string eatRightZeros(std::string && input); // to make it work with to_string() output
 
-class LaTexSymbol;
+class LaTeXSymbol;
 
 /**	This class implements the portion of the screen where the image is shown.
 	It is handy to have it on its own as it can be repainted when the image changes.
@@ -149,7 +149,7 @@ private:
 	bool saved = true; // it starts true so that the user will not be disturbed for not saving an empty project
 	std::string projectPath; // it stores the filename of the opened project if any.
 
-	std::vector<LaTexSymbol> symbolsList; // this contains basically all what matters about the symbol
+	std::vector<LaTeXSymbol> symbolsList; // this contains basically all what matters about the symbol
 										  // all the TeX components with all the information are stored here
 
 	std::string newSymbolName = "newSymbol"; // is the name of the symbol that will be called in LaTeX as \newSymbol
@@ -178,9 +178,9 @@ private:
 
 	std::unique_ptr<TableComponent> table_ptr;	// points to the table component. Pointer because, again, I need to control
 												// creation and destruction.
-//	std::shared_ptr<LaTexSymbol> selected_symbol = nullptr; //unique  or shared pointer does not work... it looks it creates copies. I don't get why
+//	std::shared_ptr<LaTeXSymbol> selected_symbol = nullptr; //unique  or shared pointer does not work... it looks it creates copies. I don't get why
 //  but why should it ever work? there is no point in using a shared_ptr or unique ptr here.
-	LaTexSymbol * selected_symbol = nullptr;	// points to the last clicked symbol, the one being displayed.
+	LaTeXSymbol * selected_symbol = nullptr;	// points to the last clicked symbol, the one being displayed.
 												// should this be an iterator instead?
 
 	// Arrow buttons
@@ -226,7 +226,7 @@ private:
 
 	void writeSymbolTeXCode(TeX & texStream);	// it translates the information stored in the symbolsList on the TeX file
 	void compile();	//	the central function. Compiles the TeX file and converts it in to an image. 
-	void add(LaTexSymbol newObject);	//	adds a symbol to the list
+	void add(LaTeXSymbol newObject);	//	adds a symbol to the list
 	void remove();	//	removes all the selected symbols
 	void reset();	//	cancels everything and resets the window to a virgin status
 
@@ -253,20 +253,20 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };
 
-class LaTexSymbol
+class LaTeXSymbol
 {
 public:
-	LaTexSymbol();
-	LaTexSymbol( std::string name, std::string LaTex, double x = 0, double y = 0,
+	LaTeXSymbol();
+	LaTeXSymbol( std::string name, std::string LaTeX, double x = 0, double y = 0,
 		double rotAngle = 0, double sizeRatio = 1, bool selected = false);
 
 	// need to implement these because I put a const private member
-	LaTexSymbol& operator=(const LaTexSymbol& other);
-	LaTexSymbol(const LaTexSymbol& other);
+	LaTeXSymbol& operator=(const LaTeXSymbol& other);
+	LaTeXSymbol(const LaTeXSymbol& other);
 	
 	// need to override these because _seclected should not be confronted
-	bool operator==(const LaTexSymbol & other) const;
-	bool operator!=(const LaTexSymbol & other) const;
+	bool operator==(const LaTeXSymbol & other) const;
+	bool operator!=(const LaTeXSymbol & other) const;
 
 	// ACCESS METHODS
 	// these are handy when writing and reading files
@@ -278,7 +278,7 @@ public:
 
 	bool is_selected() const;
 	void set_selected(const bool b);
-	std::string getLaTex() const;
+	std::string getLaTeX() const;
 
 	double getx() const;
 	void setx(const double x);
@@ -294,7 +294,7 @@ public:
 	{
 		symbolID_id = 0,
 		name_id,
-		LaTex_id,
+		LaTeX_id,
 		selected_id,
 		x_id,
 		y_id,
@@ -306,7 +306,7 @@ public:
 private:
 	const int _symbolID; //danger: the price for declaring it const is that iterators break the continuity. See the operator= implementation.
 	std::string _name;
-	std::string _LaTex; //LaTeX code
+	std::string _LaTeX; //LaTeX code
 	double _x; //x translation displacement
 	double _y; //y translation displacement
 	double _rotAngle; //rotation angle

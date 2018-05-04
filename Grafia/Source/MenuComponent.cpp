@@ -33,10 +33,10 @@ MenuComponent::MenuComponent()
 {
 //	menuBar = std::make_unique<MenuBarComponent>(this);
 
-	menuBar.reset(new MenuBarComponent(this)); //what does change with respect to before?
+	menuBar.reset(new MenuBarComponent(this));	//what does change with respect to before? The new demo does like this...
 	addAndMakeVisible(menuBar.get());
 
-	setApplicationCommandManagerToWatch(&MainContentComponent::getApplicationCommandManager());
+	setApplicationCommandManagerToWatch(&MainContentComponent::getApplicationCommandManager());	//to know the commands
 }
 
 void MenuComponent::resized()
@@ -50,7 +50,7 @@ void MenuComponent::resized()
 
 StringArray MenuComponent::getMenuBarNames()
 {
-	return  {"File", "Edit", "LaTex", "Help" };
+	return  {"File", "Edit", "LaTeX", "Help" };
 }
 
 PopupMenu MenuComponent::getMenuForIndex(int menuIndex, const String& /*menuName*/)
@@ -89,8 +89,8 @@ PopupMenu MenuComponent::getMenuForIndex(int menuIndex, const String& /*menuName
 	return menu;
 }
 
-void MenuComponent::menuItemSelected(int /*menuItemID*/, int)
-{
+void MenuComponent::menuItemSelected(int /*menuItemID*/, int)	//no need of this function but
+{																//it's abstract so I have to overwrite it
 	// most of our menu items are invoked automatically as commands, but we can handle the
 	// other special cases here..
 }
