@@ -17,9 +17,9 @@
 #include <regex>
 #include <exception>
 #include <set>
-#include <experimental\filesystem>
 
 #ifdef _WIN32
+#include <experimental\filesystem> //why is this not present in Linux???
 #include <Windows.h>
 #endif
 
@@ -204,7 +204,12 @@ private:
 /** Tests if a given file exists */
 inline bool fexists(const std::string & filename) //inline functions must be defined in the header file!
 {
+#ifdef _WIN32
 	return std::experimental::filesystem::exists(filename);
+#elif defined __linux__
+	std::ifstream f(filename.c_str());
+	return f.good();
+#endif
 }
 
 /**

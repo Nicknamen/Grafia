@@ -967,8 +967,6 @@ build/intermediate/Debug/include_juce_gui_extra_6dee1c1a.o: \
  /usr/include/webkitgtk-4.0/webkit2/WebKitContextMenuActions.h \
  /usr/include/webkitgtk-4.0/webkit2/WebKitForwardDeclarations.h \
  /usr/include/webkitgtk-4.0/webkit2/WebKitCookieManager.h \
- /usr/include/webkitgtk-4.0/webkit2/WebKitDownload.h \
- /usr/include/webkitgtk-4.0/webkit2/WebKitURIRequest.h \
  /usr/include/libsoup-2.4/libsoup/soup.h \
  /usr/include/libsoup-2.4/libsoup/soup-address.h \
  /usr/include/libsoup-2.4/libsoup/soup-types.h \
@@ -1023,6 +1021,8 @@ build/intermediate/Debug/include_juce_gui_extra_6dee1c1a.o: \
  /usr/include/libsoup-2.4/libsoup/soup-xmlrpc.h \
  /usr/include/libsoup-2.4/libsoup/soup-xmlrpc-old.h \
  /usr/include/libsoup-2.4/libsoup/soup-autocleanups.h \
+ /usr/include/webkitgtk-4.0/webkit2/WebKitDownload.h \
+ /usr/include/webkitgtk-4.0/webkit2/WebKitURIRequest.h \
  /usr/include/webkitgtk-4.0/webkit2/WebKitURIResponse.h \
  /usr/include/webkitgtk-4.0/webkit2/WebKitEditingCommands.h \
  /usr/include/webkitgtk-4.0/webkit2/WebKitEditorState.h \

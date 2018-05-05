@@ -259,7 +259,10 @@ void TeX::to(std::string ext, std::string middle_ext)
 		}
 		catch (exception &exc)
 		{
-			throw TeXException("Magick exception: " + string(exc.what()));
+			if (!regex_search(exc.what(), regex("WarningHandler")))
+				throw TeXException("Magick exception: " + string(exc.what()));
+			
+			cerr << exc.what() << endl;
 		}
 	}
 	else
@@ -298,7 +301,8 @@ path ExePath()	// I really did not go into the details of this function: I just 
 		result_path = dirname(result);
 		return path(result_path);
 	}
-
+	else
+		return path("");
 #endif
 }
 

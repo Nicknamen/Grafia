@@ -337,7 +337,7 @@ void MainContentComponent::buttonClicked(Button* button)
 			moveSymbolDown();
 		}
 	}
-	catch (const std::exception& exc)
+	catch (exception& exc)
 	{
 		errorAlert(exc);
 	}	
@@ -1194,6 +1194,8 @@ void MainContentComponent::messageComponent::paint(Graphics & g)
 void MainContentComponent::messageComponent::set(std::string to_be_written)
 {
 	message = to_be_written;
+
+	repaint();
 }
 
 int LaTeXSymbol::_symbolCount = 0;

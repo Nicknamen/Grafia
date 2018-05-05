@@ -3,7 +3,7 @@
 <JUCERPROJECT id="Qr0nDZ" name="Grafia" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.yourcompany.Grafia" includeBinaryInAppConfig="1"
               jucerVersion="5.3.1" displaySplashScreen="1" reportAppUsage="1"
-              splashScreenColour="Dark">
+              splashScreenColour="Dark" cppLanguageStandard="17">
   <MAINGROUP id="cdnleW" name="Grafia">
     <GROUP id="{3D9344D3-A3B7-AE35-480A-4CAD7625B879}" name="Source">
       <FILE id="cTME9X" name="coloured_logo_6.png" compile="0" resource="1"
