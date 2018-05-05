@@ -337,7 +337,7 @@ void MainContentComponent::buttonClicked(Button* button)
 			moveSymbolDown();
 		}
 	}
-	catch (exception& exc)
+	catch (const exception& exc)
 	{
 		errorAlert(exc);
 	}	
@@ -664,7 +664,7 @@ void MainContentComponent::open(std::string filePath)
 			}
 			catch (exception & exc)
 			{
-				throw exc; //exceptions are not handled in this function.
+				throw; //exceptions are not handled in this function.
 			}
 		}
 		else
@@ -751,7 +751,8 @@ void MainContentComponent::compile()	//most important function!
 
 			message.set("Compiling..."); //need to implement multithreading for this
 
-			texstream.to("png");	//is this the best way? I'll switch to svg when juce will give a better support for it
+			string warning = texstream.to("png");	//is this the best way? I'll switch to svg when juce will
+													//give a better support for it
 
 			File teximage(File::getCurrentWorkingDirectory().getChildFile(String(ImageFileName + ".png")));
 
@@ -768,11 +769,11 @@ void MainContentComponent::compile()	//most important function!
 
 			update_displayed();
 
-			message.set("Compiled succesfully");
+			message.set(warning);
 		}
 		catch (exception& exc)
 		{
-			throw exc; //exceptions are not handled in this function
+			throw; //exceptions are not handled in this function
 		}
 	}
 	else

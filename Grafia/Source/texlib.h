@@ -80,8 +80,10 @@ public:
 								The allowed extensions can be found https://www.imagemagick.org/script/formats.php
 		@param	middle_ext		the extension to which the TeX code shoud be compiled to: either PDF or DVI.
 								Experimentally I can see that PDF is quicker, contrarily to expectations.
+
+		Returns an eventual warning message. It makes no sense to throw exceptions for simple warnings.
 	*/
-	void to(std::string ext, std::string middle_ext = "pdf");
+	std::string to(std::string ext, std::string middle_ext = "pdf");
 
 	/**
 		Access methods for image density. The image density is intended to be the pixel density. By default it is 600.
@@ -167,7 +169,10 @@ public:
 	public:
 		/** sets the message error for the exception considered */
 		template<typename T>
-		TeXException(T what) { error_what = "TeX level error: " + (std::string)what; }
+		TeXException(T what)
+		{
+			error_what = "TeX level error: " + (std::string)what;
+		}
 
 		/** returns the message errror for the exception considered */
 		virtual const char* what() const throw()

@@ -197,7 +197,7 @@ void TeX::to_pdf()
 		extensions.insert("pdf");
 	}
 	else
-		throw "File " + _texname + " not found";
+		throw TeXException("File " + _texname + " not found");
 }
 
 void TeX::to_dvi()
@@ -211,10 +211,10 @@ void TeX::to_dvi()
 		extensions.insert("dvi");
 	}
 	else
-		throw "File " + _texname + " not found";
+		throw TeXException("File " + _texname + " not found");
 }
 
-void TeX::to(std::string ext, std::string middle_ext)
+string TeX::to(std::string ext, std::string middle_ext)
 {
 	Magick::InitializeMagick(ExePath().forward("bin").c_str()); // not able to properly initialize magick
 																// this method shoud tell it where to find xmls
@@ -257,12 +257,14 @@ void TeX::to(std::string ext, std::string middle_ext)
 			// Write the image to a file 
 			image.write(_emptyname + "." + ext);
 		}
-		catch (exception &exc)
+		catch (const exception & exc)
 		{
 			if (!regex_search(exc.what(), regex("WarningHandler")))
-				throw TeXException("Magick exception: " + string(exc.what()));
-			
-			cerr << exc.what() << endl;
+				throw TeXException("Magick exception: " + string(exc.what()));	//important: never write throw exc:
+																				//throw throws a copy of the base call,
+																				//so in this case of exception!
+			else
+				return string(exc.what());
 		}
 	}
 	else
@@ -271,6 +273,8 @@ void TeX::to(std::string ext, std::string middle_ext)
 	}
 
 	extensions.insert(ext);							// so that it is also automatically remove at the end
+
+	return "Compiled succesfully";
 }
 
 void TeX::set_image_density(const int density)
