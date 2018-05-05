@@ -23,14 +23,14 @@ Windows 8.1 or a newer version. Any Linux distribution. An installation of LaTeX
 ### Setup
 Work in progress... I'm trying to develop an installer for Windows and a script for Linux
 
-<img src="screenshot.png" align="right" width="600" height="360" />
+<img src="screenshot.png" align="left" width="600" height="360" />
 
 ## How the software works
 This application generates the code of a new LaTeX symbol by overlapping existing ones, changed at most by a similarity (that is an affine transformation of wich the vector space matrix belongs to O(2). Actually by now only SO(2) is implemented).
 
 Component symbols are added by typing the relative TeX code in the "LaTeX code" text editor and pressing either Add or enter. When all the necessary components are in the bottom right table, the component symbol attributes can be displayed by clicking on its LaTeX code cell. The first symbol of the list is dominant: it cannot be translated, but rather all the other symbols are translated with respect to this one. It can all the same be resized and rotated. To move a symbol just click on it and use the arrow buttons on top of the table. The remove button removes all the selected component symbols.
 
-> <b>Note</b>: even if modification are displayed numerically only for the displayed component symbol, they are applied > proportionally to all selected symbols, so be careful about selecting and deselecting the appropriate component symbols.
+> <b>Note</b>: even if modification are displayed numerically only for the displayed component symbol, they are applied proportionally to all selected symbols, so be careful about selecting and deselecting the appropriate component symbols.
 
 To select all symbols click on "Select" on the table header. To deselect them all click on it 2 times. When ready to see the result click on compile button (you can click it as many times as you want, it takes approximately 8 seconds on windows, 2 on linux). If you tick "Compile at each command" the final symbol will be displayed at each modification. Once the symbol is ready you can type its name (that its new LaTeX code: newSymbol will be called by $\newSymbol$) in the appropriate editbox. Then you can save the project by clicking on File->Save, wich will save it in the grproj extension, the proper extension recognised by grafia. A saved .grproj file can be opene just by double clicking on it, or through the apposite File->Open functionality. You can also export the symbol in TeX by clicking on LaTeX->Export. This will create a minimal TeX file that will be able to compile the command. You can copy and paste the appropriate symbol TeX code in your own TeX file, so to use it. In Edit->Settings you will find some display settings.
 

@@ -1,0 +1,82 @@
+\begin{theindex}
+
+  \item {$\sim$\+TeX}
+    \subitem {TeX}, \hyperpage{6}
+
+  \indexspace
+
+  \item {close}
+    \subitem {TeX}, \hyperpage{6}
+
+  \indexspace
+
+  \item {do\+\_\+not\+\_\+cancel}
+    \subitem {TeX}, \hyperpage{7}
+
+  \indexspace
+
+  \item {exists}
+    \subitem {TeX}, \hyperpage{7}
+
+  \indexspace
+
+  \item {get\+\_\+fullpath\+\_\+ext}
+    \subitem {TeX}, \hyperpage{7}
+  \item {get\+\_\+name}
+    \subitem {TeX}, \hyperpage{7}
+  \item {get\+\_\+path}
+    \subitem {TeX}, \hyperpage{7}
+
+  \indexspace
+
+  \item {open}
+    \subitem {TeX}, \hyperpage{8}
+  \item {open\+\_\+rewritemode}
+    \subitem {TeX}, \hyperpage{8}
+  \item {operator$<$$<$}
+    \subitem {TeX}, \hyperpage{8}
+
+  \indexspace
+
+  \item {rmfiles}
+    \subitem {TeX}, \hyperpage{9}
+
+  \indexspace
+
+  \item {set\+\_\+image\+\_\+density}
+    \subitem {TeX}, \hyperpage{9}
+
+  \indexspace
+
+  \item {Te\+X\+::\+Te\+X\+Exception}, \hyperpage{10}
+    \subitem {Te\+X\+Exception}, \hyperpage{10}
+    \subitem {what}, \hyperpage{10}
+  \item {Te\+X\+Exception}
+    \subitem {Te\+X\+::\+Te\+X\+Exception}, \hyperpage{10}
+  \item {TeX}, \hyperpage{5}
+    \subitem {$\sim$\+TeX}, \hyperpage{6}
+    \subitem {close}, \hyperpage{6}
+    \subitem {do\+\_\+not\+\_\+cancel}, \hyperpage{7}
+    \subitem {exists}, \hyperpage{7}
+    \subitem {get\+\_\+fullpath\+\_\+ext}, \hyperpage{7}
+    \subitem {get\+\_\+name}, \hyperpage{7}
+    \subitem {get\+\_\+path}, \hyperpage{7}
+    \subitem {open}, \hyperpage{8}
+    \subitem {open\+\_\+rewritemode}, \hyperpage{8}
+    \subitem {operator$<$$<$}, \hyperpage{8}
+    \subitem {rmfiles}, \hyperpage{9}
+    \subitem {set\+\_\+image\+\_\+density}, \hyperpage{9}
+    \subitem {TeX}, \hyperpage{6}
+    \subitem {to}, \hyperpage{9}
+    \subitem {to\+\_\+pdf}, \hyperpage{9}
+  \item {to}
+    \subitem {TeX}, \hyperpage{9}
+  \item {to\+\_\+pdf}
+    \subitem {TeX}, \hyperpage{9}
+
+  \indexspace
+
+  \item {what}
+    \subitem {Te\+X\+::\+Te\+X\+Exception}, \hyperpage{10}
+
+\end{theindex}

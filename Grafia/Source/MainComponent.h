@@ -1,13 +1,17 @@
 /*
   ==============================================================================
 
-    This file was auto-generated!
+    Main window
+	The classes implmented here form the main window of this graphical application
+	
+	This file was auto-generated!
 
 	MainComponent.h
 	Project:	Grafia
 	Created:	17 Apr 2017
 	Author:		Nicolo' Cavalleri
 	Github:		Nicknamen
+	Link:		https://github.com/Nicknamen/Grafia (details about the application can be found here)
 
   ==============================================================================
 */

@@ -8,6 +8,7 @@
 	Created:	17 Apr 2017
 	Author:		Nicolo' Cavalleri
 	Github:		Nicknamen
+	Link:		https://github.com/Nicknamen/Grafia
 
   ==============================================================================
 */
@@ -61,21 +62,6 @@ std::string eatRightZeros(std::string & input)	//juce fills everything with usel
 			}
 			else
 				break;
-
-
-/*	for (auto it = input.end() - 2; it != input.begin();)
-		if (*it == '0')
-		{
-			it = input.erase(it);
-		}
-		else if (*it == '.')
-		{
-			it = input.erase(it);
-
-			break;
-		}
-		else
-			--it;*/
 
 	return input;
 }

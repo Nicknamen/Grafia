@@ -1,11 +1,14 @@
 /*
   ==============================================================================
 
+	This file implements the table of symbols of the Grafia application.
+
     TableComponent.h
 	Project:	Grafia
     Created:	24 Mar 2018 12:52pm
     Author:		Nicolo' Cavalleri
 	Github:		Nicknamen
+	Link:		https://github.com/Nicknamen/Grafia
 
   ==============================================================================
 */

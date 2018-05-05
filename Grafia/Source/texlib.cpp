@@ -1,7 +1,7 @@
 /*
 ==============================================================================
 
-	texlib.h
+	texlib.cpp
 	Author:		Nicolo' Cavalleri
 	Github:		Nicknamen
 	Created:	16 Aug 2017
@@ -27,15 +27,20 @@
 
 using namespace std;
 
+
+//should I use the standard function std::set_difference? That function does not look to be optimized for sets
 template<class T, class Compare = std::less<T>, class Allocator = std::allocator<T>>
 std::set<T, Compare, Allocator> set_difference(const std::set<T, Compare, Allocator> & A, 
 											   const std::set<T, Compare, Allocator> & B) //returns A - B, as in mathematics
 {
 	std::set<T, Compare, Allocator> C;
 
-	for (T a : A)									//I can for sure optimize this function
+	for (T a : A)
 		if (B.find(a) == B.end())
 			C.insert(a);
+			//B = set(B.find(a), B.end())		//does this make the function quicker or slower?
+												//it would be for sure quicker if I could tell directly to find()
+												//the limits for the search.
 
 	return C;
 }

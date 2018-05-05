@@ -5,6 +5,16 @@
 
     It contains the basic startup code for a Juce application.
 
+	This program has the purpose of creating new LaTeX mathematical symbols. A more detailed introduction can be
+	found on GitHub:
+
+	https://github.com/Nicknamen/Grafia
+
+	Project:	Grafia
+	Created:	17 Apr 2017
+	Author:		Nicolo' Cavalleri
+	Github:		Nicknamen
+
   ==============================================================================
 */
 
