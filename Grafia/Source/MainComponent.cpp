@@ -20,6 +20,10 @@
 #include <regex>
 #include <algorithm>
 
+#ifdef __linux__
+#include <locale>
+#endif
+
 using namespace std;
 
 inline Colour getRandomColour(float brightness)
@@ -120,6 +124,10 @@ MainContentComponent::MainContentComponent() : arrowUp("arrowUp", DrawableButton
 											   table_ptr(new TableComponent(this)),	//need to initialize it here!!
 											   menubar(new MenuComponent)
 {
+#ifdef __linux__
+	setlocale(LC_ALL, "C");
+#endif
+
 	getLookAndFeel().setColour(Label::textColourId, Colours::black);
 	getLookAndFeel().setColour(ToggleButton::ColourIds::textColourId, Colours::black);
 	getLookAndFeel().setColour(ToggleButton::ColourIds::tickColourId, Colours::black);
@@ -792,6 +800,9 @@ void MainContentComponent::remove()
 			++it;
 
 	table_ptr->update();
+
+	if (compileAtEachCommand.getToggleState())
+		compile();
 }
 
 void MainContentComponent::reset()
