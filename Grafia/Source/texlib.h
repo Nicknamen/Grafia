@@ -17,9 +17,9 @@
 #include <regex>
 #include <exception>
 #include <set>
+#include <experimental/filesystem> //why is this not present in Linux???
 
 #ifdef _WIN32
-#include <experimental\filesystem> //why is this not present in Linux???
 #include <Windows.h>
 #endif
 
@@ -190,7 +190,11 @@ private:
 
 	std::string _texname; // name of file with .tex extension
 	std::string _emptyname; // name of file without extension
-	path _texpath; // path of file. It is still to be properly implemented. By now it only stores the exe path.
+#ifdef _WINDOWS
+	path _texpath = "C:\\temp\\"; // path of file.
+#elif defined __linux__
+	path _texpath = "/tmp/"; // path of file.
+#endif
 
 	bool _istexcreated; // flag: true if the tex file has been created
 	bool _istexmodified; // flag: true if texfile has been written on

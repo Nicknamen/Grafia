@@ -75,9 +75,9 @@ bool TeX::open()
 		return false;
 
 	if (exists())
-		_texfile.open(_texname);
+		_texfile.open(get_fullpath_ext("tex"));
 	else
-		_texfile.open(_texname, ios::out);
+		_texfile.open(get_fullpath_ext("tex"), ios::out);
 
 	if (_texfile.bad())
 		return false;
@@ -97,7 +97,7 @@ bool TeX::open_rewritemode()
 	if (_texname.empty())
 		return false;
 
-	_texfile.open(_texname, ios::out | ios::trunc);
+	_texfile.open(get_fullpath_ext("tex"), ios::out | ios::trunc);
 
 	if (_texfile.bad())
 		return false;
@@ -141,7 +141,7 @@ inline bool TeX::exists()
 {
 	if (_istexcreated && !_texname.empty())
 	{
-		return fexists(_texname);
+		return fexists(get_fullpath_ext("tex"));
 	}
 	else
 		return false;
@@ -149,12 +149,8 @@ inline bool TeX::exists()
 
 void TeX::rmfiles()
 {
-	string command = "rm";
-
 	for (auto ext : extensions - extensions_not_to_cancel)
-		command += " " + _emptyname + "." + ext;
-
-	execute(command.c_str(), _is_shell_hidden);
+		remove(get_fullpath_ext(ext).c_str());
 }
 
 std::string TeX::get_name() const
@@ -178,17 +174,6 @@ inline void TeX::name(string texname)
 
 	_texname = texname;
 	_emptyname = regex_replace(texname, texext, "");	// removes .tex from the end of the file
-
-#ifdef _WINDOWS
-	regex rgx_version("(Debug|Release)$");
-
-	_texpath = regex_replace(ExePath(), rgx_version, ""); // in windows the folder where all files are created is
-														  // one level back than Debug or Release. I'm using regular
-														  // expressions because I want to be sure not to bo back one level
-														  // unnecessarely.
-#elif _linux_
-	_texpath = ExePath();
-#endif
 }
 
 void TeX::to_pdf()
@@ -197,12 +182,12 @@ void TeX::to_pdf()
 
 	if (exists())
 	{
-		execute(("pdflatex " + _texname).c_str(), _is_shell_hidden);
+		execute(("pdflatex -output-directory " + _texpath + " " + get_fullpath_ext("tex")).c_str(), _is_shell_hidden);
 	
 		extensions.insert("pdf");
 	}
 	else
-		throw TeXException("File " + _texname + " not found");
+		throw TeXException("File " + get_fullpath_ext("tex") + " not found");
 }
 
 void TeX::to_dvi()
@@ -211,22 +196,22 @@ void TeX::to_dvi()
 
 	if (exists())
 	{
-		execute(("latex " + _texname).c_str(), _is_shell_hidden);
+		execute(("latex -output-directory " + _texpath + " " + get_fullpath_ext("tex")).c_str(), _is_shell_hidden);
 	
 		extensions.insert("dvi");
 	}
 	else
-		throw TeXException("File " + _texname + " not found");
+		throw TeXException("File " + get_fullpath_ext("tex") + " not found");
 }
 
-string TeX::to(std::string ext, std::string middle_ext)
+string TeX::to(string ext, string middle_ext)
 {
 	Magick::InitializeMagick(ExePath().forward("bin").c_str()); // not able to properly initialize magick
 																// this method shoud tell it where to find xmls
 
 	Magick::Image image;
 
-	string fname = _emptyname + "." + middle_ext;				// the middle file
+	string fname = get_fullpath_ext(middle_ext);				// the middle file
 
 	image.density(to_string(get_image_density()));
 
@@ -238,7 +223,7 @@ string TeX::to(std::string ext, std::string middle_ext)
 			image.read(fname);
 
 			// Write the image to a file 
-			image.write(_emptyname + "." + ext);
+			image.write(get_fullpath_ext(ext));
 		}
 		catch (exception & exc)
 		{
@@ -260,7 +245,7 @@ string TeX::to(std::string ext, std::string middle_ext)
 			image.read(fname);
 
 			// Write the image to a file 
-			image.write(_emptyname + "." + ext);
+			image.write(get_fullpath_ext(ext));
 		}
 		catch (const exception & exc)
 		{

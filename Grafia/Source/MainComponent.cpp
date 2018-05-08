@@ -748,7 +748,7 @@ void MainContentComponent::compile()	//most important function!
 			string warning = texstream.to("png");	//is this the best way? I'll switch to svg when juce will
 													//give a better support for it
 
-			File teximage(File::getCurrentWorkingDirectory().getChildFile(String(ImageFileName + ".png")));
+			File teximage(String(texstream.get_fullpath_ext("png")));
 
 			message.set("Processing picture"); //need to implement multithreading for this
 
