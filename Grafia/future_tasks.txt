@@ -1,0 +1,11 @@
+These are tasks that will be accomplished in a future release:
+-Solve the x and y textboxes problem with compile at each command
+-Implement a undo command
+-Export in different formats
+-Make the user decide if the new command is a relation or an operator
+-Suppress the writing of rotate box [0] and similars.
+-Allow thie vertical and orizontal shrink.
+-Properly implements the key short cuts
+-Create an installer for windows
+-uninstall
+-Compile when clicking add
