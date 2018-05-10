@@ -21,12 +21,21 @@ These instructions will get you a copy of the project up and running on your loc
 Windows 8.1 or a newer version. Any Linux distribution. An installation of LaTeX is also required, that has at least the command "pdflatex".
 
 ### Setup
-The installations differs depending on the operative system. Whatever is your OS download and unpack the appropriate file from the releases link on top of this page (two tabs left of commits). Then follow the instructions.
+The installations differs depending on the operative system. Whatever is your OS download and unpack the appropriate file from [here](https://github.com/Nicknamen/Grafia/releases). Then follow the instructions for your OS.
 #### Windows
 On windows it is pretty straightforward. Just open GrafiaSetup.msi and follow the wizard. You will find the program on your desktop at the end of it.
 #### Linux
-On linux you have to unpack the folder on your home directory. Then enter the folder, open the terminal and run the following command
-`sudo ./installGrafia.sh`
+On linux you have to install some dependencies first, namley _libwebkit2gtk libomp5 libgraphicsmagick_. For example on ubuntu run:
+```
+	sudo apt install -y libwebkit2gtk-4.0-37
+	sudo apt install -y libomp5
+	sudo apt install -y libgraphicsmagick-q16-3
+```
+on other linux distributions use the appropriate installer.
+Then unpack the downloaded archive on your home directory, enter the folder, open the terminal and run the following command
+```
+sudo ./installGrafia.sh
+```
 You will then find the application as a normal native application.
 
 <img src="screenshot.png" align="left" width="600" height="360" />
