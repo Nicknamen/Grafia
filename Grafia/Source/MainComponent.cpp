@@ -1174,7 +1174,7 @@ String MainContentComponent::mySlider::getTextFromValue(double value)	//this fun
 		return textFromValueFunction(value);
 
 	if (getNumDecimalPlacesToDisplay() > 0)
-		return eatRightZeros((String(value, getNumDecimalPlacesToDisplay())).toStdString()) + getTextValueSuffix();
+		return String(eatRightZeros((String(value, getNumDecimalPlacesToDisplay())).toStdString())) + getTextValueSuffix();
 
 	return String(roundToInt(value)) + getTextValueSuffix();
 }

@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="Qr0nDZ" name="Grafia" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.yourcompany.Grafia" includeBinaryInAppConfig="1"
-              jucerVersion="5.3.1" displaySplashScreen="1" reportAppUsage="1"
+              jucerVersion="5.3.2" displaySplashScreen="1" reportAppUsage="1"
               splashScreenColour="Dark" cppLanguageStandard="17">
   <MAINGROUP id="cdnleW" name="Grafia">
     <GROUP id="{3D9344D3-A3B7-AE35-480A-4CAD7625B879}" name="Source">
@@ -57,7 +57,7 @@
     </VS2015>
     <LINUX_MAKE targetFolder="Builds/LinuxMakefile" extraCompilerFlags="-DMAGICKCORE_QUANTUM_DEPTH=16&#10;-DMAGICKCORE_HDRI_ENABLE=0"
                 externalLibraries="Magick++-6.Q16&#10;MagickCore-6.Q16&#10;MagickWand-6.Q16&#10;stdc++fs"
-                smallIcon="G2GO1b" bigIcon="cTME9X">
+                smallIcon="G2GO1b" bigIcon="cTME9X" extraDefs="STATIC_MAGICK">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" headerPath="/usr/include/ImageMagick-6/&#10;/usr/include/x86_64-linux-gnu/ImageMagick-6/"
                        libraryPath="/usr/lib/x86_64-linux-gnu"/>
@@ -97,4 +97,7 @@
     <MODULE id="juce_video" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
   </MODULES>
   <JUCEOPTIONS/>
+  <LIVE_SETTINGS>
+    <LINUX/>
+  </LIVE_SETTINGS>
 </JUCERPROJECT>

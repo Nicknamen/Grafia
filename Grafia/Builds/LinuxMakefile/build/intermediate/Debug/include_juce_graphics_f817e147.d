@@ -55,6 +55,7 @@ build/intermediate/Debug/include_juce_graphics_f817e147.o: \
  /home/nico/JUCE/modules/juce_core/text/juce_LocalisedStrings.h \
  /home/nico/JUCE/modules/juce_core/text/juce_Base64.h \
  /home/nico/JUCE/modules/juce_core/misc/juce_Result.h \
+ /home/nico/JUCE/modules/juce_core/misc/juce_Uuid.h \
  /home/nico/JUCE/modules/juce_core/containers/juce_Variant.h \
  /home/nico/JUCE/modules/juce_core/containers/juce_NamedValueSet.h \
  /home/nico/JUCE/modules/juce_core/containers/juce_DynamicObject.h \
@@ -85,7 +86,6 @@ build/intermediate/Debug/include_juce_graphics_f817e147.o: \
  /home/nico/JUCE/modules/juce_core/maths/juce_Expression.h \
  /home/nico/JUCE/modules/juce_core/maths/juce_Random.h \
  /home/nico/JUCE/modules/juce_core/misc/juce_RuntimePermissions.h \
- /home/nico/JUCE/modules/juce_core/misc/juce_Uuid.h \
  /home/nico/JUCE/modules/juce_core/misc/juce_WindowsRegistry.h \
  /home/nico/JUCE/modules/juce_core/threads/juce_ChildProcess.h \
  /home/nico/JUCE/modules/juce_core/threads/juce_DynamicLibrary.h \
