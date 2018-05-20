@@ -1,0 +1,179 @@
+ dpkg-buildpackage -rfakeroot -us -uc -ui
+dpkg-buildpackage: warning: using a gain-root-command while being root
+dpkg-buildpackage: info: source package grafia
+dpkg-buildpackage: info: source version 0.1-1
+dpkg-buildpackage: info: source distribution unstable
+dpkg-buildpackage: info: source changed by Nico <nico@cavalleri.net>
+ dpkg-source --before-build grafia-0.1
+dpkg-buildpackage: info: host architecture amd64
+ fakeroot debian/rules clean
+dh clean  
+   dh_auto_clean
+	make -j1 clean
+make[1]: Entering directory '/home/nico/programmazione/Grafia/Grafia/Builds/LinuxMakefile/debian/grafia-0.1'
+Cleaning Grafia
+make[1]: Leaving directory '/home/nico/programmazione/Grafia/Grafia/Builds/LinuxMakefile/debian/grafia-0.1'
+   dh_clean
+ dpkg-source -b grafia-0.1
+dpkg-source: info: using source format '3.0 (quilt)'
+dpkg-source: info: building grafia using existing ./grafia_0.1.orig.tar.gz
+dpkg-source: warning: ignoring deletion of directory build
+dpkg-source: warning: ignoring deletion of file build/Grafia, use --include-removal to override
+dpkg-source: warning: ignoring deletion of directory build/intermediate
+dpkg-source: warning: ignoring deletion of directory build/intermediate/Release
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/MainComponent_a6ffb4a5.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_data_structures_7471b1e3.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_gui_extra_6dee1c1a.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_events_fd7d695.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_graphics_f817e147.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/TableComponent_58ca74d8.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_opengl_a8a032b.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_audio_devices_63111d02.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_audio_processors_10c03666.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_events_fd7d695.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/BinaryData_ce4232d4.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/MenuComponent_1ba0c2bf.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_audio_processors_10c03666.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/BinaryData_ce4232d4.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_graphics_f817e147.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_opengl_a8a032b.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/path_d725aa0e.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/TableComponent_58ca74d8.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/MenuComponent_1ba0c2bf.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/Main_90ebc5c2.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_data_structures_7471b1e3.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_cryptography_8cb807a8.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_audio_devices_63111d02.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_gui_extra_6dee1c1a.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_core_f26d17db.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_gui_basics_e3f79785.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_video_be78589.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_cryptography_8cb807a8.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/MainComponent_a6ffb4a5.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/Main_90ebc5c2.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_video_be78589.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_audio_basics_8a4e984a.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_audio_basics_8a4e984a.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/path_d725aa0e.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/texlib_9e3a3167.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/texlib_9e3a3167.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_audio_formats_15f82001.o, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_gui_basics_e3f79785.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_audio_formats_15f82001.d, use --include-removal to override
+dpkg-source: warning: ignoring deletion of file build/intermediate/Release/include_juce_core_f26d17db.d, use --include-removal to override
+dpkg-source: info: building grafia in grafia_0.1-1.debian.tar.xz
+dpkg-source: info: building grafia in grafia_0.1-1.dsc
+ debian/rules build
+dh build  
+   dh_update_autotools_config
+   dh_auto_configure
+   dh_auto_build
+	make -j1
+make[1]: Entering directory '/home/nico/programmazione/Grafia/Grafia/Builds/LinuxMakefile/debian/grafia-0.1'
+Compiling path.cpp
+Compiling TableComponent.cpp
+Compiling MenuComponent.cpp
+Compiling texlib.cpp
+Compiling MainComponent.cpp
+Compiling Main.cpp
+Compiling BinaryData.cpp
+Compiling include_juce_audio_basics.cpp
+Compiling include_juce_audio_devices.cpp
+Compiling include_juce_audio_formats.cpp
+Compiling include_juce_audio_processors.cpp
+Compiling include_juce_core.cpp
+In file included from /home/nico/JUCE/modules/juce_core/juce_core.cpp:171,
+                 from ../../../../JuceLibraryCode/include_juce_core.cpp:9:
+/home/nico/JUCE/modules/juce_core/time/juce_Time.cpp:615:27: warning: macro "__DATE__" might prevent reproducible builds [-Wdate-time]
+     dateTokens.addTokens (__DATE__, true);
+                           ^~~~~~~~
+/home/nico/JUCE/modules/juce_core/time/juce_Time.cpp:618:27: warning: macro "__TIME__" might prevent reproducible builds [-Wdate-time]
+     timeTokens.addTokens (__TIME__, ":", StringRef());
+                           ^~~~~~~~
+Compiling include_juce_cryptography.cpp
+Compiling include_juce_data_structures.cpp
+Compiling include_juce_events.cpp
+Compiling include_juce_graphics.cpp
+Compiling include_juce_gui_basics.cpp
+Compiling include_juce_gui_extra.cpp
+Compiling include_juce_opengl.cpp
+Compiling include_juce_video.cpp
+Linking Grafia - App
+make[1]: Leaving directory '/home/nico/programmazione/Grafia/Grafia/Builds/LinuxMakefile/debian/grafia-0.1'
+   dh_auto_test
+ fakeroot debian/rules binary
+dh binary  
+   dh_testroot
+   dh_prep
+   dh_auto_install
+	make -j1 install DESTDIR=/home/nico/programmazione/Grafia/Grafia/Builds/LinuxMakefile/debian/grafia-0.1/debian/grafia AM_UPDATE_INFO_DIR=no
+make[1]: Entering directory '/home/nico/programmazione/Grafia/Grafia/Builds/LinuxMakefile/debian/grafia-0.1'
+Linking Grafia - App
+install build/Grafia /usr/bin/
+install Grafia_512logo.png /usr/share/icons/hicolor/512x512/apps/
+install Grafia_512logo2.png /usr/share/icons/hicolor/512x512/mimetypes/application-x-Grafia.png
+make[1]: Leaving directory '/home/nico/programmazione/Grafia/Grafia/Builds/LinuxMakefile/debian/grafia-0.1'
+   dh_installdocs
+   dh_installchangelogs
+   dh_perl
+   dh_link
+   dh_strip_nondeterminism
+   dh_compress
+   dh_fixperms
+   dh_missing
+   dh_strip
+   dh_makeshlibs
+   dh_shlibdeps
+   dh_installdeb
+   dh_gencontrol
+dpkg-gencontrol: warning: Depends field of package grafia: unknown substitution variable ${shlibs:Depends}
+   dh_md5sums
+   dh_builddeb
+dpkg-deb: building package 'grafia' in '../grafia_0.1-1_amd64.deb'.
+ dpkg-genbuildinfo
+ dpkg-genchanges  >../grafia_0.1-1_amd64.changes
+dpkg-genchanges: info: including full source code in upload
+ dpkg-source --after-build grafia-0.1
+dpkg-buildpackage: info: full upload (original source is included)
+Now running lintian grafia_0.1-1_amd64.changes ...
+warning: the authors of lintian do not recommend running it with root privileges!
+E: grafia changes: bad-distribution-in-changes-file unstable
+E: grafia source: source-is-missing build/Grafia
+E: grafia source: source-is-missing build/intermediate/Release/BinaryData_ce4232d4.o
+E: grafia source: source-is-missing build/intermediate/Release/MainComponent_a6ffb4a5.o
+E: grafia source: source-is-missing build/intermediate/Release/Main_90ebc5c2.o
+E: grafia source: source-is-missing build/intermediate/Release/MenuComponent_1ba0c2bf.o
+E: grafia source: source-is-missing build/intermediate/Release/TableComponent_58ca74d8.o
+E: grafia source: source-is-missing build/intermediate/Release/include_juce_audio_basics_8a4e984a.o
+E: grafia source: source-is-missing build/intermediate/Release/include_juce_audio_devices_63111d02.o
+E: grafia source: source-is-missing build/intermediate/Release/include_juce_audio_formats_15f82001.o
+E: grafia source: source-is-missing build/intermediate/Release/include_juce_audio_processors_10c03666.o
+E: grafia source: source-is-missing build/intermediate/Release/include_juce_core_f26d17db.o
+E: grafia source: source-is-missing build/intermediate/Release/include_juce_cryptography_8cb807a8.o
+E: grafia source: source-is-missing build/intermediate/Release/include_juce_data_structures_7471b1e3.o
+E: grafia source: source-is-missing build/intermediate/Release/include_juce_events_fd7d695.o
+E: grafia source: source-is-missing build/intermediate/Release/include_juce_graphics_f817e147.o
+E: grafia source: source-is-missing build/intermediate/Release/include_juce_gui_basics_e3f79785.o
+E: grafia source: source-is-missing build/intermediate/Release/include_juce_gui_extra_6dee1c1a.o
+E: grafia source: source-is-missing build/intermediate/Release/include_juce_opengl_a8a032b.o
+E: grafia source: source-is-missing build/intermediate/Release/include_juce_video_be78589.o
+E: grafia source: source-is-missing build/intermediate/Release/path_d725aa0e.o
+E: grafia source: source-is-missing build/intermediate/Release/texlib_9e3a3167.o
+W: grafia source: syntax-error-in-dep5-copyright line 65: Continuation line outside a paragraph (maybe line 64 should be " .").
+W: grafia: wrong-bug-number-in-closes l3:#nnnn
+W: grafia: new-package-should-close-itp-bug
+E: grafia: changelog-is-dh_make-template
+E: grafia: copyright-file-contains-full-gpl-license
+E: grafia: copyright-should-refer-to-common-license-file-for-gpl
+W: grafia: copyright-has-url-from-dh_make-boilerplate
+W: grafia: readme-debian-contains-debmake-template
+W: grafia: priority-extra-is-replaced-by-priority-optional
+W: grafia: empty-binary-package
+Finished running lintian.
+Now signing changes and any dsc files...
+ signfile dsc grafia_0.1-1.dsc Nico <nico@cavalleri.net>
+gpg: WARNING: unsafe ownership on homedir '/home/nico/.gnupg'
+gpg: WARNING: unsafe ownership on homedir '/home/nico/.gnupg'
+gpg: skipped "Nico <nico@cavalleri.net>": No secret key
+gpg: /tmp/debsign.i6lgco8S/grafia_0.1-1.dsc: clear-sign failed: No secret key
+debsign: gpg error occurred!  Aborting....

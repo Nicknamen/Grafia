@@ -7,7 +7,7 @@ if [ $inst = y ] || [ $inst = Y ]
 then
 	cp -rf Grafia /usr/bin/
 	cp -rf Grafia_512logo.png /usr/share/icons/hicolor/512x512/apps/
-        cp -rf Grafia_512logo2.png /usr/share/icons/hicolor/512x512/mimetypes/application-x-Grafia.png
+    cp -rf Grafia_512logo2.png /usr/share/icons/hicolor/512x512/mimetypes/application-x-Grafia.png
 
     ## Create a Desktop launcher
     touch /usr/share/applications/Grafia.desktop
@@ -21,7 +21,7 @@ Icon=Grafia_512logo.png
 Comment=Create mathematical symbols in LaTex
 Categories=Utility;
 Terminal=false" | tee /usr/share/applications/Grafia.desktop
-    chmod a+x /usr/share/applications/projucer.desktop
+    chmod a+x /usr/share/applications/Grafia.desktop
 
     ## Add the MIME type to the system, so .grproj files will automatically open with Grafia
     touch /usr/share/mime/packages/Grafia.xml

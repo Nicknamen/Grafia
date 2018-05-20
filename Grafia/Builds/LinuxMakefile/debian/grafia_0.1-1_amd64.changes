@@ -1,0 +1,35 @@
+Format: 1.8
+Date: Sun, 20 May 2018 20:31:37 +0200
+Source: grafia
+Binary: grafia
+Architecture: source amd64
+Version: 0.1-1
+Distribution: unstable
+Urgency: low
+Maintainer: Nico <nico@cavalleri.net>
+Changed-By: Nico <nico@cavalleri.net>
+Description:
+ grafia     - auto-generated package by debmake
+Changes:
+ grafia (0.1-1) unstable; urgency=low
+ .
+   * Initial release. Closes: #nnnn
+     <nnnn is the bug number of your ITP>
+Checksums-Sha1:
+ 45deefcce5376ce1cc085f8be8f343480de5f75a 788 grafia_0.1-1.dsc
+ 185199abc82479ab6f902edfec4d2c89ae0672ad 7743034 grafia_0.1.orig.tar.gz
+ b18d75ad6df123195ccd85c1f08f8659e441a05e 13064 grafia_0.1-1.debian.tar.xz
+ 79e4743825d7161a9473c449f318555feb4a8bca 5919 grafia_0.1-1_amd64.buildinfo
+ f9f7ce7a966671ee1bc68d3bab0a709dc42bd21c 13492 grafia_0.1-1_amd64.deb
+Checksums-Sha256:
+ 924d65baba1017c4b01036d71c5fd6b2278e6135604ba52bd96e5e22a4064a9c 788 grafia_0.1-1.dsc
+ 5ad241cadde9e36c968b3399b58ae1d9159c264d69457547c2ce394011709896 7743034 grafia_0.1.orig.tar.gz
+ 76a96501ddd492ea3ab9ebf1ac7e88668f5a6a07a08aac460e112440d9626a85 13064 grafia_0.1-1.debian.tar.xz
+ 64f54a95bf370a13cb23832ce222275d6fc3f071b70bca93328762e35fd3b764 5919 grafia_0.1-1_amd64.buildinfo
+ 99a81ab2c3764705f73a7ff7aaf59553e70ff8f8a7c331fdbf9c4a20672360d7 13492 grafia_0.1-1_amd64.deb
+Files:
+ 950760748cf3812fe0cf2db98689a76a 788 fonts extra grafia_0.1-1.dsc
+ 0ce8e39ab2c0c4605dbc0f3eeffe7788 7743034 fonts extra grafia_0.1.orig.tar.gz
+ a73170e1731499fed46c95941e43a822 13064 fonts extra grafia_0.1-1.debian.tar.xz
+ 31cba99dccb270276568a1020ad6dcbb 5919 fonts extra grafia_0.1-1_amd64.buildinfo
+ 0bffa6d0f68ba7a9deb67ebbdbbcd257 13492 fonts extra grafia_0.1-1_amd64.deb
