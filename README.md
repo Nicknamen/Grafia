@@ -23,16 +23,14 @@ Windows 8.1 or a newer version. Any Linux distribution. An installation of LaTeX
 ### Setup
 The installations differs depending on the operative system. Whatever is your OS download and unpack the appropriate file from [here](https://github.com/Nicknamen/Grafia/releases). Then follow the instructions for your OS.
 #### Windows
-On windows it is pretty straightforward. Just open GrafiaSetup.msi and follow the wizard. You will find the program on your desktop at the end of it.
+On windows it is pretty straightforward. The only dipendency you'll need to install is [ghostscript](https://www.ghostscript.com/download/) (as already said you need also to have a LaTeX distribution, which I assume you have already if you are interested in this program). After this has correctly been installed, just open GrafiaSetup.msi and follow the wizard. You will find the program on your desktop at the end of it.
 #### Linux
-On linux you have to install some dependencies first, namley _libwebkit2gtk libomp5 libgraphicsmagick_. For example on ubuntu run:
+On linux you have to install some dependencies first, Unpack the downloaded archive on your home directory, enter the folder, run
 ```
-	sudo apt install -y libwebkit2gtk-4.0-37
-	sudo apt install -y libomp5
-	sudo apt install -y libgraphicsmagick-q16-3
+readelf -d Grafia | grep NEEDED
 ```
-on other linux distributions use the appropriate installer.
-Then unpack the downloaded archive on your home directory, enter the folder, open the terminal and run the following command
+and install the missing dependencies.
+Then open the terminal and run
 ```
 sudo ./installGrafia.sh
 ```
