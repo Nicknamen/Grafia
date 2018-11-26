@@ -52,19 +52,46 @@ std::set<T, Compare, Allocator> operator-(const std::set<T, Compare, Allocator> 
 	return set_difference(A, B);
 }
 
-TeX::TeX(bool show_shell)
+TeX::TeX(bool temp, bool show_shell)
 {
 	_istexcreated = false;
 	_istexmodified = true;
 
 	_is_shell_hidden = !show_shell;
+	_temp = temp;
+
+	if (_temp)
+		_texpath = _temp_path;
 }
 
-TeX::TeX(string filename, bool show_shell)
+TeX::TeX(string filename, bool temp, bool show_shell)
 {
-	open(filename);
-
+	_temp = temp;
 	_is_shell_hidden = !show_shell;
+
+	if (_temp)
+	{
+		_texpath = _temp_path;
+
+		open(filename);
+	}
+	else
+	{
+		smatch names;
+		
+#ifdef _WINDOWS
+		if(regex_search(filename, names, regex("\\\\[^\\\\]+$")))
+#elif defined __linux__
+		if (regex_search(filename, names, regex("\\/[^\\/]+$")))
+#endif
+		{
+			_texpath = names.prefix();
+
+			open(names[0]);
+		}
+		else
+			throw TeXException("Error opening file " + filename+  ". Not able to parse the string.");
+	}
 }
 
 bool TeX::open()

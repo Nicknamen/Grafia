@@ -44,12 +44,12 @@ public:
 	/** Default creator
 		@param	show_shell		if true shows shell information when executing shell commands (LaTeX compilation)
 	*/
-	TeX(bool show_shell = false);
+	TeX(bool temp = true, bool show_shell = false);
 
 	/**
 		@param	filename		TeX file to be opened
 	*/
-	TeX(std::string filename, bool show_shell = false);
+	TeX(std::string filename, bool temp = false, bool show_shell = false);
 
 	/** Destructor
 		Removes the last file created and the compilation temporary file.
@@ -191,15 +191,18 @@ private:
 	std::string _texname; // name of file with .tex extension
 	std::string _emptyname; // name of file without extension
 #ifdef _WINDOWS
-	path _texpath = "C:\\temp\\"; // path of file.
+	path _temp_path = "C:\\temp\\"; // path of file.
 #elif defined __linux__
-	path _texpath = "/tmp/"; // path of file.
+	path _temp_path = "/tmp/"; // path of file.
 #endif
 
 	bool _istexcreated; // flag: true if the tex file has been created
 	bool _istexmodified; // flag: true if texfile has been written on
 
-	bool _is_shell_hidden; // flag: true if the user wants to see the shell when executing commands
+	bool _is_shell_hidden;	// flag: true if the user wants to see the shell when executing commands
+	bool _temp;				// flag: true of the path where the TeX should be created should be the OS temporary directory
+
+	std::string _texpath;
 
 	std::fstream _texfile; // opened file
 

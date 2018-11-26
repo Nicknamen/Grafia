@@ -1,4 +1,4 @@
-﻿Build started 08/05/2018 17:52:11.
+﻿Build started 27/11/2018 00:06:38.
 Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStudio2015\Grafia_App.vcxproj" on node 2 (Build target(s)).
 InitializeBuildStatus:
   Creating "Win32\Debug\App\Grafia_App.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -17,4 +17,4 @@ Done Building Project "C:\Users\nicoc_000\Desktop\Grafia\Grafia\Builds\VisualStu
 
 Build succeeded.
 
-Time Elapsed 00:00:00.37
+Time Elapsed 00:00:00.60

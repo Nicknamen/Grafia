@@ -520,7 +520,7 @@ void MainContentComponent::exportSymbol()
 			saveSymbol << "\\documentclass{minimal}\n\n"
 				"\\usepackage{graphicx, amsmath, amssymb}\n\n";
 
-			saveSymbol << "%The following code is the one defining the symbol " + newSymbolName + "\n"
+			saveSymbol << "%The following code defines the symbol \"" + newSymbolName + "\"\n"
 				"%You can copy and paste it in your own TeX articles and use the symbol as shown in this file.\n";
 
 			writeSymbolTeXCode(saveSymbol);
@@ -531,6 +531,8 @@ void MainContentComponent::exportSymbol()
 
 			saveSymbol.do_not_cancel("tex");	//to avoid it being cancel if the user saves it in the exe path.
 												//line to be removed when installing Grafia as a proper program
+
+			message.set("Symbol succesfully exported");
 		}
 	});
 }
