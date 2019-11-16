@@ -1,4 +1,4 @@
-﻿<img src="icon.png" align="right" width="350"/>
+﻿<img src="icon.png" align="right" width="320"/>
 
 # Grafia
 
